@@ -9,6 +9,10 @@ Item {
 
     Component.onCompleted: dialog.show()
 
+    function setText(text) {
+        share_content.setText(text)
+    }
+
     function setScreenshot(path) {
         share_content.setScreenshot(path)
     }
