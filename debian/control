@@ -1,0 +1,15 @@
+Source: deepin-share
+Section: misc
+Priority: extra
+Maintainer: 宋文武 <songwenwu@linuxdeepin.com>
+Build-Depends: debhelper (>= 9), python
+Standards-Version: 3.9.5
+Homepage: http://www.linuxdeepin.com
+
+Package: deepin-share
+Architecture: all
+Depends: ${shlibs:Depends},
+ ${misc:Depends},
+ python-pyqt5,
+ deepin-qml-widgets,
+Description: FIXME
