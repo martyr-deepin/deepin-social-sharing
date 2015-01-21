@@ -78,23 +78,17 @@ SlideInOutItem {
 					if (itemSelected) {
 						root.deselectItem(index)
 					} else {
+						var auth_url = _accounts_manager.getAuthorizeUrl(itemName)
 						var browser = Qt.createQmlObject("import QtQuick 2.2; Browser {}", root, "browser")
-						browser.setUrl(_accounts_manager.getAuthorizeUrl(itemName))
 						browser.urlChanged.connect(function (url) {
-							var query = {};
-							if (url.indexOf("?") != -1) {
-								url = url.split("?")[1]
-								url.split("&").forEach(function(part) {
-									var item = part.split("=")
-									query[item[0]] = item[1]
-								})
-							}
-							if ("code" in query) {
-								_accounts_manager.handleAuthorizeCode(itemName, query["code"])
+							var verifier = _accounts_manager.getVerifierFromUrl(itemName, url)
+							if (verifier) {
+								_accounts_manager.handleVerifier(itemName, verifier)
 								root.selectItem(index)
 								browser.destroy()
 							}
 						})
+						browser.setUrl(auth_url)
 						browser.show()
 					}
 				}

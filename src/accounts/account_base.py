@@ -27,6 +27,19 @@ class AccountBase(object):
 
     def __init__(self):
         super(AccountBase, self).__init__()
-        self._client = None
-
         self.enabled = False
+
+    @abstractmethod
+    def valid(self): pass
+
+    @abstractmethod
+    def share(self, text, pic): pass
+
+    @abstractmethod
+    def getAuthorizeUrl(self): pass
+
+    @abstractmethod
+    def getVerifierFromUrl(self, url): pass
+
+    @abstractmethod
+    def getAccountInfoWithVerifier(self, verifier): pass

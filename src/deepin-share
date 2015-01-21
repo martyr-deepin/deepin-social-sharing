@@ -59,6 +59,7 @@ class ShareWindow(QQuickView):
     def share(self, text, picture):
         self.rootObject().setText(text)
         self.rootObject().setScreenshot(picture)
+        self.show()
 
 if __name__ == "__main__":
     window = ShareWindow()
