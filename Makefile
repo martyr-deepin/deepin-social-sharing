@@ -8,7 +8,7 @@ all:
 com.deepin.SocialSharing.service: com.deepin.SocialSharing.service.in
 	sed -e "s,@prefix@,$(PREFIX)," $< > $@
 
-install:
+install: com.deepin.SocialSharing.service  
 	mkdir -p $(INSTALL_ROOT)
 	cp -r src qmls images $(INSTALL_ROOT)
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
