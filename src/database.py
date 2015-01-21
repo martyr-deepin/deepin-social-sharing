@@ -20,18 +20,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import time
 import sqlite3
 
-HOME = os.path.expanduser('~')
-XDG_CONFIG_HOME = os.environ.get('XDG_CONFIG_HOME') or \
-                  os.path.join(HOME, '.config')
-PROJECT_NAME = "deepin-social-sharing"
-CONFIG_DIR = os.path.join(XDG_CONFIG_HOME, PROJECT_NAME)
-DATABASE_FILE = os.path.join(CONFIG_DIR, "accounts.db")
-
-if not os.path.exists(CONFIG_DIR): os.makedirs(CONFIG_DIR)
+from constants import DATABASE_FILE
 
 SINAWEIBO = "sinaweibo"
 TWITTER = "twitter"
