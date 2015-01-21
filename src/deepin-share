@@ -23,17 +23,22 @@
 import os
 import sys
 import signal
-from PyQt5.QtWidgets import QApplication
+
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtQuick import QQuickView
 from PyQt5.QtGui import QSurfaceFormat, QColor
+from PyQt5.QtWidgets import QApplication
+app = QApplication(sys.argv)
 
 from accounts_manager import AccountsManager
+from dbus_services import DBUS_NAME, DBUS_PATH
+from dbus_services import DeepinShareServiceAdaptor, session_bus
 
 class ShareWindow(QQuickView):
     def __init__(self):
         super(ShareWindow, self).__init__()
         self._accounts_manager = AccountsManager()
+        self._adapter = DeepinShareServiceAdaptor(self)
 
         surface_format = QSurfaceFormat()
         surface_format.setAlphaBufferSize(8)
@@ -51,15 +56,17 @@ class ShareWindow(QQuickView):
         qmlPath = os.path.join(qmlDir, "Share.qml")
         self.setSource(QUrl.fromLocalFile(qmlPath))
 
-    def setScreenshot(self, path):
-        self.rootObject().setScreenshot(path)
+    def share(self, text, picture):
+        self.rootObject().setText(text)
+        self.rootObject().setScreenshot(picture)
+        self.show()
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
     window = ShareWindow()
-
-    window.setScreenshot(sys.argv[1])
     window.show()
+
+    session_bus.registerService(DBUS_NAME)
+    session_bus.registerObject(DBUS_PATH, window)
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     sys.exit(app.exec_())

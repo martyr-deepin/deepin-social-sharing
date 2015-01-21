@@ -20,9 +20,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from snspy import APIClient, SinaWeiboMixin
+from _sdks.sinaweibo_sdk import SinaWeiboMixin, APIClient
 
 from account_base import AccountBase
+from utils import getUrlQuery
 
 
 APP_KEY = '3703706716'
@@ -56,8 +57,12 @@ class SinaWeibo(AccountBase):
     def getAuthorizeUrl(self):
         return self._client.get_authorize_url()
 
-    def getAccountInfoWithCode(self, code):
-        token_info = self._client.request_access_token(code)
+    def getVerifierFromUrl(self, url):
+        query = getUrlQuery(url)
+        return query.get("code")
+
+    def getAccountInfoWithVerifier(self, verifier):
+        token_info = self._client.request_access_token(verifier)
         account_info = self._client.users.show.get(uid=token_info["uid"])
         info = (token_info["uid"], account_info["name"],
                 token_info["access_token"], token_info["expires"])

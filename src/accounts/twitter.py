@@ -20,74 +20,56 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from snspy import APIClient, TwitterMixin
+from _sdks.twitter_sdk import UserClient
 
 from account_base import AccountBase
-from database import db, TWITTER
+from utils import getUrlQuery
 
 APP_KEY = 'r2HHabDu8LDQCELxk2cA'
 APP_SECRET = '9e4LsNOvxWVWeEgC5gthL9Q78F7FDsnT7lUIBruyQmI'
 CALLBACK_URL = 'http://www.linuxdeepin.com'
 
 class Twitter(AccountBase):
-    def __init__(self, uid=None):
+    def __init__(self, uid='', username='',
+                 access_token='', access_token_secret=''):
         super(Twitter, self).__init__()
-        self._initClient()
-        if uid: self.setUID(uid)
+        self.uid = uid
+        self.username = username
 
-    def _initClient(self):
-        self._client = APIClient(TwitterMixin,
-                                 app_key = APP_KEY,
-                                 app_secret = APP_SECRET,
-                                 redirect_uri = CALLBACK_URL)
+        self._access_token = access_token
+        self._access_token_secret = access_token_secret
+        self._client = UserClient(APP_KEY,
+                                  APP_SECRET,
+                                  access_token,
+                                  access_token_secret)
 
-    def setUID(self, uid):
-        self._uid = uid
-        (token, expires) = self.getAccessToken()
-        self._client.set_access_token(token, expires)
+    def valid(self):
+        return self._access_token and self._access_token_secret
 
-    def getAccessToken(self):
-        account = db.fetchAccountByUID(TWITTER, self._uid)
-        if account:
-            return (account[2], account[3])
-        else:
-            return '', 0.0
-
-    def _share(self, text, pic):
-        if pic:
-            with open(pic) as _pic:
-                self._client.statuses.upload.post(status=text, pic=_pic)
-        else:
-            self._client.statuses.update.post(status=text)
-
-    def share(self, text, pic=''):
+    def share(self, text, pic=None):
         if not self.enabled: return
 
-        if self._client.is_expires():
-            self._text = text
-            self._pic = pic
-            self.authorize()
+        if pic:
+            with open(pic, "rb") as _pic:
+                self._client.api.statuses.update_with_media.post(status=text,
+                                                                 media=_pic)
         else:
-            self._share(text, pic)
-            self._text = None
-            self._pic = None
+            self._client.api.statuses.update.post(status=text)
 
-    def reshare(self):
-        if self._text:
-            self.share(self._text, self._pic)
+    def getAuthorizeUrl(self):
+        self._client = UserClient(APP_KEY, APP_SECRET)
+        token = self._client.get_authorize_token()
+        self._access_token = token['oauth_token']
+        self._access_token_secret = token['oauth_token_secret']
 
-    def authorize(self):
-        url = self._client.get_authorize_url()
+        return token['auth_url']
 
-        self._browser.setAccount(self)
-        self._browser.openUrl(url)
+    def getVerifierFromUrl(self, url):
+        query = getUrlQuery(url)
+        return query.get("oauth_verifier")
 
-    def authorizedCallback(self, code):
-        self._browser.hide()
-
-        token_info = self._client.request_access_token(code)
-        account_info = self._client.users.show.get(uid=token_info["uid"])
-        info = (token_info["uid"], account_info["name"],
-                token_info["access_token"], token_info["expires"])
-        db.saveAccountInfo(TWITTER, info)
-        self.reshare()
+    def getAccountInfoWithVerifier(self, verifier):
+        token_info = self._client.get_access_token(verifier)
+        info = (token_info["user_id"], token_info["screen_name"],
+                token_info["oauth_token"], token_info["oauth_token_secret"])
+        return info

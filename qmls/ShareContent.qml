@@ -9,6 +9,10 @@ SlideInOutItem {
     property alias text: input_text.text
     property string screenshot
 
+    function setText(text) {
+        input_text.text = text
+    }
+
     function setScreenshot(source) {
         screenshot = source
     }
@@ -21,10 +25,10 @@ SlideInOutItem {
         height: 50
         color: "#686868"
         wrapMode:TextEdit.Wrap
-        onFocusChanged: { if (focus) { label.visible = false}}
 
         Label {
             id: label
+            visible: !input_text.focus && !input_text.text
             text: "在此输入想说的话．．．"
             color: "#686868"
             font.pixelSize: 11

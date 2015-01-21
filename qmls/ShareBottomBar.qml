@@ -60,14 +60,9 @@ Item {
         }
     ]
 
-    // this function takes a list as its parameter which determines which
-    // account will be shown on the interface.
-    // for example: [1, 0] will show SinaWeibo and hide Twitter
     function lightUpIcons(filterMap) {
-        sinaweibo_checkbox.visible = filterMap[0]
-        filterMap.forEach(function (mapItem) {
-            if (mapItem) state = "share"
-        })
+        sinaweibo_checkbox.visible = filterMap.indexOf("sinaweibo") != -1
+        twitter_checkbox.visible = filterMap.indexOf("twitter") != -1
     }
 
     function getEnabledAccounts() {

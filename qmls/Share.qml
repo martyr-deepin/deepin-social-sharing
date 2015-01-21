@@ -9,6 +9,10 @@ Item {
 
     Component.onCompleted: dialog.show()
 
+    function setText(text) {
+        share_content.setText(text)
+    }
+
     function setScreenshot(path) {
         share_content.setScreenshot(path)
     }
@@ -66,13 +70,6 @@ Item {
             anchors.bottomMargin: -5
 
             onStateChanged: {
-                var accounts = _accounts_manager.getCurrentAccounts()
-
-                switch(state) {
-                    case "first_time": {
-
-                    }
-                }
             }
 
             onNextButtonClicked: {
@@ -94,8 +91,10 @@ Item {
                 var accounts = _accounts_manager.getCurrentAccounts()
                 var filterMap = []
                 for (var i = 0; i < accounts.length; i++) {
-                    filterMap.push(accounts[i][0] ? true : false)
-                    if (accounts[i][0]) state = "share"
+                    if (accounts[i][1] && accounts[i][2]) {
+                        filterMap.push(accounts[i][0])
+                        state = "share"
+                    }
                 }
                 lightUpIcons(filterMap)
             }

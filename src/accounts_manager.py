@@ -20,51 +20,59 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from accounts import SinaWeibo
-from database import db, SINAWEIBO
+from accounts import SinaWeibo, Twitter
+from database import db, SINAWEIBO, TWITTER
 
 from PyQt5.QtCore import QObject, pyqtSlot
+
+typeClassMap = {
+    SINAWEIBO: SinaWeibo,
+    TWITTER: Twitter,
+}
 
 class AccountsManager(QObject):
     """Manager of all the SNS accounts"""
     def __init__(self):
         super(AccountsManager, self).__init__()
-        self.sina_weibo = self.getSinaWeiboAccount()
+        self._accounts = {}
+        for _type in typeClassMap:
+            self._accounts[_type] = self.getInitializedAccount(_type)
 
-    def getSinaWeiboAccount(self):
-        sina_weibo = SinaWeibo()
-        accounts = db.fetchAccessableAccounts(SINAWEIBO)
-        if accounts:
-            sina_weibo = SinaWeibo(*accounts[0])
-        return sina_weibo
+    def getInitializedAccount(self, accountType):
+        account = typeClassMap[accountType]()
+        records = db.fetchAccessableAccounts(accountType)
+        if records: account = typeClassMap[accountType](*records[0])
 
-    def setSinaWeiboAccount(self, uid):
-        account = db.fetchAccountByUID(SINAWEIBO, uid)
-        if account:
-            self.sina_weibo = SinaWeibo(*account)
+        return account
 
     @pyqtSlot(str)
     def enableAccount(self, accountType):
-        if accountType == SINAWEIBO:
-            self.sina_weibo.enabled = True
+        self._accounts[accountType].enabled = True
 
     @pyqtSlot(result="QVariant")
     def getCurrentAccounts(self):
         result = []
-        result.append([self.sina_weibo.uid, self.sina_weibo.username])
+        for _account in self._accounts:
+            account = self._accounts[_account]
+            result.append([_account, account.uid, account.username])
         return result
 
     @pyqtSlot(str, result=str)
     def getAuthorizeUrl(self, accountType):
-        if accountType == SINAWEIBO:
-            return self.sina_weibo.getAuthorizeUrl()
+        return self._accounts[accountType].getAuthorizeUrl()
+
+    @pyqtSlot(str, str, result=str)
+    def getVerifierFromUrl(self, accountType, url):
+        print accountType, url, self._accounts
+        print self._accounts[accountType].getVerifierFromUrl(url)
+        return self._accounts[accountType].getVerifierFromUrl(url)
 
     @pyqtSlot(str, str)
-    def handleAuthorizeCode(self, accountType, code):
-        if accountType == SINAWEIBO:
-            info = self.sina_weibo.getAccountInfoWithCode(code)
-            db.saveAccountInfo(SINAWEIBO, info)
+    def handleVerifier(self, accountType, verifier):
+        info = self._accounts[accountType].getAccountInfoWithVerifier(verifier)
+        db.saveAccountInfo(accountType, info)
 
     @pyqtSlot(str, str)
     def share(self, text, pic):
-        self.sina_weibo.share(text, pic)
+        for _account in self._accounts:
+            self._accounts[_account].share(text, pic)

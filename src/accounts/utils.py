@@ -20,5 +20,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from sina_weibo import SinaWeibo
-from twitter import Twitter
+import urlparse
+
+def getUrlQuery(url):
+	query = {}
+
+	parseResult = urlparse.urlparse(url)
+	params = filter(lambda x: x, parseResult.query.split("&"))
+	for param in params:
+		(key, value) = param.split("=")
+		query.setdefault(key, value)
+
+	return query
