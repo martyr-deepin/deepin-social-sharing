@@ -17,4 +17,4 @@ install:
 	cp *.service $(DESTDIR)$(PREFIX)/share/dbus-1/services
 
 clean:
-	rm com.deepin.SocialSharing.service
+	rm -f com.deepin.SocialSharing.service
