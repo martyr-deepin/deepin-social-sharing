@@ -32,13 +32,13 @@ app = QApplication(sys.argv)
 
 from accounts_manager import AccountsManager
 from dbus_services import DBUS_NAME, DBUS_PATH
-from dbus_services import DeepinShareServiceAdaptor, session_bus
+from dbus_services import DeepinSocialSharingAdaptor, session_bus
 
 class ShareWindow(QQuickView):
     def __init__(self):
         super(ShareWindow, self).__init__()
         self._accounts_manager = AccountsManager()
-        self._adapter = DeepinShareServiceAdaptor(self)
+        self._adapter = DeepinSocialSharingAdaptor(self)
 
         surface_format = QSurfaceFormat()
         surface_format.setAlphaBufferSize(8)

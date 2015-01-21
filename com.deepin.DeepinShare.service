@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=com.deepin.DeepinShare
-Exec=/usr/share/deepin-share/deepin-share

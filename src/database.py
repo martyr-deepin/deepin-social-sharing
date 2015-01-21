@@ -27,7 +27,7 @@ import sqlite3
 HOME = os.path.expanduser('~')
 XDG_CONFIG_HOME = os.environ.get('XDG_CONFIG_HOME') or \
                   os.path.join(HOME, '.config')
-PROJECT_NAME = "deepin-share-service"
+PROJECT_NAME = "deepin-social-sharing"
 CONFIG_DIR = os.path.join(XDG_CONFIG_HOME, PROJECT_NAME)
 DATABASE_FILE = os.path.join(CONFIG_DIR, "accounts.db")
 
