@@ -62,7 +62,9 @@ Item {
 
     function lightUpIcons(filterMap) {
         sinaweibo_checkbox.visible = filterMap.indexOf("sinaweibo") != -1
+        sinaweibo_checkbox.checked = filterMap.indexOf("sinaweibo") != -1
         twitter_checkbox.visible = filterMap.indexOf("twitter") != -1
+        twitter_checkbox.checked = filterMap.indexOf("twitter") != -1
     }
 
     function getEnabledAccounts() {

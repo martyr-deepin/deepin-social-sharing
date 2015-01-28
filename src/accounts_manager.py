@@ -46,6 +46,12 @@ class AccountsManager(QObject):
     succeeded = pyqtSignal()
     failed = pyqtSignal()
 
+    loginFailed = pyqtSignal(str, arguments=["accountType"])
+
+    authorizeUrlGot = pyqtSignal(str, str,
+        arguments=["accountType", "authorizeUrl"])
+    accountAuthorized = pyqtSignal(str, arguments=["accountType"])
+
     def __init__(self):
         super(AccountsManager, self).__init__()
         self._failed_accounts = []
@@ -55,8 +61,12 @@ class AccountsManager(QObject):
         self._accounts = {}
         for _type in typeClassMap:
             self._accounts[_type] = self.getInitializedAccount(_type)
-            self._accounts[_type].succeeded.connect(self._accountSucceeded)
-            self._accounts[_type].failed.connect(self._accountFailed)
+            account = self._accounts[_type]
+            account.succeeded.connect(self._accountSucceeded)
+            account.failed.connect(self._accountFailed)
+            account.loginFailed.connect(self.loginFailed)
+            account.authorizeUrlGot.connect(self.authorizeUrlGot)
+            account.accountInfoGot.connect(self.handleAccountInfo)
 
     def _checkProgress(self):
         finished_accounts = self._failed_accounts + self._succeeded_accounts
@@ -82,6 +92,16 @@ class AccountsManager(QObject):
 
         return account
 
+    @pyqtSlot(result="QVariant")
+    def getAllAccounts(self):
+        result = []
+
+        for _type in [SINAWEIBO, TWITTER]:
+            for account in db.fetchAccounts(_type):
+                result.append([_type, account[0], account[1]])
+
+        return result
+
     @pyqtSlot(str)
     def enableAccount(self, accountType):
         self._accounts[accountType].enabled = True
@@ -104,8 +124,11 @@ class AccountsManager(QObject):
 
     @pyqtSlot(str, str)
     def handleVerifier(self, accountType, verifier):
-        info = self._accounts[accountType].getAccountInfoWithVerifier(verifier)
-        db.saveAccountInfo(accountType, info)
+        self._accounts[accountType].getAccountInfoWithVerifier(verifier)
+
+    def handleAccountInfo(self, accountType, accountInfo):
+        db.saveAccountInfo(accountType, accountInfo)
+        self.accountAuthorized.emit(accountType)
 
     @pyqtSlot(str, str)
     def share(self, text, pic):

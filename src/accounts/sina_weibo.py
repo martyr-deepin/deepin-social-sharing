@@ -22,14 +22,39 @@
 
 from _sdks.sinaweibo_sdk import SinaWeiboMixin, APIClient
 
-from account_base import AccountBase
+from account_base import AccountBase, TimeoutThread
 from utils import getUrlQuery
 from database import SINAWEIBO
+
+from PyQt5.QtCore import pyqtSignal
 
 
 APP_KEY = '3703706716'
 APP_SECRET = 'c0ecbf8644ac043070449ad0901692b8'
 CALLBACK_URL = 'http://www.linuxdeepin.com'
+
+class GetAccountInfoThread(TimeoutThread):
+    getAccountInfoFailed = pyqtSignal()
+    accountInfoGot = pyqtSignal("QVariant", arguments=["accountInfo"])
+
+    def __init__(self, client=None, verifier=None):
+        super(GetAccountInfoThread, self).__init__()
+        self._client = client
+        self._verifier = verifier
+        self.timeout.connect(self.getAccountInfoFailed)
+
+    def setClient(self, client):
+        self._client = client
+
+    def setVerifier(self, verifier):
+        self._verifier = verifier
+
+    def run(self):
+        token_info = self._client.request_access_token(self._verifier)
+        account_info = self._client.users.show.get(uid=token_info["uid"])
+        info = [token_info["uid"], account_info["name"],
+                token_info["access_token"], token_info["expires"]]
+        self.accountInfoGot.emit(info)
 
 class SinaWeibo(AccountBase):
     def __init__(self, uid='', username='', access_token='', expires=0):
@@ -42,6 +67,12 @@ class SinaWeibo(AccountBase):
                                  app_secret = APP_SECRET,
                                  redirect_uri = CALLBACK_URL)
         self._client.set_access_token(access_token, expires)
+
+        self._getAccountInfoThread = GetAccountInfoThread(self._client)
+        self._getAccountInfoThread.accountInfoGot.connect(
+            lambda x: self.accountInfoGot.emit(SINAWEIBO, x))
+        self._getAccountInfoThread.getAccountInfoFailed.connect(
+            lambda: self.loginFaile.emit(SINAWEIBO))
 
     def valid(self):
         return not self._client.is_expires()
@@ -60,15 +91,14 @@ class SinaWeibo(AccountBase):
             self.failed.emit(SINAWEIBO)
 
     def getAuthorizeUrl(self):
-        return self._client.get_authorize_url()
+        auth_url = self._client.get_authorize_url()
+        self.authorizeUrlGot.emit(SINAWEIBO, auth_url)
 
     def getVerifierFromUrl(self, url):
         query = getUrlQuery(url)
         return query.get("code")
 
     def getAccountInfoWithVerifier(self, verifier):
-        token_info = self._client.request_access_token(verifier)
-        account_info = self._client.users.show.get(uid=token_info["uid"])
-        info = (token_info["uid"], account_info["name"],
-                token_info["access_token"], token_info["expires"])
-        return info
+        self._getAccountInfoThread.setClient(self._client)
+        self._getAccountInfoThread.setVerifier(verifier)
+        self._getAccountInfoThread.start()

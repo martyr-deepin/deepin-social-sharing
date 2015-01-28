@@ -29,10 +29,39 @@ DDialog {
         }
     }
 
+    function authorizeAccount(accountType) {
+        _accounts_manager.getAuthorizeUrl(accountType)
+    }
+
     Item {
         id: mainItem
         width: parent.width
         height: 260
+
+        Connections {
+            target: _accounts_manager
+
+            onAuthorizeUrlGot: {
+                var _accountType = accountType
+
+                var browser = Qt.createQmlObject("import QtQuick 2.2; Browser {}", dialog, "browser")
+                browser.urlChanged.connect(function (url) {
+                    var verifier = _accounts_manager.getVerifierFromUrl(_accountType, url)
+                    if (verifier) {
+                        _accounts_manager.handleVerifier(_accountType, verifier)
+                        browser.destroy()
+                    }
+                })
+                browser.setUrl(authorizeUrl)
+                browser.show()
+            }
+
+            onAccountAuthorized: {
+                accounts_list.selectItem(accountType)
+            }
+
+            onLoginFailed: print("failed!!!!!!")
+        }
 
         ShareContent {
             id: share_content
@@ -45,6 +74,8 @@ DDialog {
             visible: false
             width: parent.width
             height: parent.height
+
+            onLogin: authorizeAccount(type)
         }
 
         AccountsPickView {
@@ -53,6 +84,26 @@ DDialog {
             parentWindow: dialog
             width: parent.width
             height: parent.height
+
+            onLogin: authorizeAccount(type)
+        }
+
+        DTextButton {
+            text: "Accounts"
+            visible: bottom_bar.state == "first_time" || bottom_bar.state == "share"
+
+            onClicked: {
+                bottom_bar.state = "accounts_manage"
+                share_content.leftOut()
+                accounts_pick_view.rightIn()
+
+                var accounts = _accounts_manager.getAllAccounts()
+                for (var i = 0; i < accounts.length; i++) {
+                    var uid = accounts[i][1]
+                    var username = accounts[i][2]
+                    accounts_pick_view.addUser(accounts[i][0], uid, username)
+                }
+            }
         }
     }
 
@@ -80,6 +131,12 @@ DDialog {
                 _accounts_manager.enableAccount(account)
             })
             _accounts_manager.share(share_content.text, share_content.screenshot)
+        }
+
+        onOkButtonClicked: {
+            bottom_bar.state = "share"
+            accounts_pick_view.rightOut()
+            share_content.leftIn()
         }
 
         Component.onCompleted: {

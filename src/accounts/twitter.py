@@ -22,13 +22,55 @@
 
 from _sdks.twitter_sdk import UserClient
 
-from account_base import AccountBase
+from account_base import AccountBase, TimeoutThread
 from utils import getUrlQuery
 from database import TWITTER
+
+from PyQt5.QtCore import pyqtSignal
 
 APP_KEY = 'r2HHabDu8LDQCELxk2cA'
 APP_SECRET = '9e4LsNOvxWVWeEgC5gthL9Q78F7FDsnT7lUIBruyQmI'
 CALLBACK_URL = 'http://www.linuxdeepin.com'
+
+class GetAuthorizeUrlThread(TimeoutThread):
+    getAuthorizeUrlFailed = pyqtSignal()
+    authorizeUrlGot = pyqtSignal(str, arguments=["authorizeUrl"])
+
+    def __init__(self, client=None):
+        super(GetAuthorizeUrlThread, self).__init__()
+        self._client = client
+        self.timeout.connect(self.getAuthorizeUrlFailed)
+
+    def setClient(self, client):
+        self._client = client
+
+    def run(self):
+        token = self._client.get_authorize_token()
+        self._access_token = token['oauth_token']
+        self._access_token_secret = token['oauth_token_secret']
+        self.authorizeUrlGot.emit(token["auth_url"])
+
+class GetAccountInfoThread(TimeoutThread):
+    getAccountInfoFailed = pyqtSignal()
+    accountInfoGot = pyqtSignal("QVariant", arguments=["accountInfo"])
+
+    def __init__(self, client=None, verifier=None):
+        super(GetAccountInfoThread, self).__init__()
+        self._client = client
+        self._verifier = verifier
+        self.timeout.connect(self.getAccountInfoFailed)
+
+    def setClient(self, client):
+        self._client = client
+
+    def setVerifier(self, verifier):
+        self._verifier = verifier
+
+    def run(self):
+        token_info = self._client.get_access_token(self._verifier)
+        info = [token_info["user_id"], token_info["screen_name"],
+                token_info["oauth_token"], token_info["oauth_token_secret"]]
+        self.accountInfoGot.emit(info)
 
 class Twitter(AccountBase):
     def __init__(self, uid='', username='',
@@ -43,6 +85,18 @@ class Twitter(AccountBase):
                                   APP_SECRET,
                                   access_token,
                                   access_token_secret)
+
+        self._getAuthorizeUrlThread = GetAuthorizeUrlThread(self._client)
+        self._getAuthorizeUrlThread.authorizeUrlGot.connect(
+            lambda x: self.authorizeUrlGot.emit(TWITTER, x))
+        self._getAuthorizeUrlThread.getAuthorizeUrlFailed.connect(
+            lambda: self.loginFailed.emit(TWITTER))
+
+        self._getAccountInfoThread = GetAccountInfoThread(self._client)
+        self._getAccountInfoThread.accountInfoGot.connect(
+            lambda x: self.accountInfoGot.emit(TWITTER, x))
+        self._getAccountInfoThread.getAccountInfoFailed.connect(
+            lambda: self.loginFaile.emit(TWITTER))
 
     def valid(self):
         return self._access_token and self._access_token_secret
@@ -59,18 +113,14 @@ class Twitter(AccountBase):
 
     def getAuthorizeUrl(self):
         self._client = UserClient(APP_KEY, APP_SECRET)
-        token = self._client.get_authorize_token()
-        self._access_token = token['oauth_token']
-        self._access_token_secret = token['oauth_token_secret']
-
-        return token['auth_url']
+        self._getAuthorizeUrlThread.setClient(self._client)
+        self._getAuthorizeUrlThread.start()
 
     def getVerifierFromUrl(self, url):
         query = getUrlQuery(url)
         return query.get("oauth_verifier")
 
     def getAccountInfoWithVerifier(self, verifier):
-        token_info = self._client.get_access_token(verifier)
-        info = (token_info["user_id"], token_info["screen_name"],
-                token_info["oauth_token"], token_info["oauth_token_secret"])
-        return info
+        self._getAccountInfoThread.setClient(self._client)
+        self._getAccountInfoThread.setVerifier(verifier)
+        self._getAccountInfoThread.start()

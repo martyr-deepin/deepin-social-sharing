@@ -2,109 +2,94 @@ import QtQuick 2.1
 import QtGraphicalEffects 1.0
 
 SlideInOutItem {
-	id: root
+    id: root
 
-	function selectItem(idx) {
-		for (var i = 0; i < list_view.count; i++) {
-			if (i == idx) {
-				list_view.model.setProperty(idx, "itemSelected", true)
-			}
-		}
-	}
+    signal login(string type)
 
-	function deselectItem(idx) {
-		for (var i = 0; i < list_view.count; i++) {
-			if (i == idx) {
-				list_view.model.setProperty(idx, "itemSelected", false)
-			}
-		}
-	}
+    function selectItem(accountType) {
+        for (var i = 0; i < list_view.count; i++) {
+            if (list_view.model.get(i).itemName == accountType) {
+                list_view.model.setProperty(i, "itemSelected", true)
+            }
+        }
+    }
 
-	function getEnabledAccounts() {
-		var result = []
-		for (var i = 0; i < list_view.count; i++) {
-			if (list_view.model.get(i).itemSelected) {
-				result.push(list_view.model.get(i).itemName)
-			}
-		}
-		return result
-	}
+    function deselectItem(accountType) {
+        for (var i = 0; i < list_view.count; i++) {
+            if (list_view.model.get(i).itemName == accountType) {
+                list_view.model.setProperty(i, "itemSelected", true)
+            }
+        }
+    }
 
-	ListView {
-		id: list_view
-		width: parent.width
-		height: parent.height
+    function getEnabledAccounts() {
+        var result = []
+        for (var i = 0; i < list_view.count; i++) {
+            if (list_view.model.get(i).itemSelected) {
+                result.push(list_view.model.get(i).itemName)
+            }
+        }
+        return result
+    }
 
-		highlight: Rectangle {
-			clip: true
+    ListView {
+        id: list_view
+        width: parent.width
+        height: parent.height
 
-			RadialGradient {
-				width: parent.width
-				height: parent.height + 20
-				verticalOffset: - height / 2
+        highlight: Rectangle {
+            clip: true
 
-				gradient: Gradient {
-					GradientStop { position: 0.0; color: Qt.rgba(0, 0, 0, 0.3) }
-					GradientStop { position: 1.0; color: Qt.rgba(0, 0, 0, 0.0) }
-				}
-			}
-		}
-		delegate: Item {
-			id: delegate_item
-			width: ListView.view.width
-			height: banner.implicitHeight
+            RadialGradient {
+                width: parent.width
+                height: parent.height + 20
+                verticalOffset: - height / 2
 
-			Image {
-				id: check_mark
-				visible: itemSelected
-				source: "../images/account_select_flag.png"
-				anchors.verticalCenter: parent.verticalCenter
-			}
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: Qt.rgba(0, 0, 0, 0.3) }
+                    GradientStop { position: 1.0; color: Qt.rgba(0, 0, 0, 0.0) }
+                }
+            }
+        }
+        delegate: Item {
+            id: delegate_item
+            width: ListView.view.width
+            height: banner.implicitHeight
 
-			Image {
-				id: banner
-				source: imageSource
-				anchors.horizontalCenter: parent.horizontalCenter
-			}
+            Image {
+                id: check_mark
+                visible: itemSelected
+                source: "../images/account_select_flag.png"
+                anchors.verticalCenter: parent.verticalCenter
+            }
 
-			MouseArea {
-				hoverEnabled: true
-				anchors.fill: parent
+            Image {
+                id: banner
+                source: imageSource
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
 
-				onEntered: delegate_item.ListView.view.currentIndex = index
-				onExited: delegate_item.ListView.view.currentIndex = -1
+            MouseArea {
+                hoverEnabled: true
+                anchors.fill: parent
 
-				onClicked: {
-					if (itemSelected) {
-						root.deselectItem(index)
-					} else {
-						var auth_url = _accounts_manager.getAuthorizeUrl(itemName)
-						var browser = Qt.createQmlObject("import QtQuick 2.2; Browser {}", root, "browser")
-						browser.urlChanged.connect(function (url) {
-							var verifier = _accounts_manager.getVerifierFromUrl(itemName, url)
-							if (verifier) {
-								_accounts_manager.handleVerifier(itemName, verifier)
-								root.selectItem(index)
-								browser.destroy()
-							}
-						})
-						browser.setUrl(auth_url)
-						browser.show()
-					}
-				}
-			}
-		}
-		model: ListModel{
-			ListElement {
-				itemName: "sinaweibo"
-				itemSelected: false
-				imageSource: "../images/account_banner_sinaweibo.png"
-			}
-			ListElement {
-				itemName: "twitter"
-				itemSelected: false
-				imageSource: "../images/account_banner_twitter.png"
-			}
-		}
-	}
+                onEntered: delegate_item.ListView.view.currentIndex = index
+                onExited: delegate_item.ListView.view.currentIndex = -1
+
+                onClicked: root.login(itemName)
+            }
+        }
+        model: ListModel{
+            ListElement {
+                itemName: "sinaweibo"
+                itemSelected: false
+                imageSource: "../images/account_banner_sinaweibo.png"
+            }
+            ListElement {
+                itemName: "twitter"
+                itemSelected: false
+                imageSource: "../images/account_banner_twitter.png"
+            }
+        }
+    }
 }
