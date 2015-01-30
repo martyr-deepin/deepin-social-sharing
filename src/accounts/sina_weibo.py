@@ -24,6 +24,7 @@ from _sdks.sinaweibo_sdk import SinaWeiboMixin, APIClient
 
 from account_base import AccountBase
 from utils import getUrlQuery
+from database import SINAWEIBO
 
 
 APP_KEY = '3703706716'
@@ -48,11 +49,15 @@ class SinaWeibo(AccountBase):
     def share(self, text, pic=None):
         if not self.enabled: return
 
-        if pic:
-            with open(pic) as _pic:
-                self._client.statuses.upload.post(status=text, pic=_pic)
-        else:
-            self._client.statuses.update.post(status=text)
+        try:
+            if pic:
+                with open(pic) as _pic:
+                    self._client.statuses.upload.post(status=text, pic=_pic)
+            else:
+                self._client.statuses.update.post(status=text)
+            self.succeeded.emit(SINAWEIBO)
+        except Exception:
+            self.failed.emit(SINAWEIBO)
 
     def getAuthorizeUrl(self):
         return self._client.get_authorize_url()

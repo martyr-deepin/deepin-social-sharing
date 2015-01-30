@@ -22,8 +22,12 @@
 
 from abc import abstractmethod
 
-class AccountBase(object):
+from PyQt5.QtCore import QObject, pyqtSignal
+
+class AccountBase(QObject):
     """Base class all the SNS accounts should inherit"""
+    succeeded = pyqtSignal(str)
+    failed = pyqtSignal(str)
 
     def __init__(self):
         super(AccountBase, self).__init__()

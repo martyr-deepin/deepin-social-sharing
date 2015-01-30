@@ -34,6 +34,7 @@ from constants import MAIN_QML
 from accounts_manager import AccountsManager
 from dbus_services import DBUS_NAME, DBUS_PATH
 from dbus_services import DeepinSocialSharingAdaptor, session_bus
+from dbus_interfaces import notificationsInterface
 
 class ShareWindow(QQuickView):
     def __init__(self):
@@ -53,6 +54,13 @@ class ShareWindow(QQuickView):
                                               self._accounts_manager)
 
         self.setSource(QUrl.fromLocalFile(MAIN_QML))
+
+        self._accounts_manager.failed.connect(
+            lambda: notificationsInterface.notify("Failed", "Failed", ["_reshare", "Reshare"])
+        )
+        self._accounts_manager.succeeded.connect(
+            lambda: notificationsInterface.notify("Succeeded", "Succeeded", ["_view", "View"])
+        )
 
     def share(self, text, picture):
         self.rootObject().setText(text)

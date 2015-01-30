@@ -24,6 +24,7 @@ from _sdks.twitter_sdk import UserClient
 
 from account_base import AccountBase
 from utils import getUrlQuery
+from database import TWITTER
 
 APP_KEY = 'r2HHabDu8LDQCELxk2cA'
 APP_SECRET = '9e4LsNOvxWVWeEgC5gthL9Q78F7FDsnT7lUIBruyQmI'
