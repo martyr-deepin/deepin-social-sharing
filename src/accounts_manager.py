@@ -116,3 +116,7 @@ class AccountsManager(QObject):
         self._share_thread.pic = pic
         self._share_thread.accounts = self._accounts.values()
         self._share_thread.start()
+
+    def reshare(self):
+        self._share_thread.accounts = self._failed_accounts
+        self._share_thread.start()
