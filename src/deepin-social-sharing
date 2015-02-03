@@ -25,6 +25,7 @@ import signal
 
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtQuick import QQuickView
+from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtGui import QSurfaceFormat, QColor
 from PyQt5.QtWidgets import QApplication
 app = QApplication(sys.argv)
@@ -38,27 +39,18 @@ from dbus_interfaces import notificationsInterface
 
 ACTION_ID_RESHARE = "action_id_reshare"
 
-class ShareWindow(QQuickView):
+class QmlEngine(QQmlApplicationEngine):
     def __init__(self):
-        super(ShareWindow, self).__init__()
+        super(QmlEngine, self).__init__()
         self._accounts_manager = AccountsManager()
         self._adapter = DeepinSocialSharingAdaptor(self)
         self._notificationId = None
 
-        surface_format = QSurfaceFormat()
-        surface_format.setAlphaBufferSize(8)
-
-        self.setColor(QColor(0, 0, 0, 0))
-        self.setFlags(Qt.FramelessWindowHint)
-        self.setResizeMode(QQuickView.SizeViewToRootObject)
-        self.setFormat(surface_format)
-        self.setWidth(0)
-        self.setHeight(0)
-
         self.rootContext().setContextProperty("_accounts_manager",
                                               self._accounts_manager)
 
-        self.setSource(QUrl.fromLocalFile(MAIN_QML))
+        self.load(QUrl.fromLocalFile(MAIN_QML))
+        self.rootObject = self.rootObjects()[0]
 
         notificationsInterface.NotificationClosed.connect(self._notificationClosedCB)
         notificationsInterface.ActionInvoked.connect(self._actionInvokedCB)
@@ -66,9 +58,9 @@ class ShareWindow(QQuickView):
         self._accounts_manager.succeeded.connect(self._shareFailedCB)
 
     def share(self, text, picture):
-        self.rootObject().setText(text)
-        self.rootObject().setScreenshot(picture)
-        self.show()
+        self.rootObject.setText(text)
+        self.rootObject.setScreenshot(picture)
+        self.rootObject.show()
 
     def _shareSucceededCB(self):
         self._notificationId = notificationsInterface.notify(
@@ -80,7 +72,7 @@ class ShareWindow(QQuickView):
 
     def _notificationClosedCB(self, notificationId):
         if notificationId == self._notificationId:
-            self.close()
+            self.rootObject.close()
 
     def _actionInvokedCB(self, notificationId, actionId):
         if notificationId == self._notificationId:
@@ -88,11 +80,10 @@ class ShareWindow(QQuickView):
                 self._accounts_manager.reshare()
 
 if __name__ == "__main__":
-    window = ShareWindow()
-    window.show()
+    engine = QmlEngine()
 
     session_bus.registerService(DBUS_NAME)
-    session_bus.registerObject(DBUS_PATH, window)
+    session_bus.registerObject(DBUS_PATH, engine)
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     sys.exit(app.exec_())
