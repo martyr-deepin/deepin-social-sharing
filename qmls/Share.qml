@@ -78,7 +78,7 @@ DDialog {
             onLogin: authorizeAccount(type)
         }
 
-        AccountsPickView {
+        AccountsManagement {
             id: accounts_pick_view
             visible: false
             parentWindow: dialog
