@@ -33,25 +33,41 @@ SlideInOutItem {
         list_view.model.setProperty(index, "accounts", JSON.stringify(result))
     }
 
+    function selectUser(accountType, uid) {
+        var index = 0
+        switch (accountType) {
+            case "sinaweibo": {
+                index = 0
+                break
+            }
+            case "twitter": {
+                index = 1
+                break
+            }
+        }
+        list_view.model.setProperty(index, "selectedUser", uid)
+    }
+
     ListView {
         id: list_view
         width: parent.width
         height: parent.height
+        interactive: false
 
-        highlight: Rectangle {
-            clip: true
+        // highlight: Rectangle {
+        //     clip: true
 
-            RadialGradient {
-                width: parent.width
-                height: parent.height + 20
-                verticalOffset: - height / 2
+        //     RadialGradient {
+        //         width: parent.width
+        //         height: parent.height + 20
+        //         verticalOffset: - height / 2
 
-                gradient: Gradient {
-                    GradientStop { position: 0.0; color: Qt.rgba(0, 0, 0, 0.3) }
-                    GradientStop { position: 1.0; color: Qt.rgba(0, 0, 0, 0.0) }
-                }
-            }
-        }
+        //         gradient: Gradient {
+        //             GradientStop { position: 0.0; color: Qt.rgba(0, 0, 0, 0.3) }
+        //             GradientStop { position: 1.0; color: Qt.rgba(0, 0, 0, 0.0) }
+        //         }
+        //     }
+        // }
         delegate: Item {
             id: delegate_item
             width: ListView.view.width
@@ -77,7 +93,18 @@ SlideInOutItem {
                     width: 120
                     visible: accounts != ""
                     parentWindow: root.parentWindow
-                    selectIndex: 0
+                    selectIndex: {
+                        if (accounts) {
+                            var _accounts = JSON.parse(accounts)
+                            for (var i = 0; i < _accounts.length; i++) {
+                                if (_accounts[i].uid == selectedUser) {
+                                    text = _accounts[i].username
+                                    return i
+                                }
+                            }
+                        }
+                        return -1
+                    }
                     menu.labels: {
                         var result = []
                         if (accounts) {
@@ -85,12 +112,9 @@ SlideInOutItem {
                             for (var i = 0; i < _accounts.length; i++) {
                                 result.push(_accounts[i].username)
                             }
-                        } else {
-                            result = [""]
                         }
                         return result
                     }
-
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -119,11 +143,13 @@ SlideInOutItem {
                 iconSource: "../images/sinaweibo_big.png"
                 accountType: "sinaweibo"
                 accounts: ""
+                selectedUser: ""
             }
             ListElement {
                 iconSource: "../images/twitter_big.png"
                 accountType: "twitter"
                 accounts: ""
+                selectedUser: ""
             }
         }
     }
