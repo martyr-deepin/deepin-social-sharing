@@ -8,6 +8,7 @@ SlideInOutItem {
     property var parentWindow
 
     signal login(string type)
+    signal switchUser(string type, string uid)
 
     function addUser(accountType, uid, username) {
         var index = 0
@@ -112,10 +113,21 @@ SlideInOutItem {
                             for (var i = 0; i < _accounts.length; i++) {
                                 result.push(_accounts[i].username)
                             }
+                            result.push("New account")
                         }
                         return result
                     }
                     anchors.verticalCenter: parent.verticalCenter
+
+                    onMenuSelect: {
+                        if (index == menu.labels.length - 1) {
+                            root.login(accountType)
+                        } else {
+                            var _accounts = JSON.parse(accounts)
+                            var uid = _accounts[index].uid
+                            root.switchUser(accountType, uid)
+                        }
+                    }
                 }
 
                 DTextButton {

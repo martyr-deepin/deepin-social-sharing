@@ -49,8 +49,8 @@ class Database(object):
 
     def fetchAccountByUID(self, accountType, uid):
         self.db_cursor.execute(
-            "SELECT * FROM %s WHERE uid=%s" % (accountType, uid))
-        tuples = self.db_cursor.fetchone()
+            "SELECT * FROM %s WHERE uid='%s'" % (accountType, uid))
+        tuples = self.db_cursor.fetchmany()
         if tuples:
             return tuples[0]
         else:
@@ -63,6 +63,7 @@ class Database(object):
         return filter(not_expired_func, accounts)
 
     def saveAccountInfo(self, accountType, info):
+        info = map(lambda x: unicode(x), info)
         self.db_cursor.execute(
             "INSERT OR REPLACE INTO %s VALUES(?, ?, ?, ?)" % accountType, info)
         self.db_connect.commit()

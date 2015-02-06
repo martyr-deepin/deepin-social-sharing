@@ -106,6 +106,19 @@ class AccountsManager(QObject):
     def enableAccount(self, accountType):
         self._accounts[accountType].enabled = True
 
+    @pyqtSlot(str, str)
+    def switchUser(self, accountType, userId):
+        accountInfo = db.fetchAccountByUID(accountType, userId)
+        if accountInfo:
+            account = typeClassMap[accountType](*accountInfo)
+            account.succeeded.connect(self._accountSucceeded)
+            account.failed.connect(self._accountFailed)
+            account.loginFailed.connect(self.loginFailed)
+            account.authorizeUrlGot.connect(self.authorizeUrlGot)
+            account.accountInfoGot.connect(self.handleAccountInfo)
+
+            self._accounts[accountType] = account
+
     @pyqtSlot(result="QVariant")
     def getCurrentAccounts(self):
         result = []

@@ -87,15 +87,23 @@ DDialog {
 
             onLogin: authorizeAccount(type)
 
-            Component.onCompleted: {
+            onSwitchUser: _accounts_manager.switchUser(type, uid)
+
+            function updateView() {
                 var accounts = _accounts_manager.getAllAccounts()
                 for (var i = 0; i < accounts.length; i++) {
                     var uid = accounts[i][1]
                     var username = accounts[i][2]
                     accounts_pick_view.addUser(accounts[i][0], uid, username)
-                    accounts_pick_view.selectUser(accounts[i][0], uid)
+                }
+                var currentAccounts = _accounts_manager.getCurrentAccounts()
+                for (var i = 0; i < currentAccounts.length; i++) {
+                    var uid = currentAccounts[i][1]
+                    accounts_pick_view.selectUser(currentAccounts[i][0], uid)
                 }
             }
+
+            Component.onCompleted: updateView()
         }
 
         DTextButton {
