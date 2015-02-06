@@ -45,10 +45,13 @@ class GetAuthorizeUrlThread(TimeoutThread):
         self._client = client
 
     def run(self):
-        token = self._client.get_authorize_token()
-        self._access_token = token['oauth_token']
-        self._access_token_secret = token['oauth_token_secret']
-        self.authorizeUrlGot.emit(token["auth_url"])
+        try:
+            token = self._client.get_authorize_token()
+            self._access_token = token['oauth_token']
+            self._access_token_secret = token['oauth_token_secret']
+            self.authorizeUrlGot.emit(token["auth_url"])
+        except Exception:
+            self.getAuthorizeUrlFailed.emit()
 
 class GetAccountInfoThread(TimeoutThread):
     getAccountInfoFailed = pyqtSignal()
@@ -67,10 +70,13 @@ class GetAccountInfoThread(TimeoutThread):
         self._verifier = verifier
 
     def run(self):
-        token_info = self._client.get_access_token(self._verifier)
-        info = [token_info["user_id"], token_info["screen_name"],
-                token_info["oauth_token"], token_info["oauth_token_secret"]]
-        self.accountInfoGot.emit(info)
+        try:
+            token_info = self._client.get_access_token(self._verifier)
+            info = [token_info["user_id"], token_info["screen_name"],
+                    token_info["oauth_token"], token_info["oauth_token_secret"]]
+            self.accountInfoGot.emit(info)
+        except Exception:
+            self.getAccountInfoFailed.emit()
 
 class Twitter(AccountBase):
     def __init__(self, uid='', username='',
@@ -104,12 +110,16 @@ class Twitter(AccountBase):
     def share(self, text, pic=None):
         if not self.enabled: return
 
-        if pic:
-            with open(pic, "rb") as _pic:
-                self._client.api.statuses.update_with_media.post(status=text,
-                                                                 media=_pic)
-        else:
-            self._client.api.statuses.update.post(status=text)
+        try:
+            if pic:
+                with open(pic, "rb") as _pic:
+                    self._client.api.statuses.update_with_media.post(status=text,
+                                                                     media=_pic)
+            else:
+                self._client.api.statuses.update.post(status=text)
+            self.succeeded.emit(TWITTER)
+        except Exception:
+            self.failed.emit(TWITTER)
 
     def getAuthorizeUrl(self):
         self._client = UserClient(APP_KEY, APP_SECRET)

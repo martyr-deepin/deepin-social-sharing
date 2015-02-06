@@ -50,11 +50,14 @@ class GetAccountInfoThread(TimeoutThread):
         self._verifier = verifier
 
     def run(self):
-        token_info = self._client.request_access_token(self._verifier)
-        account_info = self._client.users.show.get(uid=token_info["uid"])
-        info = [token_info["uid"], account_info["name"],
-                token_info["access_token"], token_info["expires"]]
-        self.accountInfoGot.emit(info)
+        try:
+            token_info = self._client.request_access_token(self._verifier)
+            account_info = self._client.users.show.get(uid=token_info["uid"])
+            info = [token_info["uid"], account_info["name"],
+                    token_info["access_token"], token_info["expires"]]
+            self.accountInfoGot.emit(info)
+        except Exception:
+            self.getAccountInfoFailed.emit()
 
 class SinaWeibo(AccountBase):
     def __init__(self, uid='', username='', access_token='', expires=0):

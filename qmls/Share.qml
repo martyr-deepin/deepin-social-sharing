@@ -60,7 +60,7 @@ DDialog {
                 accounts_list.selectItem(accountType)
             }
 
-            onLoginFailed: print("failed!!!!!!")
+            onLoginFailed: _utils.notify(accountType + " login failed!!!")
         }
 
         ShareContent {

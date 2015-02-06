@@ -23,10 +23,8 @@
 import sys
 import signal
 
-from PyQt5.QtCore import Qt, QUrl
-from PyQt5.QtQuick import QQuickView
+from PyQt5.QtCore import QUrl, QObject, pyqtSlot
 from PyQt5.QtQml import QQmlApplicationEngine
-from PyQt5.QtGui import QSurfaceFormat, QColor
 from PyQt5.QtWidgets import QApplication
 app = QApplication(sys.argv)
 app.setQuitOnLastWindowClosed(True)
@@ -39,6 +37,20 @@ from dbus_interfaces import notificationsInterface
 
 ACTION_ID_RESHARE = "action_id_reshare"
 
+
+class UIUtils(QObject):
+    """Qt/UI related utils"""
+    def __init__(self):
+        super(UIUtils, self).__init__()
+
+    @pyqtSlot(str)
+    def notify(self, content):
+        notificationsInterface.notify("Deepin Social Sharing",
+            content)
+
+
+utils = UIUtils()
+
 class QmlEngine(QQmlApplicationEngine):
     def __init__(self):
         super(QmlEngine, self).__init__()
@@ -46,6 +58,7 @@ class QmlEngine(QQmlApplicationEngine):
         self._adapter = DeepinSocialSharingAdaptor(self)
         self._notificationId = None
 
+        self.rootContext().setContextProperty("_utils", utils)
         self.rootContext().setContextProperty("_accounts_manager",
                                               self._accounts_manager)
 
