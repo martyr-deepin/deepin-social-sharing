@@ -57,7 +57,13 @@ DDialog {
             }
 
             onAccountAuthorized: {
-                accounts_list.selectItem(accountType)
+                if (accounts_list.visible) {
+                    accounts_list.selectItem(accountType)
+                }
+                if (accounts_pick_view.visible) {
+                    accounts_pick_view.addUser(accountType, uid, username)
+                    accounts_pick_view.selectUser(accountType, uid)
+                }
             }
 
             onLoginFailed: _utils.notify(accountType + " login failed!!!")

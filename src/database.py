@@ -68,4 +68,9 @@ class Database(object):
             "INSERT OR REPLACE INTO %s VALUES(?, ?, ?, ?)" % accountType, info)
         self.db_connect.commit()
 
+    def removeAccountByUID(self, accountType, uid):
+        self.db_cursor.execute(
+            "DELETE FROM %s WHERE uid='%s'" % (accountType, uid))
+        self.db_connect.commit()
+
 db = Database()

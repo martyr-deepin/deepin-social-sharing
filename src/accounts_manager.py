@@ -50,7 +50,8 @@ class AccountsManager(QObject):
 
     authorizeUrlGot = pyqtSignal(str, str,
         arguments=["accountType", "authorizeUrl"])
-    accountAuthorized = pyqtSignal(str, arguments=["accountType"])
+    accountAuthorized = pyqtSignal(str, str, str,
+        arguments=["accountType", "uid", "username"])
 
     def __init__(self):
         super(AccountsManager, self).__init__()
@@ -119,6 +120,10 @@ class AccountsManager(QObject):
 
             self._accounts[accountType] = account
 
+    @pyqtSlot(str, str)
+    def removeUser(self, accountType, userId):
+        db.removeAccountByUID(accountType, userId)
+
     @pyqtSlot(result="QVariant")
     def getCurrentAccounts(self):
         result = []
@@ -141,7 +146,9 @@ class AccountsManager(QObject):
 
     def handleAccountInfo(self, accountType, accountInfo):
         db.saveAccountInfo(accountType, accountInfo)
-        self.accountAuthorized.emit(accountType)
+        uid = accountInfo[0]
+        username = accountInfo[1]
+        self.accountAuthorized.emit(accountType, uid, username)
 
     @pyqtSlot(str, str)
     def share(self, text, pic):

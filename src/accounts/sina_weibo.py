@@ -75,7 +75,7 @@ class SinaWeibo(AccountBase):
         self._getAccountInfoThread.accountInfoGot.connect(
             lambda x: self.accountInfoGot.emit(SINAWEIBO, x))
         self._getAccountInfoThread.getAccountInfoFailed.connect(
-            lambda: self.loginFaile.emit(SINAWEIBO))
+            lambda: self.loginFailed.emit(SINAWEIBO))
 
     def valid(self):
         return not self._client.is_expires()

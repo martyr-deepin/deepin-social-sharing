@@ -89,7 +89,7 @@ SlideInOutItem {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                DComboBox {
+                AccountsComboBox {
                     id: combobox
                     width: 120
                     visible: accounts != ""
@@ -113,20 +113,25 @@ SlideInOutItem {
                             for (var i = 0; i < _accounts.length; i++) {
                                 result.push(_accounts[i].username)
                             }
-                            result.push("New account")
                         }
                         return result
                     }
                     anchors.verticalCenter: parent.verticalCenter
 
                     onMenuSelect: {
-                        if (index == menu.labels.length - 1) {
-                            root.login(accountType)
-                        } else {
-                            var _accounts = JSON.parse(accounts)
-                            var uid = _accounts[index].uid
-                            root.switchUser(accountType, uid)
-                        }
+                        var _accounts = JSON.parse(accounts)
+                        var uid = _accounts[index].uid
+                        root.switchUser(accountType, uid)
+                    }
+
+                    onNewAccount: {
+                        root.login(accountType)
+                    }
+
+                    onRemoveAccount: {
+                        var _accounts = JSON.parse(accounts)
+                        var uid = _accounts[index].uid
+                        _accounts_manager.removeUser(accountType, uid)
                     }
                 }
 
