@@ -23,10 +23,7 @@
 import time
 import sqlite3
 
-from constants import DATABASE_FILE
-
-SINAWEIBO = "sinaweibo"
-TWITTER = "twitter"
+from constants import DATABASE_FILE, SINAWEIBO, TWITTER
 
 class Database(object):
 

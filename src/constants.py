@@ -34,3 +34,6 @@ _qmlDir = os.path.join(os.path.dirname(_parentDir), "qmls")
 MAIN_QML = os.path.join(_qmlDir, "Share.qml")
 
 if not os.path.exists(CONFIG_DIR): os.makedirs(CONFIG_DIR)
+
+SINAWEIBO = "sinaweibo"
+TWITTER = "twitter"

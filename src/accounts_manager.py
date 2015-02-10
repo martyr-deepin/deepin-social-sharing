@@ -25,6 +25,8 @@ from database import db, SINAWEIBO, TWITTER
 
 from PyQt5.QtCore import QObject, QThread, pyqtSlot, pyqtSignal
 
+from settings import SocialSharingSettings
+
 typeClassMap = {
     SINAWEIBO: SinaWeibo,
     TWITTER: Twitter,
@@ -58,6 +60,7 @@ class AccountsManager(QObject):
         self._failed_accounts = []
         self._succeeded_accounts = []
         self._share_thread = _ShareThread()
+        self._settings = SocialSharingSettings()
 
         self._accounts = {}
         for _type in typeClassMap:
@@ -89,7 +92,13 @@ class AccountsManager(QObject):
     def getInitializedAccount(self, accountType):
         account = typeClassMap[accountType]()
         records = db.fetchAccessableAccounts(accountType)
-        if records: account = typeClassMap[accountType](*records[0])
+        if records:
+            targetUID = self._settings.getCurrentUser(accountType)
+            _records = filter(lambda x: x[0] == targetUID, records)
+            if _records:
+                account = typeClassMap[accountType](*_records[0])
+            else:
+                account = typeClassMap[accountType](*records[0])
 
         return account
 
@@ -119,6 +128,7 @@ class AccountsManager(QObject):
             account.accountInfoGot.connect(self.handleAccountInfo)
 
             self._accounts[accountType] = account
+            self._settings.setCurrentUser(accountType, userId)
 
     @pyqtSlot(str, str)
     def removeUser(self, accountType, userId):
