@@ -45,8 +45,8 @@ class _ShareThread(QThread):
 
 class AccountsManager(QObject):
     """Manager of all the SNS accounts"""
-    succeeded = pyqtSignal()
-    failed = pyqtSignal()
+    succeeded = pyqtSignal("QVariant")
+    failed = pyqtSignal("QVariant")
 
     loginFailed = pyqtSignal(str, arguments=["accountType"])
 
@@ -76,10 +76,10 @@ class AccountsManager(QObject):
         finished_accounts = self._failed_accounts + self._succeeded_accounts
         enabled_accounts = filter(lambda x: x.enabled, self._accounts.values())
         if len(finished_accounts) == len(enabled_accounts):
+            if len(self._succeeded_accounts) > 0:
+                self.succeeded.emit(self._succeeded_accounts)
             if len(self._failed_accounts) > 0:
-                self.failed.emit()
-            else:
-                self.succeeded.emit()
+                self.failed.emit(self._failed_accounts)
 
     def _accountFailed(self, account):
         self._failed_accounts.append(account)

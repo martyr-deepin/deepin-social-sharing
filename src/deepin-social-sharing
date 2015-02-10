@@ -70,21 +70,23 @@ class QmlEngine(QQmlApplicationEngine):
 
         notificationsInterface.NotificationClosed.connect(self._notificationClosedCB)
         notificationsInterface.ActionInvoked.connect(self._actionInvokedCB)
-        self._accounts_manager.failed.connect(self._shareSucceededCB)
-        self._accounts_manager.succeeded.connect(self._shareFailedCB)
+        self._accounts_manager.succeeded.connect(self._shareSucceededCB)
+        self._accounts_manager.failed.connect(self._shareFailedCB)
 
     def share(self, text, picture):
         self.rootObject.setText(text)
         self.rootObject.setScreenshot(picture)
         self.rootObject.show()
 
-    def _shareSucceededCB(self):
+    def _shareSucceededCB(self, accounts):
+        accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = notificationsInterface.notify(
-            "Failed", "Failed", [ACTION_ID_RESHARE, "Reshare"])
+            "Succeeded", "succeeded to sharing to %s" % accountsStr)
 
-    def _shareFailedCB(self):
+    def _shareFailedCB(self, accounts):
+        accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = notificationsInterface.notify(
-            "Succeeded", "Succeeded")
+            "Failed", "failed to sharing to %s" % accountsStr, [ACTION_ID_RESHARE, "Reshare"])
 
     def _notificationClosedCB(self, notificationId):
         if notificationId == self._notificationId:
