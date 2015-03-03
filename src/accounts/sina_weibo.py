@@ -55,6 +55,8 @@ class GetAccountInfoThread(TimeoutThread):
             account_info = self._client.users.show.get(uid=token_info["uid"])
             info = [token_info["uid"], account_info["name"],
                     token_info["access_token"], token_info["expires"]]
+            self._client.set_access_token(token_info["access_token"],
+                                          token_info["expires"])
             self.accountInfoGot.emit(info)
         except Exception:
             self.getAccountInfoFailed.emit()

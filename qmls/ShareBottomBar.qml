@@ -9,6 +9,8 @@ Item {
 
     property alias wordCount: word_number_label.text
 
+    signal accountSelected(string accountType)
+    signal accountDeselected(string accountType)
     signal nextButtonClicked()
     signal shareButtonClicked()
     signal okButtonClicked()
@@ -57,6 +59,17 @@ Item {
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: true }
+        },
+        State {
+            name: "authorize"
+
+            PropertyChanges { target: row; visible: false }
+            PropertyChanges { target: plz_choose_sns_label; visible: true }
+            PropertyChanges { target: accounts_management_label; visible: false }
+            PropertyChanges { target: word_number_label; visible: false }
+            PropertyChanges { target: next_button; visible: true }
+            PropertyChanges { target: share_button; visible: false }
+            PropertyChanges { target: ok_button; visible: false }
         }
     ]
 
@@ -65,13 +78,6 @@ Item {
         sinaweibo_checkbox.checked = filterMap.indexOf("sinaweibo") != -1
         twitter_checkbox.visible = filterMap.indexOf("twitter") != -1
         twitter_checkbox.checked = filterMap.indexOf("twitter") != -1
-    }
-
-    function getEnabledAccounts() {
-        var result = []
-        if (sinaweibo_checkbox.checked) result.push("sinaweibo")
-        if (twitter_checkbox.checked) result.push("twitter")
-        return result
     }
 
     Row {

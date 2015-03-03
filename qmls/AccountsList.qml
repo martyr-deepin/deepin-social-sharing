@@ -4,33 +4,8 @@ import QtGraphicalEffects 1.0
 SlideInOutItem {
     id: root
 
-    signal login(string type)
-
-    function selectItem(accountType) {
-        for (var i = 0; i < list_view.count; i++) {
-            if (list_view.model.get(i).itemName == accountType) {
-                list_view.model.setProperty(i, "itemSelected", true)
-            }
-        }
-    }
-
-    function deselectItem(accountType) {
-        for (var i = 0; i < list_view.count; i++) {
-            if (list_view.model.get(i).itemName == accountType) {
-                list_view.model.setProperty(i, "itemSelected", true)
-            }
-        }
-    }
-
-    function getEnabledAccounts() {
-        var result = []
-        for (var i = 0; i < list_view.count; i++) {
-            if (list_view.model.get(i).itemSelected) {
-                result.push(list_view.model.get(i).itemName)
-            }
-        }
-        return result
-    }
+    signal accountSelected(string accountType)
+    signal accountDeselected(string accountType)
 
     ListView {
         id: list_view
@@ -56,6 +31,8 @@ SlideInOutItem {
             width: ListView.view.width
             height: banner.implicitHeight
 
+            property bool itemSelected: false
+
             Image {
                 id: check_mark
                 visible: itemSelected
@@ -76,18 +53,24 @@ SlideInOutItem {
                 onEntered: delegate_item.ListView.view.currentIndex = index
                 onExited: delegate_item.ListView.view.currentIndex = -1
 
-                onClicked: root.login(itemName)
+                onClicked: {
+                    if (itemSelected) {
+                        root.accountDeselected(itemName)
+                        itemSelected = false
+                    } else {
+                        root.accountSelected(itemName)
+                        itemSelected = true
+                    }
+                }
             }
         }
         model: ListModel{
             ListElement {
                 itemName: "sinaweibo"
-                itemSelected: false
                 imageSource: "../images/account_banner_sinaweibo.png"
             }
             ListElement {
                 itemName: "twitter"
-                itemSelected: false
                 imageSource: "../images/account_banner_twitter.png"
             }
         }

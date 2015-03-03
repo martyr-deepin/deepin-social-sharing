@@ -6,8 +6,8 @@ DDialog {
     id: dialog
     x: (Screen.desktopAvailableWidth - width) / 2
     y: (Screen.desktopAvailableHeight - height) / 2
-    width: 480
-    height: 360
+    width: 480 + 60
+    height: 360 + 60
 
     Component.onCompleted: show()
 
@@ -19,41 +19,67 @@ DDialog {
         share_content.setScreenshot(path)
     }
 
-    function getEnabledAccounts() {
-        if (bottom_bar.state == "share") {
-            return bottom_bar.getEnabledAccounts()
-        } else if (bottom_bar.state == "accounts_list") {
-            return accounts_list.getEnabledAccounts()
-        } else {
-            return []
-        }
-    }
-
     function authorizeAccount(accountType) {
+        mainItem.showBrowser()
         _accounts_manager.getAuthorizeUrl(accountType)
     }
 
     Item {
         id: mainItem
         width: parent.width
-        height: 260
+        height: 330
+        clip: true
+
+        property var browser
+
+        function getCurrentPage() {
+            var pages = [share_content, accounts_list, accounts_pick_view]
+            for (var i = 0; i < pages.length; i++) {
+                if (pages[i].visible) return pages[i]
+            }
+            return null
+        }
+
+        function showBrowser() {
+            var currentPage = getCurrentPage()
+            if (currentPage) {
+                currentPage.leftOut()
+            }
+
+            createBrowser()
+        }
+
+        function createBrowser() {
+            if (browser) {
+                browser.destroy()
+                browser = null
+            }
+            browser = Qt.createQmlObject("import QtQuick 2.2; AuthBrowser {width: %1; height: %2}".arg(mainItem.width).arg(mainItem.height), mainItem, "browser")
+            browser.visible = false
+            browser.rightIn()
+        }
 
         Connections {
             target: _accounts_manager
 
+            onNeedAuthorization: {
+                mainItem.showBrowser()
+                _accounts_manager.authorizeNextAccount()
+            }
+
             onAuthorizeUrlGot: {
                 var _accountType = accountType
 
-                var browser = Qt.createQmlObject("import QtQuick 2.2; Browser {}", dialog, "browser")
-                browser.urlChanged.connect(function (url) {
+                mainItem.browser.urlChanged.connect(function (url) {
                     var verifier = _accounts_manager.getVerifierFromUrl(_accountType, url)
                     if (verifier) {
                         _accounts_manager.handleVerifier(_accountType, verifier)
-                        browser.destroy()
                     }
                 })
-                browser.setUrl(authorizeUrl)
-                browser.show()
+                mainItem.browser.outAnimationDone.connect(function() {
+                    _accounts_manager.tryToShare("", "")
+                })
+                mainItem.browser.setUrl(authorizeUrl)
             }
 
             onAccountAuthorized: {
@@ -64,6 +90,7 @@ DDialog {
                     accounts_pick_view.addUser(accountType, uid, username)
                     accounts_pick_view.selectUser(accountType, uid)
                 }
+                mainItem.browser.leftOut()
             }
 
             onLoginFailed: _utils.notify(accountType + " login failed!!!")
@@ -81,7 +108,8 @@ DDialog {
             width: parent.width
             height: parent.height
 
-            onLogin: authorizeAccount(type)
+            onAccountSelected: _accounts_manager.enableAccount(accountType)
+            onAccountDeselected: _accounts_manager.disableAccount(accountType)
         }
 
         AccountsManagement {
@@ -132,8 +160,8 @@ DDialog {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: -5
 
-        onStateChanged: {
-        }
+        onAccountSelected: _accounts_manager.enableAccount(accountType)
+        onAccountDeselected: _accounts_manager.disableAccount(accountType)
 
         onNextButtonClicked: {
             bottom_bar.state = "accounts_list"
@@ -142,12 +170,7 @@ DDialog {
         }
 
         onShareButtonClicked: {
-            var enableAccounts = dialog.getEnabledAccounts()
-            print(enableAccounts)
-            enableAccounts.forEach(function (account) {
-                _accounts_manager.enableAccount(account)
-            })
-            _accounts_manager.share(share_content.text, share_content.screenshot)
+            _accounts_manager.tryToShare(share_content.text, share_content.screenshot)
         }
 
         onOkButtonClicked: {
@@ -162,6 +185,7 @@ DDialog {
             for (var i = 0; i < accounts.length; i++) {
                 if (accounts[i][1] && accounts[i][2]) {
                     filterMap.push(accounts[i][0])
+                    _accounts_manager.enableAccount(accounts[i][0])
                     state = "share"
                 }
             }

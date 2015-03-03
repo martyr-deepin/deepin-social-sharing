@@ -5,11 +5,13 @@ Item {
     width: 400
     height: 300
 
+    signal outAnimationDone()
+
     NumberAnimation {
         id: in_animation
         property: "x"
         target: rect
-        duration: 500
+        duration: 300
         easing.type: Easing.OutCubic
         onStarted: rect.visible = true
     }
@@ -18,9 +20,12 @@ Item {
         id: out_animation
         property: "x"
         target: rect
-        duration: 500
+        duration: 300
         easing.type: Easing.OutCubic
-        onStopped: rect.visible = false
+        onStopped: {
+            rect.visible = false
+            rect.outAnimationDone()
+        }
     }
 
     function leftIn() {

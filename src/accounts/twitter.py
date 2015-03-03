@@ -105,7 +105,7 @@ class Twitter(AccountBase):
             lambda: self.loginFaile.emit(TWITTER))
 
     def valid(self):
-        return self._access_token and self._access_token_secret
+        return bool(self._client.access_token and self._client.access_token_secret)
 
     def share(self, text, pic=None):
         if not self.enabled: return

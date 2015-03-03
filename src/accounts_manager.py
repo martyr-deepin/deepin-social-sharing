@@ -50,6 +50,8 @@ class AccountsManager(QObject):
 
     loginFailed = pyqtSignal(str, arguments=["accountType"])
 
+    needAuthorization = pyqtSignal()
+
     authorizeUrlGot = pyqtSignal(str, str,
         arguments=["accountType", "authorizeUrl"])
     accountAuthorized = pyqtSignal(str, str, str,
@@ -116,6 +118,10 @@ class AccountsManager(QObject):
     def enableAccount(self, accountType):
         self._accounts[accountType].enabled = True
 
+    @pyqtSlot(str)
+    def disableAccount(self, accountType):
+        self._accounts[accountType].enabled = False
+
     @pyqtSlot(str, str)
     def switchUser(self, accountType, userId):
         accountInfo = db.fetchAccountByUID(accountType, userId)
@@ -160,7 +166,26 @@ class AccountsManager(QObject):
         username = accountInfo[1]
         self.accountAuthorized.emit(accountType, uid, username)
 
+    @pyqtSlot()
+    def authorizeNextAccount(self):
+        for (accountType, account) in self._accounts.items():
+            if account.enabled and not account.valid():
+                self.getAuthorizeUrl(accountType)
+                return
+        self.share(self._text, self._pic)
+
     @pyqtSlot(str, str)
+    def tryToShare(self, text, pic):
+        self._text = self._text if text == "" else text
+        self._pic = self._pic if pic == "" else pic
+
+        if not all(map(lambda x:x.enabled and x.valid(),
+                       self._accounts.values())):
+            self.needAuthorization.emit()
+        else:
+            self.share(self._text, self._pic)
+
+    @pyqtSlot()
     def share(self, text, pic):
         self._succeeded_accounts = []
         self._failed_accounts = []
