@@ -51,6 +51,7 @@ class AccountsManager(QObject):
     loginFailed = pyqtSignal(str, arguments=["accountType"])
 
     needAuthorization = pyqtSignal()
+    readyToShare = pyqtSignal()
 
     authorizeUrlGot = pyqtSignal(str, str,
         arguments=["accountType", "authorizeUrl"])
@@ -187,6 +188,8 @@ class AccountsManager(QObject):
 
     @pyqtSlot()
     def share(self, text, pic):
+        self.readyToShare.emit()
+
         self._succeeded_accounts = []
         self._failed_accounts = []
 

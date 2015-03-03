@@ -62,6 +62,8 @@ DDialog {
         Connections {
             target: _accounts_manager
 
+            onReadyToShare: dialog.hide()
+
             onNeedAuthorization: {
                 mainItem.showBrowser()
                 _accounts_manager.authorizeNextAccount()
