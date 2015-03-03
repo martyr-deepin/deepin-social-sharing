@@ -62,6 +62,7 @@ class AccountsManager(QObject):
         super(AccountsManager, self).__init__()
         self._failed_accounts = []
         self._succeeded_accounts = []
+        self._accounts_need_auth = []
         self._share_thread = _ShareThread()
         self._settings = SocialSharingSettings()
 
@@ -169,19 +170,22 @@ class AccountsManager(QObject):
 
     @pyqtSlot()
     def authorizeNextAccount(self):
-        for (accountType, account) in self._accounts.items():
-            if account.enabled and not account.valid():
-                self.getAuthorizeUrl(accountType)
-                return
-        self.share(self._text, self._pic)
+        if self._accounts_need_auth:
+            accountType = self._accounts_need_auth.pop()
+            self.getAuthorizeUrl(accountType)
+        else:
+            self.share(self._text, self._pic)
 
     @pyqtSlot(str, str)
     def tryToShare(self, text, pic):
         self._text = self._text if text == "" else text
         self._pic = self._pic if pic == "" else pic
 
-        if not all(map(lambda x:x.enabled and x.valid(),
-                       self._accounts.values())):
+        for (accountType, account) in self._accounts.items():
+            if account.enabled and not account.valid():
+                self._accounts_need_auth.append(accountType)
+
+        if self._accounts_need_auth:
             self.needAuthorization.emit()
         else:
             self.share(self._text, self._pic)
