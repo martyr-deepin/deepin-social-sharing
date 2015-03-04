@@ -34,7 +34,7 @@ Item {
 
     function select(index) {
         if (menu.labels[selectIndex] != undefined) {
-            menu.currentIndex = index
+            selectIndex = index
             text = menu.labels[index]
         }
     }
@@ -43,6 +43,11 @@ Item {
         id: menu
         parentWindow: combobox.parentWindow
         labels: combobox.labels
+
+        onReset: {
+            combobox.selectIndex = -1
+            combobox.text = ""
+        }
 
         onNewAccount: combobox.newAccount()
 

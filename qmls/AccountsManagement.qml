@@ -120,8 +120,13 @@ SlideInOutItem {
 
                     onMenuSelect: {
                         var _accounts = JSON.parse(accounts)
-                        var uid = _accounts[index].uid
-                        root.switchUser(accountType, uid)
+                        for (var i = 0; i < _accounts.length; i++) {
+                            if (menu.labels[index] &&
+                                menu.labels[index] == _accounts[i].username) {
+                                var uid = _accounts[i].uid
+                                root.switchUser(accountType, uid)
+                            }
+                        }
                     }
 
                     onNewAccount: {

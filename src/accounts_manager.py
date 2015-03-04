@@ -58,6 +58,9 @@ class AccountsManager(QObject):
     accountAuthorized = pyqtSignal(str, str, str,
         arguments=["accountType", "uid", "username"])
 
+    userRemoved = pyqtSignal(str, str, str,
+        arguments=["accountType", "uid", "username"])
+
     def __init__(self):
         super(AccountsManager, self).__init__()
         self._failed_accounts = []
@@ -140,7 +143,10 @@ class AccountsManager(QObject):
 
     @pyqtSlot(str, str)
     def removeUser(self, accountType, userId):
+        accountInfo = db.fetchAccountByUID(accountType, userId)
         db.removeAccountByUID(accountType, userId)
+
+        self.userRemoved.emit(accountType, userId, accountInfo[1])
 
     @pyqtSlot(result="QVariant")
     def getCurrentAccounts(self):

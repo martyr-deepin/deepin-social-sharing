@@ -21,6 +21,7 @@ DPopupWindow {
     property var labels
     visible: false
 
+    signal reset()
     signal menuSelect(int index)
     signal removeAccount(int index)
     signal newAccount()
@@ -52,7 +53,7 @@ DPopupWindow {
                 model: ListModel {}
                 delegate: AccountsMenuItem {
                     text: itemLabel
-                    canDelete: index != completeView.currentIndex && index != completeView.count - 1
+                    canDelete: index != completeView.count - 1
 
                     onSelectAction:{
                         menuPopupWindow.visible = false
@@ -65,6 +66,11 @@ DPopupWindow {
                     onClear: {
                         menuPopupWindow.removeAccount(index)
                         completeView.model.remove(index, 1)
+                        if (completeView.count != 1) {
+                            menuPopupWindow.menuSelect(0)
+                        } else {
+                            menuPopupWindow.reset()
+                        }
                     }
                 }
                 clip: true
