@@ -181,9 +181,12 @@ class AccountsManager(QObject):
         self._text = self._text if text == "" else text
         self._pic = self._pic if pic == "" else pic
 
-        for (accountType, account) in self._accounts.items():
-            if account.enabled and not account.valid():
-                self._accounts_need_auth.append(accountType)
+        # if the accounts that need auth are still not empty, the authentication
+        # must be still in progress.
+        if not self._accounts_need_auth:
+            for (accountType, account) in self._accounts.items():
+                if account.enabled and not account.valid():
+                    self._accounts_need_auth.append(accountType)
 
         if self._accounts_need_auth:
             self.needAuthorization.emit()

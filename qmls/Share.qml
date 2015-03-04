@@ -75,6 +75,7 @@ DDialog {
                 mainItem.browser.urlChanged.connect(function (url) {
                     var verifier = _accounts_manager.getVerifierFromUrl(_accountType, url)
                     if (verifier) {
+                        mainItem.browser.leftOut()
                         _accounts_manager.handleVerifier(_accountType, verifier)
                     }
                 })
@@ -92,7 +93,6 @@ DDialog {
                     accounts_pick_view.addUser(accountType, uid, username)
                     accounts_pick_view.selectUser(accountType, uid)
                 }
-                mainItem.browser.leftOut()
             }
 
             onLoginFailed: _utils.notify(accountType + " login failed!!!")
