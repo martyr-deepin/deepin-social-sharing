@@ -7,7 +7,7 @@ Item {
     height: 40
     state: "first_time"
 
-    property alias wordCount: word_number_label.text
+    property alias wordsLeft: word_number_label.text
 
     signal accountSelected(string accountType)
     signal accountDeselected(string accountType)

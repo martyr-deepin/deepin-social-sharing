@@ -157,7 +157,7 @@ DDialog {
     ShareBottomBar {
         id: bottom_bar
         width: parent.width
-        wordCount: share_content.wordCount
+        wordsLeft: 140 - share_content.wordCount
 
         anchors.bottom: parent.bottom
         anchors.bottomMargin: -5
