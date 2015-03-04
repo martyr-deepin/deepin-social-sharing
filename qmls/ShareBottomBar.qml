@@ -94,6 +94,8 @@ Item {
             imageSource :"../images/sinaweibo_small.png"
 
             anchors.verticalCenter: parent.verticalCenter
+
+            onClicked: checked ? root.accountSelected("sinaweibo") : root.accountDeselected("sinaweibo")
         }
 
         DImageCheckBox {
@@ -102,6 +104,8 @@ Item {
             imageSource :"../images/twitter_small.png"
 
             anchors.verticalCenter: parent.verticalCenter
+
+            onClicked: checked ? root.accountSelected("twitter") : root.accountDeselected("twitter")
         }
     }
 
