@@ -4,7 +4,7 @@ import Deepin.Widgets 1.0
 Item {
     id: root
     width: 300
-    height: 40
+    height: 36
     state: "first_time"
 
     property alias wordsLeft: word_number_label.text
@@ -80,6 +80,14 @@ Item {
         twitter_checkbox.checked = filterMap.indexOf("twitter") != -1
     }
 
+    DSeparatorHorizontal {
+        width: parent.width - 5 * 2
+
+        anchors.top: parent.top
+        anchors.topMargin: -5
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
+
     Row {
         id: row
         height: parent.height
@@ -112,22 +120,24 @@ Item {
     Text {
         id: plz_choose_sns_label
         text: "Please choose platforms"
-        color: "#FDA825"
+        color: "#b4b4b4"
         font.pixelSize: 11
         visible: false
 
         anchors.left: parent.left
+        anchors.leftMargin: 16
         anchors.verticalCenter: parent.verticalCenter
     }
 
     Text {
         id: accounts_management_label
         text: "Accounts management"
-        color: "#FDA825"
+        color: "#b4b4b4"
         font.pixelSize: 11
         visible: false
 
         anchors.left: parent.left
+        anchors.leftMargin: 16
         anchors.verticalCenter: parent.verticalCenter
     }
 

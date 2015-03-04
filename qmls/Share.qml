@@ -6,8 +6,8 @@ DDialog {
     id: dialog
     x: (Screen.desktopAvailableWidth - width) / 2
     y: (Screen.desktopAvailableHeight - height) / 2
-    width: 480 + 60
-    height: 360 + 60
+    width: 480 + 20
+    height: 314
 
     Component.onCompleted: show()
 
@@ -27,10 +27,12 @@ DDialog {
     Item {
         id: mainItem
         width: parent.width
-        height: 330
         clip: true
 
         property var browser
+
+        anchors.top: parent.top
+        anchors.bottom: bottom_bar.top
 
         function getCurrentPage() {
             var pages = [share_content, accounts_list, accounts_pick_view]
@@ -141,17 +143,6 @@ DDialog {
 
             Component.onCompleted: updateView()
         }
-
-        DTextButton {
-            text: "Accounts"
-            visible: bottom_bar.state == "first_time" || bottom_bar.state == "share"
-
-            onClicked: {
-                bottom_bar.state = "accounts_manage"
-                share_content.leftOut()
-                accounts_pick_view.rightIn()
-            }
-        }
     }
 
     ShareBottomBar {
@@ -192,6 +183,22 @@ DDialog {
                 }
             }
             lightUpIcons(filterMap)
+        }
+    }
+
+    DImageButton {
+        x: 10
+        y: -17
+        z: dialog.z + 1
+        normal_image: "../images/users_manage_normal.png"
+        hover_image: "../images/users_manage_hover.png"
+        press_image: "../images/users_manage_press.png"
+        visible: bottom_bar.state == "first_time" || bottom_bar.state == "share"
+
+        onClicked: {
+            bottom_bar.state = "accounts_manage"
+            share_content.leftOut()
+            accounts_pick_view.rightIn()
         }
     }
 }
