@@ -184,8 +184,8 @@ class AccountsManager(QObject):
 
     @pyqtSlot(str, str)
     def tryToShare(self, text, pic):
-        self._text = self._text if text == "" else text
-        self._pic = self._pic if pic == "" else pic
+        self._text = getattr(self, "_text", text)
+        self._pic = getattr(self, "_pic", pic)
 
         # if the accounts that need auth are still not empty, the authentication
         # must be still in progress.

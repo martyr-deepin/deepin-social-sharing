@@ -88,13 +88,11 @@ DDialog {
             }
 
             onAccountAuthorized: {
-                if (accounts_list.visible) {
-                    accounts_list.selectItem(accountType)
-                }
-                if (accounts_pick_view.visible) {
-                    accounts_pick_view.addUser(accountType, uid, username)
-                    accounts_pick_view.selectUser(accountType, uid)
-                }
+                accounts_pick_view.updateView()
+            }
+
+            onUserRemoved: {
+                accounts_pick_view.updateView()
             }
 
             onLoginFailed: _utils.notify(accountType + " login failed!!!")
@@ -128,6 +126,8 @@ DDialog {
             onSwitchUser: _accounts_manager.switchUser(type, uid)
 
             function updateView() {
+                accounts_pick_view.clearUsers()
+
                 var accounts = _accounts_manager.getAllAccounts()
                 for (var i = 0; i < accounts.length; i++) {
                     var uid = accounts[i][1]
@@ -153,6 +153,27 @@ DDialog {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: -5
 
+        function updateView() {
+            var accounts = _accounts_manager.getCurrentAccounts()
+            var filterMap = []
+            var userExistsFlag = false
+            for (var i = 0; i < accounts.length; i++) {
+                if (accounts[i][1] && accounts[i][2]) {
+                    filterMap.push(accounts[i][0])
+                    _accounts_manager.enableAccount(accounts[i][0])
+                    state = "share"
+                    userExistsFlag = true
+                }
+            }
+            lightUpIcons(filterMap)
+
+            if (!userExistsFlag && state == "share") {
+                state = "first_time"
+            }
+        }
+
+        onStateChanged: updateView()
+
         onAccountSelected: _accounts_manager.enableAccount(accountType)
         onAccountDeselected: _accounts_manager.disableAccount(accountType)
 
@@ -172,18 +193,7 @@ DDialog {
             share_content.leftIn()
         }
 
-        Component.onCompleted: {
-            var accounts = _accounts_manager.getCurrentAccounts()
-            var filterMap = []
-            for (var i = 0; i < accounts.length; i++) {
-                if (accounts[i][1] && accounts[i][2]) {
-                    filterMap.push(accounts[i][0])
-                    _accounts_manager.enableAccount(accounts[i][0])
-                    state = "share"
-                }
-            }
-            lightUpIcons(filterMap)
-        }
+        Component.onCompleted: updateView()
     }
 
     DImageButton {

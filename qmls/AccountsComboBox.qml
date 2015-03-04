@@ -47,6 +47,7 @@ Item {
         onReset: {
             combobox.selectIndex = -1
             combobox.text = ""
+            menu.visible = false
         }
 
         onNewAccount: combobox.newAccount()

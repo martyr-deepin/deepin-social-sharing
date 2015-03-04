@@ -49,6 +49,13 @@ SlideInOutItem {
         list_view.model.setProperty(index, "selectedUser", uid)
     }
 
+    function clearUsers() {
+        list_view.model.setProperty(0, "accounts", "")
+        list_view.model.setProperty(0, "selectUser", "")
+        list_view.model.setProperty(1, "accounts", "")
+        list_view.model.setProperty(1, "selectUser", "")
+    }
+
     ListView {
         id: list_view
         width: parent.width
