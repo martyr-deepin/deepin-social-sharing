@@ -50,7 +50,7 @@ class AccountsManager(QObject):
 
     loginFailed = pyqtSignal(str, arguments=["accountType"])
 
-    needAuthorization = pyqtSignal()
+    shareNeedAuthorization = pyqtSignal("QStringList", arguments=["urls"])
     readyToShare = pyqtSignal()
 
     authorizeUrlGot = pyqtSignal(str, str,
@@ -63,6 +63,7 @@ class AccountsManager(QObject):
 
     def __init__(self):
         super(AccountsManager, self).__init__()
+        self._sharing = False
         self._failed_accounts = []
         self._succeeded_accounts = []
         self._accounts_need_auth = []
@@ -176,32 +177,32 @@ class AccountsManager(QObject):
 
     @pyqtSlot()
     def authorizeNextAccount(self):
-        if self._accounts_need_auth:
-            accountType = self._accounts_need_auth.pop()
-            self.getAuthorizeUrl(accountType)
-        else:
-            self.share(self._text, self._pic)
+        if self._sharing:
+            if self._accounts_need_auth:
+                accountType = self._accounts_need_auth.pop()
+                self.getAuthorizeUrl(accountType)
+            else:
+                self.share(self._text, self._pic)
 
     @pyqtSlot(str, str)
     def tryToShare(self, text, pic):
+        self._sharing = True
         self._text = getattr(self, "_text", text)
         self._pic = getattr(self, "_pic", pic)
 
-        # if the accounts that need auth are still not empty, the authentication
-        # must be still in progress.
-        if not self._accounts_need_auth:
-            for (accountType, account) in self._accounts.items():
-                if account.enabled and not account.valid():
-                    self._accounts_need_auth.append(accountType)
+        for (accountType, account) in self._accounts.items():
+            if account.enabled and not account.valid():
+                self._accounts_need_auth.append(accountType)
 
         if self._accounts_need_auth:
-            self.needAuthorization.emit()
+            self.shareNeedAuthorization.emit(self._accounts_need_auth)
         else:
             self.share(self._text, self._pic)
 
     @pyqtSlot()
     def share(self, text, pic):
         self.readyToShare.emit()
+        self._sharing = False
 
         self._succeeded_accounts = []
         self._failed_accounts = []
@@ -212,5 +213,6 @@ class AccountsManager(QObject):
         self._share_thread.start()
 
     def reshare(self):
-        self._share_thread.accounts = self._failed_accounts
+        accounts = [self._accounts[x] for x in self._failed_accounts]
+        self._share_thread.accounts = accounts
         self._share_thread.start()

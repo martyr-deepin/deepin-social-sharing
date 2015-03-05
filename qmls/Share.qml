@@ -20,7 +20,7 @@ DDialog {
     }
 
     function authorizeAccount(accountType) {
-        mainItem.showBrowser()
+        auth_browser.rightIn()
         _accounts_manager.getAuthorizeUrl(accountType)
     }
 
@@ -42,52 +42,32 @@ DDialog {
             return null
         }
 
-        function showBrowser() {
-            var currentPage = getCurrentPage()
-            if (currentPage) {
-                currentPage.leftOut()
-            }
-
-            createBrowser()
-        }
-
-        function createBrowser() {
-            if (browser) {
-                browser.destroy()
-                browser = null
-            }
-            browser = Qt.createQmlObject("import QtQuick 2.2; AuthBrowser {width: %1; height: %2}".arg(mainItem.width).arg(mainItem.height), mainItem, "browser")
-            browser.visible = false
-            browser.rightIn()
-        }
-
         Connections {
             target: _accounts_manager
 
             onReadyToShare: dialog.hide()
 
-            onNeedAuthorization: {
-                mainItem.showBrowser()
+            onShareNeedAuthorization: {
+                auth_browser.rightIn()
                 _accounts_manager.authorizeNextAccount()
             }
 
             onAuthorizeUrlGot: {
                 var _accountType = accountType
 
-                mainItem.browser.urlChanged.connect(function (url) {
+                auth_browser.urlChanged.connect(function (url) {
                     var verifier = _accounts_manager.getVerifierFromUrl(_accountType, url)
                     if (verifier) {
-                        mainItem.browser.leftOut()
                         _accounts_manager.handleVerifier(_accountType, verifier)
+                        _accounts_manager.authorizeNextAccount()
                     }
                 })
-                mainItem.browser.outAnimationDone.connect(function() {
-                    _accounts_manager.tryToShare("", "")
-                })
-                mainItem.browser.setUrl(authorizeUrl)
+                auth_browser.next()
+                auth_browser.setUrl(authorizeUrl)
             }
 
             onAccountAuthorized: {
+                auth_browser.leftOut()
                 accounts_pick_view.updateView()
             }
 
@@ -161,7 +141,7 @@ DDialog {
                 if (accounts[i][1] && accounts[i][2]) {
                     filterMap.push(accounts[i][0])
                     _accounts_manager.enableAccount(accounts[i][0])
-                    state = "share"
+                    if (state == "first_time") state = "share"
                     userExistsFlag = true
                 }
             }
@@ -171,8 +151,6 @@ DDialog {
                 state = "first_time"
             }
         }
-
-        onStateChanged: updateView()
 
         onAccountSelected: _accounts_manager.enableAccount(accountType)
         onAccountDeselected: _accounts_manager.disableAccount(accountType)
@@ -189,6 +167,7 @@ DDialog {
 
         onOkButtonClicked: {
             bottom_bar.state = "share"
+            updateView()
             accounts_pick_view.rightOut()
             share_content.leftIn()
         }
@@ -197,9 +176,9 @@ DDialog {
     }
 
     DImageButton {
-        x: 10
-        y: -17
-        z: dialog.z + 1
+        x: 14
+        y: 14
+        parent: mainItem.parent.parent.parent
         normal_image: "../images/users_manage_normal.png"
         hover_image: "../images/users_manage_hover.png"
         press_image: "../images/users_manage_press.png"
@@ -209,6 +188,21 @@ DDialog {
             bottom_bar.state = "accounts_manage"
             share_content.leftOut()
             accounts_pick_view.rightIn()
+        }
+    }
+
+    // TODO: make all the positioning numbers meaningful
+    Item {
+        y: -24
+        width: 484
+        height: 298
+
+        AuthBrowser {
+            id: auth_browser
+            width: parent.width
+            height: parent.height
+            visible: false
+            radius: 3
         }
     }
 }
