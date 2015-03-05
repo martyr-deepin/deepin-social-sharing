@@ -11,7 +11,8 @@ SlideInOutItem {
     property alias radius: browser_area.radius
     property var currentBrowser: browser_one
 
-    signal urlChanged(string url)
+    signal skipped(string accountType)
+    signal urlChanged(string accountType, string url)
 
     function next() {
         if (root.currentBrowser == browser_one) {
@@ -23,6 +24,10 @@ SlideInOutItem {
             browser_two.leftOut()
             browser_one.rightIn()
         }
+    }
+
+    function setAccountType(accountType) {
+        root.currentBrowser.accountType = accountType
     }
 
     function setUrl(url) {
@@ -40,13 +45,14 @@ SlideInOutItem {
             height: parent.height
 
             property alias url: webview_one.url
+            property string accountType
 
             WebView {
                 id: webview_one
                 experimental.userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3"
                 anchors.fill: parent
 
-                onLoadingChanged: root.urlChanged(loadRequest.url)
+                onLoadingChanged: root.urlChanged(browser_one.accountType, loadRequest.url)
 
                 Rectangle {
                     width: Math.max(20, parent.width * webview_one.loadProgress / 100)
@@ -57,6 +63,17 @@ SlideInOutItem {
                     anchors.bottom: parent.bottom
                 }
             }
+
+            WhiteButton {
+                label: "Skip"
+                visible: webview_one.loadProgress == 100
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 10
+                anchors.bottomMargin: 10
+
+                onClicked: root.skipped(browser_one.accountType)
+            }
         }
 
         SlideInOutItem {
@@ -66,13 +83,14 @@ SlideInOutItem {
             height: parent.height
 
             property alias url: webview_two.url
+            property string accountType
 
             WebView {
                 id: webview_two
                 experimental.userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3"
                 anchors.fill: parent
 
-                onLoadingChanged: root.urlChanged(loadRequest.url)
+                onLoadingChanged: root.urlChanged(browser_two.accountType, loadRequest.url)
 
                 Rectangle {
                     width: Math.max(20, parent.width * webview_two.loadProgress / 100)
@@ -82,6 +100,17 @@ SlideInOutItem {
 
                     anchors.bottom: parent.bottom
                 }
+            }
+
+            WhiteButton {
+                label: "Skip"
+                visible: webview_two.loadProgress == 100
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 10
+                anchors.bottomMargin: 10
+
+                onClicked: root.skipped(browser_two.accountType)
             }
         }
     }

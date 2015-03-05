@@ -23,7 +23,7 @@
 from accounts import SinaWeibo, Twitter
 from database import db, SINAWEIBO, TWITTER
 
-from PyQt5.QtCore import QObject, QThread, pyqtSlot, pyqtSignal
+from PyQt5.QtCore import QObject, QThread, pyqtSlot, pyqtSignal, pyqtProperty
 
 from settings import SocialSharingSettings
 
@@ -52,6 +52,7 @@ class AccountsManager(QObject):
 
     shareNeedAuthorization = pyqtSignal("QStringList", arguments=["urls"])
     readyToShare = pyqtSignal()
+    noAccountsToShare = pyqtSignal()
 
     authorizeUrlGot = pyqtSignal(str, str,
         arguments=["accountType", "authorizeUrl"])
@@ -67,6 +68,7 @@ class AccountsManager(QObject):
         self._failed_accounts = []
         self._succeeded_accounts = []
         self._accounts_need_auth = []
+        self._skipped_accounts = []
         self._share_thread = _ShareThread()
         self._settings = SocialSharingSettings()
 
@@ -109,6 +111,10 @@ class AccountsManager(QObject):
                 account = typeClassMap[accountType](*records[0])
 
         return account
+
+    @pyqtProperty(bool)
+    def isSharing(self):
+        return self._sharing
 
     @pyqtSlot(result="QVariant")
     def getAllAccounts(self):
@@ -175,10 +181,6 @@ class AccountsManager(QObject):
         username = accountInfo[1]
         self.accountAuthorized.emit(accountType, uid, username)
 
-    @pyqtSlot(result=bool)
-    def authorizationCompleted(self):
-        return len(self._accounts_need_auth) == 0 if self._sharing else True
-
     @pyqtSlot()
     def authorizeNextAccount(self):
         if self._sharing:
@@ -187,6 +189,10 @@ class AccountsManager(QObject):
                 self.getAuthorizeUrl(accountType)
             else:
                 self.share(self._text, self._pic)
+
+    @pyqtSlot(str)
+    def skipAccount(self, accountType):
+        self._skipped_accounts.append(accountType)
 
     @pyqtSlot(str, str)
     def tryToShare(self, text, pic):
@@ -210,11 +216,17 @@ class AccountsManager(QObject):
 
         self._succeeded_accounts = []
         self._failed_accounts = []
+        accounts = [y for (x, y) in self._accounts.items()
+                    if x not in self._skipped_accounts]
+        self._skipped_accounts = []
 
-        self._share_thread.text = text
-        self._share_thread.pic = pic
-        self._share_thread.accounts = self._accounts.values()
-        self._share_thread.start()
+        if accounts:
+            self._share_thread.text = text
+            self._share_thread.pic = pic
+            self._share_thread.accounts = accounts
+            self._share_thread.start()
+        else:
+            self.noAccountsToShare.emit()
 
     def reshare(self):
         accounts = [self._accounts[x] for x in self._failed_accounts]

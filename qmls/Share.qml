@@ -54,26 +54,15 @@ DDialog {
 
             onReadyToShare: dialog.hide()
 
+            onNoAccountsToShare: dialog.close()
+
             onShareNeedAuthorization: {
                 auth_browser.rightIn()
                 _accounts_manager.authorizeNextAccount()
             }
 
             onAuthorizeUrlGot: {
-                var _accountType = accountType
-
-                auth_browser.urlChanged.connect(function (url) {
-                    var verifier = _accounts_manager.getVerifierFromUrl(_accountType, url)
-                    if (verifier) {
-                        _accounts_manager.handleVerifier(_accountType, verifier)
-                        if (_accounts_manager.authorizationCompleted()) {
-                            auth_browser.leftOut()
-                        } else {
-                            auth_browser.next()
-                            _accounts_manager.authorizeNextAccount()
-                        }
-                    }
-                })
+                auth_browser.setAccountType(accountType)
                 auth_browser.setUrl(authorizeUrl)
             }
 
@@ -216,6 +205,30 @@ DDialog {
             height: parent.height
             visible: false
             radius: 3
+
+            onSkipped: {
+                auth_browser.next()
+                _accounts_manager.skipAccount(accountType)
+
+                if (_accounts_manager.isSharing) {
+                    _accounts_manager.authorizeNextAccount()
+                } else {
+                    auth_browser.leftOut()
+                }
+            }
+
+            onUrlChanged: {
+                var verifier = _accounts_manager.getVerifierFromUrl(accountType, url)
+                if (verifier) {
+                    _accounts_manager.handleVerifier(accountType, verifier)
+                    if (_accounts_manager.isSharing) {
+                        auth_browser.next()
+                        _accounts_manager.authorizeNextAccount()
+                    } else {
+                        auth_browser.leftOut()
+                    }
+                }
+            }
         }
     }
 }
