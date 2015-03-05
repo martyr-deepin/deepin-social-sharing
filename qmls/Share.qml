@@ -42,6 +42,13 @@ DDialog {
             return null
         }
 
+        // steal focus from share_content, thus to make the TextEdit
+        // response to a click event outside itself.
+        MouseArea {
+            anchors.fill: parent
+            onClicked: mainItem.focus = true
+        }
+
         Connections {
             target: _accounts_manager
 
