@@ -12,6 +12,9 @@ SlideInOutItem {
 
     property int inputLeftRightPadding: 24
 
+    signal textOverflow()
+    signal textInBounds()
+
     function setText(text) {
         input_text.text = text
     }
@@ -36,6 +39,15 @@ SlideInOutItem {
         anchors.leftMargin: root.inputLeftRightPadding
         anchors.right: parent.right
         anchors.rightMargin: root.inputLeftRightPadding
+
+        onTextChanged: {
+            if (input_text.length > 140) {
+                input_text.remove(140, 141)
+                root.textOverflow()
+            } else {
+                root.textInBounds()
+            }
+        }
 
         Label {
             id: label

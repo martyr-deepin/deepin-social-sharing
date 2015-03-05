@@ -89,6 +89,9 @@ DDialog {
             id: share_content
             width: parent.width
             height: parent.height
+
+            onTextOverflow: bottom_bar.warnWordsCount()
+            onTextInBounds: bottom_bar.showWordsCount()
         }
 
         AccountsList {

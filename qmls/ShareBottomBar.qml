@@ -22,7 +22,7 @@ Item {
             PropertyChanges { target: row; visible: false }
             PropertyChanges { target: plz_choose_sns_label; visible: false }
             PropertyChanges { target: accounts_management_label; visible: false }
-            PropertyChanges { target: word_number_label; visible: true }
+            PropertyChanges { target: word_number_label; visibleFlag: true }
             PropertyChanges { target: next_button; visible: true }
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: false }
@@ -33,7 +33,7 @@ Item {
             PropertyChanges { target: row; visible: false }
             PropertyChanges { target: plz_choose_sns_label; visible: true }
             PropertyChanges { target: accounts_management_label; visible: false }
-            PropertyChanges { target: word_number_label; visible: false }
+            PropertyChanges { target: word_number_label; visibleFlag: false }
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: true }
             PropertyChanges { target: ok_button; visible: false }
@@ -44,7 +44,7 @@ Item {
             PropertyChanges { target: row; visible: true }
             PropertyChanges { target: plz_choose_sns_label; visible: false }
             PropertyChanges { target: accounts_management_label; visible: false }
-            PropertyChanges { target: word_number_label; visible: true }
+            PropertyChanges { target: word_number_label; visibleFlag: true }
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: true }
             PropertyChanges { target: ok_button; visible: false }
@@ -55,21 +55,10 @@ Item {
             PropertyChanges { target: row; visible: false }
             PropertyChanges { target: plz_choose_sns_label; visible: false }
             PropertyChanges { target: accounts_management_label; visible: true }
-            PropertyChanges { target: word_number_label; visible: false }
+            PropertyChanges { target: word_number_label; visibleFlag: false }
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: true }
-        },
-        State {
-            name: "authorize"
-
-            PropertyChanges { target: row; visible: false }
-            PropertyChanges { target: plz_choose_sns_label; visible: true }
-            PropertyChanges { target: accounts_management_label; visible: false }
-            PropertyChanges { target: word_number_label; visible: false }
-            PropertyChanges { target: next_button; visible: true }
-            PropertyChanges { target: share_button; visible: false }
-            PropertyChanges { target: ok_button; visible: false }
         }
     ]
 
@@ -78,6 +67,14 @@ Item {
         sinaweibo_checkbox.checked = filterMap.indexOf("sinaweibo") != -1
         twitter_checkbox.visible = filterMap.indexOf("twitter") != -1
         twitter_checkbox.checked = filterMap.indexOf("twitter") != -1
+    }
+
+    function warnWordsCount() {
+        word_number_overflow_label.visible = true
+    }
+
+    function showWordsCount() {
+        word_number_overflow_label.visible = false
     }
 
     DSeparatorHorizontal {
@@ -143,8 +140,23 @@ Item {
 
     Text {
         id: word_number_label
+        visible: !word_number_overflow_label.visible
         color: "#FDA825"
         font.pixelSize: 11
+
+        property bool visibleFlag: true
+
+        anchors.right: next_button.left
+        anchors.rightMargin: 10
+        anchors.verticalCenter: parent.verticalCenter
+    }
+
+    Text {
+        id: word_number_overflow_label
+        visible: false
+        text: "Words limit has been exceeded."
+        color: word_number_label.color
+        font.pixelSize: word_number_label.font.pixelSize
 
         anchors.right: next_button.left
         anchors.rightMargin: 10
