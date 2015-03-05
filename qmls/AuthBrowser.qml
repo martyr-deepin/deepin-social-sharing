@@ -15,19 +15,18 @@ SlideInOutItem {
 
     function next() {
         if (root.currentBrowser == browser_one) {
+            root.currentBrowser = browser_two
             browser_one.leftOut()
             browser_two.rightIn()
-            root.currentBrowser = browser_two
         } else if (root.currentBrowser == browser_two) {
+            root.currentBrowser = browser_one
             browser_two.leftOut()
             browser_one.rightIn()
-            root.currentBrowser = browser_one
         }
     }
 
     function setUrl(url) {
-        browser_one.url = url
-        browser_two.url = url
+        root.currentBrowser.url = url
     }
 
     Rectangle {
@@ -37,11 +36,10 @@ SlideInOutItem {
 
         SlideInOutItem {
             id: browser_one
-            visible: true
+            width: parent.width
+            height: parent.height
 
             property alias url: webview_one.url
-
-            anchors.fill: parent
 
             WebView {
                 id: webview_one
@@ -49,15 +47,25 @@ SlideInOutItem {
                 anchors.fill: parent
 
                 onLoadingChanged: root.urlChanged(loadRequest.url)
+
+                Rectangle {
+                    width: Math.max(20, parent.width * webview_one.loadProgress / 100)
+                    height: 2
+                    color: "#00A2FF"
+                    visible: webview_one.loadProgress != 100
+
+                    anchors.bottom: parent.bottom
+                }
             }
         }
 
         SlideInOutItem {
             id: browser_two
             visible: false
-            property alias url: webview_two.url
+            width: parent.width
+            height: parent.height
 
-            anchors.fill: parent
+            property alias url: webview_two.url
 
             WebView {
                 id: webview_two
@@ -65,6 +73,15 @@ SlideInOutItem {
                 anchors.fill: parent
 
                 onLoadingChanged: root.urlChanged(loadRequest.url)
+
+                Rectangle {
+                    width: Math.max(20, parent.width * webview_two.loadProgress / 100)
+                    height: 2
+                    color: "#00A2FF"
+                    visible: webview_two.loadProgress != 100
+
+                    anchors.bottom: parent.bottom
+                }
             }
         }
     }

@@ -66,15 +66,18 @@ DDialog {
                     var verifier = _accounts_manager.getVerifierFromUrl(_accountType, url)
                     if (verifier) {
                         _accounts_manager.handleVerifier(_accountType, verifier)
-                        _accounts_manager.authorizeNextAccount()
+                        if (_accounts_manager.authorizationCompleted()) {
+                            auth_browser.leftOut()
+                        } else {
+                            auth_browser.next()
+                            _accounts_manager.authorizeNextAccount()
+                        }
                     }
                 })
-                auth_browser.next()
                 auth_browser.setUrl(authorizeUrl)
             }
 
             onAccountAuthorized: {
-                auth_browser.leftOut()
                 accounts_pick_view.updateView()
             }
 

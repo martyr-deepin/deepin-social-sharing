@@ -102,7 +102,7 @@ class Twitter(AccountBase):
         self._getAccountInfoThread.accountInfoGot.connect(
             lambda x: self.accountInfoGot.emit(TWITTER, x))
         self._getAccountInfoThread.getAccountInfoFailed.connect(
-            lambda: self.loginFaile.emit(TWITTER))
+            lambda: self.loginFailed.emit(TWITTER))
 
     def valid(self):
         return bool(self._client.access_token and self._client.access_token_secret)

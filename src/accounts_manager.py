@@ -175,6 +175,10 @@ class AccountsManager(QObject):
         username = accountInfo[1]
         self.accountAuthorized.emit(accountType, uid, username)
 
+    @pyqtSlot(result=bool)
+    def authorizationCompleted(self):
+        return len(self._accounts_need_auth) == 0 if self._sharing else True
+
     @pyqtSlot()
     def authorizeNextAccount(self):
         if self._sharing:
