@@ -148,7 +148,7 @@ SlideInOutItem {
                 }
 
                 DTextButton {
-                    text: "Login"
+                    text: dsTr("Login")
                     visible: accounts == ""
 
                     anchors.verticalCenter: parent.verticalCenter
@@ -169,13 +169,13 @@ SlideInOutItem {
         }
         model: ListModel{
             ListElement {
-                iconSource: "../images/sinaweibo_big.png"
+                iconSource: "../../images/sinaweibo_big.png"
                 accountType: "sinaweibo"
                 accounts: ""
                 selectedUser: ""
             }
             ListElement {
-                iconSource: "../images/twitter_big.png"
+                iconSource: "../../images/twitter_big.png"
                 accountType: "twitter"
                 accounts: ""
                 selectedUser: ""

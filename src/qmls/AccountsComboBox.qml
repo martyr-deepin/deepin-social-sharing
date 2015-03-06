@@ -81,9 +81,9 @@ Item {
     QtObject {
         id: buttonImage
         property string status: "normal"
-        property string header: "../images/button_left_%1.png".arg(status)
-        property string middle: "../images/button_center_%1.png".arg(status)
-        property string tail: "../images/button_right_%1.png".arg(status)
+        property string header: "../../images/button_left_%1.png".arg(status)
+        property string middle: "../../images/button_center_%1.png".arg(status)
+        property string tail: "../../images/button_right_%1.png".arg(status)
     }
 
     property int minMiddleWidth: buttonHeader.width + downArrow.width + buttonTail.width
@@ -131,7 +131,7 @@ Item {
             id: downArrow
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            source: hovered ? "../images/arrow_down_hover.png" : "../images/arrow_down_normal.png"
+            source: hovered ? "../../images/arrow_down_hover.png" : "../../images/arrow_down_normal.png"
         }
 
     }

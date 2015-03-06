@@ -32,6 +32,7 @@ app.setApplicationName("Deepin Social Sharing")
 app.setApplicationVersion("1.0")
 app.setQuitOnLastWindowClosed(True)
 
+from i18n import _
 from constants import MAIN_QML
 from accounts_manager import AccountsManager
 from dbus_services import DBUS_NAME, DBUS_PATH
@@ -48,7 +49,7 @@ class UIUtils(QObject):
 
     @pyqtSlot(str)
     def notify(self, content):
-        notificationsInterface.notify("Deepin Social Sharing",
+        notificationsInterface.notify(_("Deepin Social Sharing"),
             content)
 
 
@@ -81,12 +82,12 @@ class QmlEngine(QQmlApplicationEngine):
     def _shareSucceededCB(self, accounts):
         accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = notificationsInterface.notify(
-            "Succeeded", "succeeded to sharing to %s" % accountsStr)
+            _("Succeeded"), _("succeeded to sharing to %s") % accountsStr)
 
     def _shareFailedCB(self, accounts):
         accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = notificationsInterface.notify(
-            "Failed", "failed to sharing to %s" % accountsStr, [ACTION_ID_RESHARE, "Reshare"])
+            _("Failed"), _("failed to sharing to %s") % accountsStr, [ACTION_ID_RESHARE, "Reshare"])
 
     def _notificationClosedCB(self, notificationId):
         if notificationId == self._notificationId:

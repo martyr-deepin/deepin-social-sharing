@@ -96,7 +96,7 @@ Item {
         DImageCheckBox {
             id: sinaweibo_checkbox
             visible: false
-            imageSource :"../images/sinaweibo_small.png"
+            imageSource :"../../images/sinaweibo_small.png"
 
             anchors.verticalCenter: parent.verticalCenter
 
@@ -106,7 +106,7 @@ Item {
         DImageCheckBox {
             id: twitter_checkbox
             visible: false
-            imageSource :"../images/twitter_small.png"
+            imageSource :"../../images/twitter_small.png"
 
             anchors.verticalCenter: parent.verticalCenter
 
@@ -116,7 +116,7 @@ Item {
 
     Text {
         id: plz_choose_sns_label
-        text: "Please choose platforms"
+        text: dsTr("Please choose platforms")
         color: "#b4b4b4"
         font.pixelSize: 11
         visible: false
@@ -128,7 +128,7 @@ Item {
 
     Text {
         id: accounts_management_label
-        text: "Accounts management"
+        text: dsTr("Accounts management")
         color: "#b4b4b4"
         font.pixelSize: 11
         visible: false
@@ -154,7 +154,7 @@ Item {
     Text {
         id: word_number_overflow_label
         visible: false
-        text: "Words limit has been exceeded."
+        text: dsTr("Words limit has been exceeded.")
         color: word_number_label.color
         font.pixelSize: word_number_label.font.pixelSize
 
@@ -165,7 +165,7 @@ Item {
 
     DTextButton {
         id: next_button
-        text: "Next"
+        text: dsTr("Next")
         visible: false
 
         anchors.right: parent.right
@@ -177,7 +177,7 @@ Item {
 
     DTextButton {
         id: share_button
-        text: "Share"
+        text: dsTr("Share")
 
         anchors.right: parent.right
         anchors.rightMargin: 10
@@ -188,7 +188,7 @@ Item {
 
     DTextButton {
         id: ok_button
-        text: "OK"
+        text: dsTr("OK")
         visible: false
 
         anchors.right: parent.right

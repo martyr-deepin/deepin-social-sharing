@@ -79,7 +79,7 @@ SlideInOutItem {
             }
 
             WhiteButton {
-                label: "Skip"
+                label: dsTr("Skip")
                 visible: webview_one.loadProgress == 100
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
@@ -117,7 +117,7 @@ SlideInOutItem {
             }
 
             WhiteButton {
-                label: "Skip"
+                label: dsTr("Skip")
                 visible: webview_two.loadProgress == 100
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom

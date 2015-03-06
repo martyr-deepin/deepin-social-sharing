@@ -31,7 +31,7 @@ DPopupWindow {
         for (var i = 0; i < labels.length; i++) {
             completeView.model.append({ "itemLabel": labels[i] })
         }
-        completeView.model.append({ "itemLabel": "New account" })
+        completeView.model.append({ "itemLabel": dsTr("New account") })
     }
 
     DWindowFrame {

@@ -1,6 +1,7 @@
 import QtQuick 2.1
 import QtQuick.Window 2.1
 import Deepin.Widgets 1.0
+import Deepin.Locale 1.0
 
 DDialog {
     id: dialog
@@ -10,6 +11,8 @@ DDialog {
     height: 314
 
     Component.onCompleted: show()
+
+    function dsTr(src) { return locale.dsTr(src) }
 
     function setText(text) {
         share_content.setText(text)
@@ -34,6 +37,8 @@ DDialog {
 
         anchors.top: parent.top
         anchors.bottom: bottom_bar.top
+
+        DLocale { id: locale; domain: "deepin-social-sharing" }
 
         function getCurrentPage() {
             var pages = [share_content, accounts_list, accounts_pick_view]
@@ -192,9 +197,9 @@ DDialog {
         x: 14
         y: 14
         parent: mainItem.parent.parent.parent
-        normal_image: "../images/users_manage_normal.png"
-        hover_image: "../images/users_manage_hover.png"
-        press_image: "../images/users_manage_press.png"
+        normal_image: "../../images/users_manage_normal.png"
+        hover_image: "../../images/users_manage_hover.png"
+        press_image: "../../images/users_manage_press.png"
         visible: bottom_bar.state == "first_time" || bottom_bar.state == "share"
 
         onClicked: {

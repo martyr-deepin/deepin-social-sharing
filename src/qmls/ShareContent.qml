@@ -52,7 +52,7 @@ SlideInOutItem {
         Label {
             id: label
             visible: !input_text.focus && !input_text.text
-            text: "在此输入想说的话"
+            text: dsTr("Input the words you want to put here")
             color: "#686868"
             font.pixelSize: input_text.font.pixelSize
             anchors.centerIn: parent

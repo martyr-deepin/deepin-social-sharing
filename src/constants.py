@@ -30,7 +30,7 @@ CONFIG_DIR = os.path.join(XDG_CONFIG_HOME, PROJECT_NAME)
 DATABASE_FILE = os.path.join(CONFIG_DIR, "accounts.db")
 
 _parentDir = os.path.dirname(os.path.abspath(__file__))
-_qmlDir = os.path.join(os.path.dirname(_parentDir), "qmls")
+_qmlDir = os.path.join(_parentDir, "qmls")
 MAIN_QML = os.path.join(_qmlDir, "Share.qml")
 
 if not os.path.exists(CONFIG_DIR): os.makedirs(CONFIG_DIR)

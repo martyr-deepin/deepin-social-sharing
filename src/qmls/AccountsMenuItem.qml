@@ -41,9 +41,9 @@ Item {
 
     DImageButton {
         visible: wrapper.canDelete
-        normal_image: "../images/clear_content_normal.png"
-        hover_image: "../images/clear_content_hover.png"
-        press_image: "../images/clear_content_press.png"
+        normal_image: "../../images/clear_content_normal.png"
+        hover_image: "../../images/clear_content_hover.png"
+        press_image: "../../images/clear_content_press.png"
 
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter

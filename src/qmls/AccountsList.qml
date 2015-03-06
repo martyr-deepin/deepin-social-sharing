@@ -68,7 +68,7 @@ SlideInOutItem {
             Image {
                 id: check_mark
                 visible: itemSelected
-                source: "../images/account_select_flag.png"
+                source: "../../images/account_select_flag.png"
 
                 anchors.left: parent.left
                 anchors.leftMargin: 20
@@ -103,11 +103,11 @@ SlideInOutItem {
         model: ListModel{
             ListElement {
                 itemName: "sinaweibo"
-                imageSource: "../images/account_banner_sinaweibo.png"
+                imageSource: "../../images/account_banner_sinaweibo.png"
             }
             ListElement {
                 itemName: "twitter"
-                imageSource: "../images/account_banner_twitter.png"
+                imageSource: "../../images/account_banner_twitter.png"
             }
         }
     }
