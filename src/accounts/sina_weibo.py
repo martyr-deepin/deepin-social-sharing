@@ -101,7 +101,7 @@ class SinaWeibo(AccountBase):
             self.failed.emit(SINAWEIBO)
 
     def getAuthorizeUrl(self):
-        auth_url = self._client.get_authorize_url()
+        auth_url = self._client.get_authorize_url(forcelogin=True)
         self.authorizeUrlGot.emit(SINAWEIBO, auth_url)
 
     def getVerifierFromUrl(self, url):
