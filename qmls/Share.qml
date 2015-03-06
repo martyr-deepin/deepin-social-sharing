@@ -68,6 +68,7 @@ DDialog {
 
             onAccountAuthorized: {
                 accounts_pick_view.updateView()
+                accounts_pick_view.selectUser(accountType, uid)
             }
 
             onUserRemoved: {

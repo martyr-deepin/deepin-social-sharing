@@ -100,9 +100,14 @@ class Twitter(AccountBase):
 
         self._getAccountInfoThread = GetAccountInfoThread(self._client)
         self._getAccountInfoThread.accountInfoGot.connect(
-            lambda x: self.accountInfoGot.emit(TWITTER, x))
+            self.handleAccountInfoGot)
         self._getAccountInfoThread.getAccountInfoFailed.connect(
             lambda: self.loginFailed.emit(TWITTER))
+
+    def handleAccountInfoGot(self, info):
+        self.accountInfoGot.emit(TWITTER, info)
+        self.uid = info[0]
+        self.username = info[1]
 
     def valid(self):
         return bool(self._client.access_token and self._client.access_token_secret)
