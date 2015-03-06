@@ -169,7 +169,7 @@ Item {
         visible: false
 
         anchors.right: parent.right
-        anchors.rightMargin: 5
+        anchors.rightMargin: 10
         anchors.verticalCenter: parent.verticalCenter
 
         onClicked: root.nextButtonClicked()
@@ -180,7 +180,7 @@ Item {
         text: "Share"
 
         anchors.right: parent.right
-        anchors.rightMargin: 5
+        anchors.rightMargin: 10
         anchors.verticalCenter: parent.verticalCenter
 
         onClicked: root.shareButtonClicked()
@@ -192,7 +192,7 @@ Item {
         visible: false
 
         anchors.right: parent.right
-        anchors.rightMargin: 5
+        anchors.rightMargin: 10
         anchors.verticalCenter: parent.verticalCenter
 
         onClicked: root.okButtonClicked()

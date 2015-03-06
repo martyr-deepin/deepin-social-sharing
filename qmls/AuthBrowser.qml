@@ -34,6 +34,20 @@ SlideInOutItem {
         root.currentBrowser.url = url
     }
 
+    function reset() {
+        webview_one.stop()
+        webview_two.stop()
+
+        root.currentBrowser = browser_one
+        browser_one.x =  0
+        browser_one.visible = true
+        browser_one.url = ""
+        browser_one.accountType = ""
+        browser_two.visible = false
+        browser_two.url = ""
+        browser_two.accountType = ""
+    }
+
     Rectangle {
         id: browser_area
         color: "white"
@@ -52,7 +66,7 @@ SlideInOutItem {
                 experimental.userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3"
                 anchors.fill: parent
 
-                onLoadingChanged: root.urlChanged(browser_one.accountType, loadRequest.url)
+                onNavigationRequested: root.urlChanged(browser_one.accountType, request.url)
 
                 Rectangle {
                     width: Math.max(20, parent.width * webview_one.loadProgress / 100)
@@ -90,7 +104,7 @@ SlideInOutItem {
                 experimental.userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3"
                 anchors.fill: parent
 
-                onLoadingChanged: root.urlChanged(browser_two.accountType, loadRequest.url)
+                onNavigationRequested: root.urlChanged(browser_two.accountType, request.url)
 
                 Rectangle {
                     width: Math.max(20, parent.width * webview_two.loadProgress / 100)

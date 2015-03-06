@@ -20,6 +20,7 @@ DDialog {
     }
 
     function authorizeAccount(accountType) {
+        auth_browser.reset()
         auth_browser.rightIn()
         _accounts_manager.getAuthorizeUrl(accountType)
     }
@@ -57,6 +58,7 @@ DDialog {
             onNoAccountsToShare: dialog.close()
 
             onShareNeedAuthorization: {
+                auth_browser.reset()
                 auth_browser.rightIn()
                 _accounts_manager.authorizeNextAccount()
             }
@@ -219,6 +221,8 @@ DDialog {
             }
 
             onUrlChanged: {
+                if (!accountType) return
+
                 var verifier = _accounts_manager.getVerifierFromUrl(accountType, url)
                 if (verifier) {
                     _accounts_manager.handleVerifier(accountType, verifier)

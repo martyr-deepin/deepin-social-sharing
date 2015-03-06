@@ -5,7 +5,8 @@ Item {
     width: 400
     height: 300
 
-    signal outAnimationDone()
+    signal beforeInAnimation()
+    signal afterOutAnimation()
 
     NumberAnimation {
         id: in_animation
@@ -13,7 +14,10 @@ Item {
         target: rect
         duration: 300
         easing.type: Easing.OutCubic
-        onStarted: rect.visible = true
+        onStarted: {
+            rect.beforeInAnimation()
+            rect.visible = true
+        }
     }
 
     NumberAnimation {
@@ -24,7 +28,7 @@ Item {
         easing.type: Easing.OutCubic
         onStopped: {
             rect.visible = false
-            rect.outAnimationDone()
+            rect.afterOutAnimation()
         }
     }
 
