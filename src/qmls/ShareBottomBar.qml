@@ -91,7 +91,7 @@ Item {
         spacing: 10
 
         anchors.left: parent.left
-        anchors.leftMargin: 5
+        anchors.leftMargin: 10
 
         DImageCheckBox {
             id: sinaweibo_checkbox

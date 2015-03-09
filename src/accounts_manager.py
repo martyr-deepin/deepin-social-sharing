@@ -152,6 +152,15 @@ class AccountsManager(QObject):
     def removeUser(self, accountType, userId):
         accountInfo = db.fetchAccountByUID(accountType, userId)
         db.removeAccountByUID(accountType, userId)
+        if str(self._accounts[accountType].uid) == str(userId):
+            account = typeClassMap[accountType]()
+            account.succeeded.connect(self._accountSucceeded)
+            account.failed.connect(self._accountFailed)
+            account.loginFailed.connect(self.loginFailed)
+            account.authorizeUrlGot.connect(self.authorizeUrlGot)
+            account.accountInfoGot.connect(self.handleAccountInfo)
+
+            self._accounts[accountType] = account
 
         self.userRemoved.emit(accountType, userId, accountInfo[1])
 
