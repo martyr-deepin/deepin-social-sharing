@@ -27,7 +27,7 @@ from PyQt5.QtCore import QObject, pyqtSignal, QThread, QTimer
 class TimeoutThread(QThread):
     timeout = pyqtSignal()
 
-    def __init__(self, timeout=5*1000):
+    def __init__(self, timeout=10*1000):
         super(TimeoutThread, self).__init__()
         self._timer = QTimer()
         self._timer.setSingleShot(False)
