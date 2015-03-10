@@ -28,6 +28,19 @@ DDialog {
         _accounts_manager.getAuthorizeUrl(accountType)
     }
 
+    // below two functions are just workarounds to the issue that
+    // WebView or something will crash if the top window they are in
+    // shows again after hiding for a while.
+    function _hide() {
+        width = 1
+        height = 1
+    }
+
+    function _show() {
+        width = 480 + 20
+        height = 314
+    }
+
     Item {
         id: mainItem
         width: parent.width
@@ -59,11 +72,13 @@ DDialog {
         Connections {
             target: _accounts_manager
 
-            onReadyToShare: dialog.hide()
+            onReadyToShare: dialog._hide()
 
             onNoAccountsToShare: dialog.close()
 
             onShareNeedAuthorization: {
+                dialog._show()
+
                 auth_browser.reset()
                 auth_browser.rightIn()
                 _accounts_manager.authorizeNextAccount()

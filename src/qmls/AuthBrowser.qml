@@ -34,16 +34,13 @@ SlideInOutItem {
     }
 
     function reset() {
-        webview_one.stop()
-        webview_two.stop()
-
         root.currentBrowser = browser_one
         browser_one.x =  0
         browser_one.visible = true
-        browser_one.url = ""
+        browser_one.url = "about:blank"
         browser_one.accountType = ""
         browser_two.visible = false
-        browser_two.url = ""
+        browser_two.url = "about:blank"
         browser_two.accountType = ""
     }
 

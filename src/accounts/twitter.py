@@ -20,11 +20,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from _sdks.twitter_sdk import UserClient
+from _sdks.twitter_sdk import UserClient, TwitterAuthError
 
 from account_base import AccountBase, TimeoutThread
 from utils import getUrlQuery
-from database import TWITTER
+from constants import TWITTER, ShareFailedReason
 
 from PyQt5.QtCore import pyqtSignal
 
@@ -123,8 +123,11 @@ class Twitter(AccountBase):
             else:
                 self._client.api.statuses.update.post(status=text)
             self.succeeded.emit(TWITTER)
-        except Exception:
-            self.failed.emit(TWITTER)
+        except Exception, e:
+            if e.__class__ == TwitterAuthError:
+                self.failed.emit(TWITTER, ShareFailedReason.Authorization)
+            else:
+                self.failed.emit(TWITTER, ShareFailedReason.Other)
 
     def getAuthorizeUrl(self):
         self._client = UserClient(APP_KEY, APP_SECRET)

@@ -22,6 +22,7 @@
 
 from accounts import SinaWeibo, Twitter
 from database import db, SINAWEIBO, TWITTER
+from constants import ShareFailedReason
 
 from PyQt5.QtCore import QObject, QThread, pyqtSlot, pyqtSignal, pyqtProperty
 
@@ -86,13 +87,19 @@ class AccountsManager(QObject):
         finished_accounts = self._failed_accounts + self._succeeded_accounts
         enabled_accounts = filter(lambda x: x.enabled, self._accounts.values())
         if len(finished_accounts) == len(enabled_accounts):
-            if len(self._succeeded_accounts) > 0:
-                self.succeeded.emit(self._succeeded_accounts)
-            if len(self._failed_accounts) > 0:
-                self.failed.emit(self._failed_accounts)
+            if len(self._accounts_need_auth) > 0:
+                self._sharing = True
+                self.shareNeedAuthorization.emit(self._accounts_need_auth)
+            else:
+                if len(self._succeeded_accounts) > 0:
+                    self.succeeded.emit(self._succeeded_accounts)
+                if len(self._failed_accounts) > 0:
+                    self.failed.emit(self._failed_accounts)
 
-    def _accountFailed(self, account):
+    def _accountFailed(self, account, reason):
         self._failed_accounts.append(account)
+        if reason == ShareFailedReason.Authorization:
+            self._accounts_need_auth.append(account)
         self._checkProgress()
 
     def _accountSucceeded(self, account):
@@ -190,14 +197,18 @@ class AccountsManager(QObject):
         username = accountInfo[1]
         self.accountAuthorized.emit(accountType, uid, username)
 
+        if self._sharing and len(self._accounts_need_auth) == 0:
+            if self._failed_accounts:
+                self.reshare()
+            else:
+                self.share(self._text, self._pic)
+
     @pyqtSlot()
     def authorizeNextAccount(self):
         if self._sharing:
             if self._accounts_need_auth:
                 accountType = self._accounts_need_auth.pop()
                 self.getAuthorizeUrl(accountType)
-            else:
-                self.share(self._text, self._pic)
 
     @pyqtSlot(str)
     def skipAccount(self, accountType):
@@ -238,6 +249,12 @@ class AccountsManager(QObject):
             self.noAccountsToShare.emit()
 
     def reshare(self):
-        accounts = [self._accounts[x] for x in self._failed_accounts]
+        self.readyToShare.emit()
+        self._sharing = False
+
+        accounts = [self._accounts[x] for x in self._failed_accounts
+                    if x not in self._skipped_accounts]
+        self._failed_accounts = []
+
         self._share_thread.accounts = accounts
         self._share_thread.start()

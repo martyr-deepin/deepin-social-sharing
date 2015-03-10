@@ -24,7 +24,7 @@ from _sdks.sinaweibo_sdk import SinaWeiboMixin, APIClient
 
 from account_base import AccountBase, TimeoutThread
 from utils import getUrlQuery
-from database import SINAWEIBO
+from constants import SINAWEIBO, ShareFailedReason
 
 from PyQt5.QtCore import pyqtSignal
 
@@ -97,8 +97,11 @@ class SinaWeibo(AccountBase):
             else:
                 self._client.statuses.update.post(status=text)
             self.succeeded.emit(SINAWEIBO)
-        except Exception:
-            self.failed.emit(SINAWEIBO)
+        except Exception, e:
+            if e.error_code == 21332:
+                self.failed.emit(SINAWEIBO, ShareFailedReason.Authorization)
+            else:
+                self.failed.emit(SINAWEIBO, ShareFailedReason.Other)
 
     def getAuthorizeUrl(self):
         auth_url = self._client.get_authorize_url(forcelogin=True,

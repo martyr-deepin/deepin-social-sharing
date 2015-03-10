@@ -44,7 +44,7 @@ class TimeoutThread(QThread):
 class AccountBase(QObject):
     """Base class all the SNS accounts should inherit"""
     succeeded = pyqtSignal(str, arguments=["accountType"])
-    failed = pyqtSignal(str, arguments=["accountType"])
+    failed = pyqtSignal(str, int, arguments=["accountType", "reason"])
 
     loginFailed = pyqtSignal(str, arguments=["accountType"])
 
