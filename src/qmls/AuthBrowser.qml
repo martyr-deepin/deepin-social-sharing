@@ -1,7 +1,6 @@
 import QtQuick 2.2
 import QtWebKit 3.0
 import QtGraphicalEffects 1.0
-import QtWebKit.experimental 1.0
 
 SlideInOutItem {
     id: root
@@ -63,7 +62,6 @@ SlideInOutItem {
 
             WebView {
                 id: webview_one
-                experimental.userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3"
                 anchors.fill: parent
 
                 onNavigationRequested: root.urlChanged(browser_one.accountType, request.url)
@@ -101,7 +99,6 @@ SlideInOutItem {
 
             WebView {
                 id: webview_two
-                experimental.userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3"
                 anchors.fill: parent
 
                 onNavigationRequested: root.urlChanged(browser_two.accountType, request.url)
