@@ -32,6 +32,7 @@ DDialog {
         id: mainItem
         width: parent.width
         clip: true
+        focus: true
 
         property var browser
 
@@ -140,6 +141,12 @@ DDialog {
             }
 
             Component.onCompleted: updateView()
+        }
+
+        Keys.onReturnPressed: {
+            if (event.modifiers & Qt.ControlModifier) {
+                _accounts_manager.tryToShare(share_content.text, share_content.screenshot)
+            }
         }
     }
 
