@@ -5,12 +5,8 @@ import Deepin.Locale 1.0
 
 DDialog {
     id: dialog
-    x: (Screen.desktopAvailableWidth - width) / 2
-    y: (Screen.desktopAvailableHeight - height) / 2
-    width: 480 + 20
-    height: 314
 
-    Component.onCompleted: show()
+    Component.onCompleted: { _show(); show() }
 
     function dsTr(src) { return locale.dsTr(src) }
 
@@ -39,6 +35,8 @@ DDialog {
     function _show() {
         width = 480 + 20
         height = 314
+        x = (Screen.desktopAvailableWidth - width) / 2
+        y = (Screen.desktopAvailableHeight - height) / 2
     }
 
     Item {

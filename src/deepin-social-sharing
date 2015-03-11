@@ -89,7 +89,7 @@ class QmlEngine(QQmlApplicationEngine):
         self._notificationId = notificationsInterface.notify(
             _("Failed"), _("failed to sharing to %s") % accountsStr, [ACTION_ID_RESHARE, "Reshare"])
 
-    def _notificationClosedCB(self, notificationId):
+    def _notificationClosedCB(self, notificationId, reason):
         if notificationId == self._notificationId:
             self.rootObject.close()
 
