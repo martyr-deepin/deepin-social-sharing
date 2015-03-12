@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from _sdks.sinaweibo_sdk import SinaWeiboMixin, APIClient
+from _sdks.sinaweibo_sdk import SinaWeiboMixin, APIClient, APIError
 
 from account_base import AccountBase, TimeoutThread
 from utils import getUrlQuery
@@ -98,7 +98,7 @@ class SinaWeibo(AccountBase):
                 self._client.statuses.update.post(status=text)
             self.succeeded.emit(SINAWEIBO)
         except Exception, e:
-            if e.error_code == 21332:
+            if e.__class__ == APIError and e.error_code == 21332:
                 self.failed.emit(SINAWEIBO, ShareFailedReason.Authorization)
             else:
                 self.failed.emit(SINAWEIBO, ShareFailedReason.Other)
