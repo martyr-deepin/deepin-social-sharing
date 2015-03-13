@@ -7,6 +7,29 @@ SlideInOutItem {
     signal accountSelected(string accountType)
     signal accountDeselected(string accountType)
 
+    function anyPlatform() {
+        for (var i = 0; i < list_view.count; i++) {
+            if (list_view.model.get(i).itemSelected) {
+                return true
+            }
+        }
+        return false
+    }
+
+    function selectItem(index, accountType) {
+        for (var i = 0; i < list_view.count; i++) {
+            list_view.model.setProperty(index, "itemSelected", true)
+            root.accountSelected(accountType)
+        }
+    }
+
+    function deselectItem(index, accountType) {
+        for (var i = 0; i < list_view.count; i++) {
+            list_view.model.setProperty(index, "itemSelected", false)
+            root.accountDeselected(accountType)
+        }
+    }
+
     ListView {
         id: list_view
         width: parent.width
@@ -63,8 +86,6 @@ SlideInOutItem {
             width: ListView.view.width
             height: 48
 
-            property bool itemSelected: false
-
             Image {
                 id: check_mark
                 visible: itemSelected
@@ -91,11 +112,9 @@ SlideInOutItem {
 
                 onClicked: {
                     if (itemSelected) {
-                        root.accountDeselected(itemName)
-                        itemSelected = false
+                        root.deselectItem(index, itemName)
                     } else {
-                        root.accountSelected(itemName)
-                        itemSelected = true
+                        root.selectItem(index, itemName)
                     }
                 }
             }
@@ -103,10 +122,12 @@ SlideInOutItem {
         model: ListModel{
             ListElement {
                 itemName: "sinaweibo"
+                itemSelected: false
                 imageSource: "../../images/account_banner_sinaweibo.png"
             }
             ListElement {
                 itemName: "twitter"
+                itemSelected: false
                 imageSource: "../../images/account_banner_twitter.png"
             }
         }

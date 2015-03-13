@@ -167,6 +167,7 @@ DDialog {
         id: bottom_bar
         width: parent.width
         wordsLeft: 140 - share_content.wordCount
+        shareEnabled: anyPlatform() || accounts_list.anyPlatform()
 
         anchors.bottom: parent.bottom
         anchors.bottomMargin: -5
@@ -207,6 +208,12 @@ DDialog {
             bottom_bar.state = "share"
             updateView()
             accounts_pick_view.rightOut()
+            share_content.leftIn()
+        }
+
+        onBackButtonClicked: {
+            bottom_bar.state = "first_time"
+            accounts_list.rightOut()
             share_content.leftIn()
         }
 
