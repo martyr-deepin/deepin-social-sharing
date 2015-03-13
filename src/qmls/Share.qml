@@ -5,6 +5,11 @@ import Deepin.Locale 1.0
 
 DDialog {
     id: dialog
+    x: (Screen.desktopAvailableWidth - width) / 2
+    y: (Screen.desktopAvailableHeight - height) / 2
+
+    property int lastX: x
+    property int lastY: y
 
     Component.onCompleted: { _show(); show() }
 
@@ -28,6 +33,8 @@ DDialog {
     // WebView or something will crash if the top window they are in
     // shows again after hiding for a while.
     function _hide() {
+        lastX = x
+        lastY = y
         width = 1
         height = 1
     }
@@ -35,8 +42,8 @@ DDialog {
     function _show() {
         width = 480 + 20
         height = 314
-        x = (Screen.desktopAvailableWidth - width) / 2
-        y = (Screen.desktopAvailableHeight - height) / 2
+        x = lastX
+        y = lastY
     }
 
     Item {
