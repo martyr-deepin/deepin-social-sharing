@@ -37,56 +37,62 @@ from constants import MAIN_QML
 from accounts_manager import AccountsManager
 from dbus_services import DBUS_NAME, DBUS_PATH
 from dbus_services import DeepinSocialSharingAdaptor, session_bus
-from dbus_interfaces import notificationsInterface
+from dbus_interfaces import NotificationsInterface
 
 ACTION_ID_RESHARE = "action_id_reshare"
 
 
 class UIUtils(QObject):
     """Qt/UI related utils"""
-    def __init__(self):
+    def __init__(self, notificationsInterface = None):
         super(UIUtils, self).__init__()
+        self.notificationsInterface = notificationsInterface
 
     @pyqtSlot(str)
     def notify(self, content):
-        notificationsInterface.notify(_("Deepin Social Sharing"),
-            content)
+        self.notificationsInterface.notify(self._appName, content)
 
-
-utils = UIUtils()
 
 class QmlEngine(QQmlApplicationEngine):
     def __init__(self):
         super(QmlEngine, self).__init__()
         self._accounts_manager = AccountsManager()
         self._notificationId = None
+        self._utils = UIUtils()
 
-        self.rootContext().setContextProperty("_utils", utils)
+        self.rootContext().setContextProperty("_utils", self._utils)
         self.rootContext().setContextProperty("_accounts_manager",
                                               self._accounts_manager)
 
         self.load(QUrl.fromLocalFile(MAIN_QML))
         self.rootObject = self.rootObjects()[0]
 
-        notificationsInterface.NotificationClosed.connect(self._notificationClosedCB)
-        notificationsInterface.ActionInvoked.connect(self._actionInvokedCB)
         self._accounts_manager.succeeded.connect(self._shareSucceededCB)
         self._accounts_manager.failed.connect(self._shareFailedCB)
 
-    def share(self, text, picture):
+    def share(self, appName, appIcon, text, picture):
+        self._notificationsInterface = NotificationsInterface(
+            appName, appIcon)
+        self._notificationsInterface.NotificationClosed.connect(
+            self._notificationClosedCB)
+        self._notificationsInterface.ActionInvoked.connect(
+            self._actionInvokedCB)
+        self._utils.notificationsInterface = self._notificationsInterface
+
         self.rootObject.setText(text)
         self.rootObject.setScreenshot(picture)
         self.rootObject.show()
 
     def _shareSucceededCB(self, accounts):
         accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
-        self._notificationId = notificationsInterface.notify(
+        self._notificationId = self._notificationsInterface.notify(
             _("Succeeded"), _("succeeded to sharing to %s") % accountsStr)
 
     def _shareFailedCB(self, accounts):
         accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
-        self._notificationId = notificationsInterface.notify(
-            _("Failed"), _("failed to sharing to %s") % accountsStr, [ACTION_ID_RESHARE, "Reshare"])
+        self._notificationId = self._notificationsInterface.notify(
+            _("Failed"), _("failed to sharing to %s") % accountsStr,
+            [ACTION_ID_RESHARE, "Reshare"])
 
     def _notificationClosedCB(self, notificationId, reason):
         if notificationId == self._notificationId:
@@ -103,9 +109,9 @@ class AppDelegate(QObject):
         self._engines = []
         self._adapter = DeepinSocialSharingAdaptor(self)
 
-    def share(self, text, picture):
+    def share(self, appName, appIcon, text, picture):
         engine = QmlEngine()
-        engine.share(text, picture)
+        engine.share(appName, appIcon, text, picture)
         self._engines.append(engine)
 
 if __name__ == "__main__":

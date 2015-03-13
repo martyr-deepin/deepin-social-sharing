@@ -28,13 +28,15 @@ class NotificationsInterface(QDBusAbstractInterface):
     ActionInvoked = pyqtSignal("quint32", str)
     NotificationClosed = pyqtSignal("quint32", "quint32")
 
-    def __init__(self):
+    def __init__(self, appName, appIcon):
         super(NotificationsInterface, self).__init__(
             "org.freedesktop.Notifications",
             "/org/freedesktop/Notifications",
             "org.freedesktop.Notifications",
             QDBusConnection.sessionBus(),
             None)
+        self._appName = appName
+        self._appIcon = appIcon
 
     def notify(self, summary, body, actions=[]):
         varRPlaceId = QVariant(0)
@@ -43,13 +45,11 @@ class NotificationsInterface(QDBusAbstractInterface):
         varActions.convert(QVariant.StringList)
 
         msg = self.call("Notify",
-            "Deepin Screenshot",
+            self._appName,
             varRPlaceId,
-            "deepin-screenshot",
+            self._appIcon,
             summary,
             body,
             varActions, {}, -1)
         reply = QDBusReply(msg)
         return reply.value()
-
-notificationsInterface = NotificationsInterface()
