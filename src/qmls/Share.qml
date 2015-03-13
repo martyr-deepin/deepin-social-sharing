@@ -96,15 +96,15 @@ DDialog {
                 accounts_pick_view.updateView()
             }
 
-            onLoginFailed: {
-                _utils.notifyContent(accountType + " login failed!!!")
-                if (_accounts_manager.isSharing) {
-                    auth_browser.next()
-                    _accounts_manager.authorizeNextAccount()
-                } else {
-                    auth_browser.leftOut()
-                }
-            }
+            // onLoginFailed: {
+            //     _utils.notifyContent(accountType + " login failed!!!")
+            //     if (_accounts_manager.isSharing) {
+            //         auth_browser.next()
+            //         _accounts_manager.authorizeNextAccount()
+            //     } else {
+            //         auth_browser.leftOut()
+            //     }
+            // }
         }
 
         ShareContent {
