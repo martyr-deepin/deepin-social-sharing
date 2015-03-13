@@ -128,7 +128,7 @@ Item {
 
     Text {
         id: plz_choose_sns_label
-        text: dsTr("Please choose platforms")
+        text: dsTr("Please select social platforms")
         color: "#b4b4b4"
         font.pixelSize: 11
         visible: false
@@ -140,7 +140,7 @@ Item {
 
     Text {
         id: accounts_management_label
-        text: dsTr("Accounts management")
+        text: dsTr("Account management")
         color: "#b4b4b4"
         font.pixelSize: 11
         visible: false
@@ -166,7 +166,7 @@ Item {
     Text {
         id: word_number_overflow_label
         visible: false
-        text: dsTr("Words limit has been exceeded.")
+        text: dsTr("The input content is more than maximum words.")
         color: word_number_label.color
         font.pixelSize: word_number_label.font.pixelSize
 

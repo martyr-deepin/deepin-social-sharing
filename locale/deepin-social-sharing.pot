@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-06 16:48+0800\n"
+"POT-Creation-Date: 2015-03-13 16:06+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,41 +18,45 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../src/qmls/AccountsManagement.qml:151
-msgid "Login"
+msgid "Log in"
 msgstr ""
 
 #: ../src/qmls/AccountsMenu.qml:34
 msgid "New account"
 msgstr ""
 
-#: ../src/qmls/AuthBrowser.qml:82 ../src/qmls/AuthBrowser.qml:120
+#: ../src/qmls/AuthBrowser.qml:78 ../src/qmls/AuthBrowser.qml:114
 msgid "Skip"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:119
-msgid "Please choose platforms"
+#: ../src/qmls/AuthBrowser.qml:138
+msgid "Back"
 msgstr ""
 
 #: ../src/qmls/ShareBottomBar.qml:131
-msgid "Accounts management"
+msgid "Please select social platforms"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:157
-msgid "Words limit has been exceeded."
+#: ../src/qmls/ShareBottomBar.qml:143
+msgid "Account management"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:168
+#: ../src/qmls/ShareBottomBar.qml:169
+msgid "The input content is more than maximum words."
+msgstr ""
+
+#: ../src/qmls/ShareBottomBar.qml:193
 msgid "Next"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:180
+#: ../src/qmls/ShareBottomBar.qml:205
 msgid "Share"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:191
+#: ../src/qmls/ShareBottomBar.qml:218
 msgid "OK"
 msgstr ""
 
 #: ../src/qmls/ShareContent.qml:55
-msgid "Input the words you want to put here"
+msgid "Input what you want to say"
 msgstr ""

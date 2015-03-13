@@ -148,7 +148,7 @@ SlideInOutItem {
                 }
 
                 DTextButton {
-                    text: dsTr("Login")
+                    text: dsTr("Log in")
                     visible: accounts == ""
 
                     anchors.verticalCenter: parent.verticalCenter

@@ -90,13 +90,15 @@ class QmlEngine(QQmlApplicationEngine):
     def _shareSucceededCB(self, accounts):
         accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = self._notificationsInterface.notify(
-            _("Succeeded"), _("succeeded to sharing to %s") % accountsStr)
+            _("Succeeded"),
+            _("You have successfully shared the picture to (%s)") % accountsStr)
 
     def _shareFailedCB(self, accounts):
         accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = self._notificationsInterface.notify(
-            _("Failed"), _("failed to sharing to %s") % accountsStr,
-            [ACTION_ID_RESHARE, "Reshare"])
+            _("Failed"),
+            _("Sorry, failed to share the picture to (%s)") % accountsStr,
+            [ACTION_ID_RESHARE, "Resend"])
 
     def _notificationClosedCB(self, notificationId, reason):
         if notificationId == self._notificationId:
