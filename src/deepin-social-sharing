@@ -48,9 +48,13 @@ class UIUtils(QObject):
         super(UIUtils, self).__init__()
         self.notificationsInterface = notificationsInterface
 
+    @pyqtSlot(str, str)
+    def notify(self, summary, body):
+        self.notificationsInterface.notify(summary, body)
+
     @pyqtSlot(str)
-    def notify(self, content):
-        self.notificationsInterface.notify(self._appName, content)
+    def notifyContent(self, content):
+        self.notificationsInterface.notifyBody(content)
 
 
 class QmlEngine(QQmlApplicationEngine):

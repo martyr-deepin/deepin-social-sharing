@@ -97,7 +97,7 @@ DDialog {
             }
 
             onLoginFailed: {
-                _utils.notify(accountType + " login failed!!!")
+                _utils.notifyContent(accountType + " login failed!!!")
                 if (_accounts_manager.isSharing) {
                     auth_browser.next()
                     _accounts_manager.authorizeNextAccount()
@@ -248,6 +248,10 @@ DDialog {
             height: parent.height
             visible: false
             radius: 3
+
+            onBack: {
+                auth_browser.leftOut()
+            }
 
             onSkipped: {
                 auth_browser.next()

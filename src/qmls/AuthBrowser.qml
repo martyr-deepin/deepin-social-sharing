@@ -10,6 +10,7 @@ SlideInOutItem {
     property alias radius: browser_area.radius
     property var currentBrowser: browser_one
 
+    signal back()
     signal skipped(string accountType)
     signal urlChanged(string accountType, string url)
 
@@ -75,7 +76,6 @@ SlideInOutItem {
 
             WhiteButton {
                 label: dsTr("Skip")
-                visible: webview_one.loadProgress == 100
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: 10
@@ -112,7 +112,6 @@ SlideInOutItem {
 
             WhiteButton {
                 label: dsTr("Skip")
-                visible: webview_two.loadProgress == 100
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: 10
@@ -133,5 +132,15 @@ SlideInOutItem {
         anchors.fill: browser_area
         source: ShaderEffectSource { sourceItem: browser_area; hideSource: true }
         maskSource: mask
+    }
+
+    WhiteButton {
+        label: dsTr("Back")
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 10
+        anchors.bottomMargin: 10
+
+        onClicked: root.back()
     }
 }

@@ -53,3 +53,6 @@ class NotificationsInterface(QDBusAbstractInterface):
             varActions, {}, -1)
         reply = QDBusReply(msg)
         return reply.value()
+
+    def notifyBody(self, body):
+        self.notify(self._appName, body)
