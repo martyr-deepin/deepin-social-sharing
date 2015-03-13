@@ -59,7 +59,6 @@ class QmlEngine(QQmlApplicationEngine):
     def __init__(self):
         super(QmlEngine, self).__init__()
         self._accounts_manager = AccountsManager()
-        self._adapter = DeepinSocialSharingAdaptor(self)
         self._notificationId = None
 
         self.rootContext().setContextProperty("_utils", utils)
@@ -98,11 +97,22 @@ class QmlEngine(QQmlApplicationEngine):
             if actionId == ACTION_ID_RESHARE:
                 self._accounts_manager.reshare()
 
+class AppDelegate(QObject):
+    def __init__(self):
+        super(AppDelegate, self).__init__()
+        self._engines = []
+        self._adapter = DeepinSocialSharingAdaptor(self)
+
+    def share(self, text, picture):
+        engine = QmlEngine()
+        engine.share(text, picture)
+        self._engines.append(engine)
+
 if __name__ == "__main__":
-    engine = QmlEngine()
+    delegate = AppDelegate()
 
     session_bus.registerService(DBUS_NAME)
-    session_bus.registerObject(DBUS_PATH, engine)
+    session_bus.registerObject(DBUS_PATH, delegate)
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     sys.exit(app.exec_())
