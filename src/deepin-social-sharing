@@ -22,6 +22,8 @@
 
 import sys
 import signal
+import shutil
+import tempfile
 
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot
 from PyQt5.QtQml import QQmlApplicationEngine
@@ -116,8 +118,11 @@ class AppDelegate(QObject):
         self._adapter = DeepinSocialSharingAdaptor(self)
 
     def share(self, appName, appIcon, text, picture):
+        temp = tempfile.mktemp()
+        shutil.copyfile(picture, temp)
+
         engine = QmlEngine()
-        engine.share(appName, appIcon, text, picture)
+        engine.share(appName, appIcon, text, temp)
         self._engines.append(engine)
 
 if __name__ == "__main__":
