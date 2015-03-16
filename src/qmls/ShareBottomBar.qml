@@ -23,7 +23,6 @@ Item {
             name: "first_time"
 
             PropertyChanges { target: row; visible: false }
-            PropertyChanges { target: plz_choose_sns_label; visible: false }
             PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: word_number_label; visibleFlag: true }
             PropertyChanges { target: next_button; visible: true }
@@ -35,7 +34,6 @@ Item {
             name: "accounts_list"
 
             PropertyChanges { target: row; visible: false }
-            PropertyChanges { target: plz_choose_sns_label; visible: true }
             PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: word_number_label; visibleFlag: false }
             PropertyChanges { target: next_button; visible: false }
@@ -47,7 +45,6 @@ Item {
             name: "share"
 
             PropertyChanges { target: row; visible: true }
-            PropertyChanges { target: plz_choose_sns_label; visible: false }
             PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: word_number_label; visibleFlag: true }
             PropertyChanges { target: next_button; visible: false }
@@ -59,7 +56,6 @@ Item {
             name: "accounts_manage"
 
             PropertyChanges { target: row; visible: false }
-            PropertyChanges { target: plz_choose_sns_label; visible: false }
             PropertyChanges { target: accounts_management_label; visible: true }
             PropertyChanges { target: word_number_label; visibleFlag: false }
             PropertyChanges { target: next_button; visible: false }
@@ -127,18 +123,6 @@ Item {
     }
 
     Text {
-        id: plz_choose_sns_label
-        text: dsTr("Please select social platforms")
-        color: "#b4b4b4"
-        font.pixelSize: 11
-        visible: false
-
-        anchors.left: back_button.right
-        anchors.leftMargin: 16
-        anchors.verticalCenter: parent.verticalCenter
-    }
-
-    Text {
         id: accounts_management_label
         text: dsTr("Account management")
         color: "#b4b4b4"
@@ -152,7 +136,7 @@ Item {
 
     Text {
         id: word_number_label
-        visible: !word_number_overflow_label.visible && root.shareEnabled
+        visible: !word_number_overflow_label.visible && root.shareEnabled && visibleFlag
         color: "#FDA825"
         font.pixelSize: 11
 
@@ -177,6 +161,7 @@ Item {
 
     DImageButton {
         id: back_button
+        drawBackground: true
         normal_image: "../../images/back_normal.png"
         hover_image: "../../images/back_hover.png"
         press_image: "../../images/back_press.png"
