@@ -142,3 +142,6 @@ class Twitter(AccountBase):
         self._getAccountInfoThread.setClient(self._client)
         self._getAccountInfoThread.setVerifier(verifier)
         self._getAccountInfoThread.start()
+
+    def generateTag(self, text):
+        return "#%s " % text

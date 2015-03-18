@@ -20,13 +20,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from i18n import _
 from accounts import SinaWeibo, Twitter
 from database import db, SINAWEIBO, TWITTER
 from constants import ShareFailedReason
+from settings import SocialSharingSettings
 
 from PyQt5.QtCore import QObject, QThread, pyqtSlot, pyqtSignal, pyqtProperty
 
-from settings import SocialSharingSettings
+from weakref import ref
 
 typeClassMap = {
     SINAWEIBO: SinaWeibo,
@@ -34,15 +36,21 @@ typeClassMap = {
 }
 
 class _ShareThread(QThread):
-    def __init__(self, accounts=None, text=None, pic=None):
+    def __init__(self, manager):
         super(_ShareThread, self).__init__()
-        self.accounts = accounts
-        self.text = text
-        self.pic = pic
+        self.text = ""
+        self.pic = ""
+        self.manager = manager
+        self.accounts = []
 
     def run(self):
         for account in self.accounts:
-            account.share(self.text, self.pic)
+            if self.text == "" and self.manager:
+                tag = account.generateTag(self.manager.appName)
+                text = _("Come and look at pictures I share! (Share with %s)") % tag
+                account.share(text, self.pic)
+            else:
+                account.share(self.text, self.pic)
 
 class AccountsManager(QObject):
     """Manager of all the SNS accounts"""
@@ -72,7 +80,7 @@ class AccountsManager(QObject):
         self._succeeded_accounts = []
         self._accounts_need_auth = []
         self._skipped_accounts = []
-        self._share_thread = _ShareThread()
+        self._share_thread = _ShareThread(ref(self)())
         self._settings = SocialSharingSettings()
 
         self._accounts = {}

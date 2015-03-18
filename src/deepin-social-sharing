@@ -85,6 +85,8 @@ class QmlEngine(QQmlApplicationEngine):
             self._actionInvokedCB)
         self._utils.notificationsInterface = self._notificationsInterface
 
+        self._accounts_manager.appName = appName
+
         self.rootObject.setText(text)
         self.rootObject.setScreenshot(picture)
         self.rootObject.show()

@@ -20,8 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from abc import abstractmethod
-
 from PyQt5.QtCore import QObject, pyqtSignal, QThread, QTimer
 
 class TimeoutThread(QThread):
@@ -59,17 +57,20 @@ class AccountBase(QObject):
         self._getAuthorizeUrlThread = None
         self._getAccountInfoThread = None
 
-    @abstractmethod
-    def valid(self): pass
+    def valid(self):
+        raise NotImplementedError()
 
-    @abstractmethod
-    def share(self, text, pic): pass
+    def share(self, text, pic):
+        raise NotImplementedError()
 
-    @abstractmethod
-    def getAuthorizeUrl(self): pass
+    def getAuthorizeUrl(self):
+        raise NotImplementedError()
 
-    @abstractmethod
-    def getVerifierFromUrl(self, url): pass
+    def getVerifierFromUrl(self, url):
+        raise NotImplementedError()
 
-    @abstractmethod
-    def getAccountInfoWithVerifier(self, verifier): pass
+    def getAccountInfoWithVerifier(self, verifier):
+        raise NotImplementedError()
+
+    def generateTag(self, text):
+        raise NotImplementedError()
