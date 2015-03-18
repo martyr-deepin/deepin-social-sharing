@@ -29,6 +29,7 @@ Item {
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: false }
             PropertyChanges { target: back_button; visible: false }
+            PropertyChanges { target: word_number_overflow_label; visible: false }
         },
         State {
             name: "accounts_list"
@@ -40,6 +41,7 @@ Item {
             PropertyChanges { target: share_button; visible: true }
             PropertyChanges { target: ok_button; visible: false }
             PropertyChanges { target: back_button; visible: true }
+            PropertyChanges { target: word_number_overflow_label; visible: false }
         },
         State {
             name: "share"
@@ -51,6 +53,7 @@ Item {
             PropertyChanges { target: share_button; visible: true }
             PropertyChanges { target: ok_button; visible: false }
             PropertyChanges { target: back_button; visible: false }
+            PropertyChanges { target: word_number_overflow_label; visible: false }
         },
         State {
             name: "accounts_manage"
@@ -62,6 +65,7 @@ Item {
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: true }
             PropertyChanges { target: back_button; visible: false }
+            PropertyChanges { target: word_number_overflow_label; visible: false }
         }
     ]
 
