@@ -63,6 +63,8 @@ class AccountsManager(QObject):
     userRemoved = pyqtSignal(str, str, str,
         arguments=["accountType", "uid", "username"])
 
+    hasNextToAuthChanged = pyqtSignal()
+
     def __init__(self):
         super(AccountsManager, self).__init__()
         self._sharing = False
@@ -100,6 +102,7 @@ class AccountsManager(QObject):
         self._failed_accounts.append(account)
         if reason == ShareFailedReason.Authorization:
             self._accounts_need_auth.append(account)
+            self.hasNextToAuthChanged.emit()
         self._checkProgress()
 
     def _accountSucceeded(self, account):
@@ -122,6 +125,10 @@ class AccountsManager(QObject):
     @pyqtProperty(bool)
     def isSharing(self):
         return self._sharing
+
+    @pyqtProperty(bool,notify=hasNextToAuthChanged)
+    def hasNextToAuth(self):
+        return len(self._accounts_need_auth) > 0
 
     @pyqtSlot(result="QVariant")
     def getAllAccounts(self):
@@ -208,6 +215,7 @@ class AccountsManager(QObject):
         if self._sharing:
             if self._accounts_need_auth:
                 accountType = self._accounts_need_auth.pop()
+                self.hasNextToAuthChanged.emit()
                 self.getAuthorizeUrl(accountType)
 
     @pyqtSlot(str)
@@ -223,6 +231,7 @@ class AccountsManager(QObject):
         for (accountType, account) in self._accounts.items():
             if account.enabled and not account.valid():
                 self._accounts_need_auth.append(accountType)
+                self.hasNextToAuthChanged.emit()
 
         if self._accounts_need_auth:
             self.shareNeedAuthorization.emit(self._accounts_need_auth)

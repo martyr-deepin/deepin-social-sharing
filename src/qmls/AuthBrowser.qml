@@ -10,6 +10,8 @@ SlideInOutItem {
     property alias radius: browser_area.radius
     property var currentBrowser: browser_one
 
+    property bool canSkip: false
+
     signal back()
     signal skipped(string accountType)
     signal urlChanged(string accountType, string url)
@@ -76,6 +78,7 @@ SlideInOutItem {
 
             WhiteButton {
                 label: dsTr("Skip")
+                visible: root.canSkip
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: 10
@@ -112,6 +115,7 @@ SlideInOutItem {
 
             WhiteButton {
                 label: dsTr("Skip")
+                visible: root.canSkip
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: 10

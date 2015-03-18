@@ -256,6 +256,7 @@ DDialog {
             height: parent.height
             visible: false
             radius: 3
+            canSkip: _accounts_manager.hasNextToAuth
 
             onBack: {
                 auth_browser.leftOut()
