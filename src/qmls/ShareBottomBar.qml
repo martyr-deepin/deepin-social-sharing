@@ -140,7 +140,7 @@ Item {
 
     Text {
         id: word_number_label
-        visible: !word_number_overflow_label.visible && root.shareEnabled && visibleFlag
+        visible: !word_number_overflow_label.visible && visibleFlag
         color: "#FDA825"
         font.pixelSize: 11
 
