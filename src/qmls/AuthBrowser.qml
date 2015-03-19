@@ -164,6 +164,7 @@ SlideInOutItem {
     Column {
         id: error_warning
         width: 100
+        visible: false
         anchors.centerIn: parent
 
         Image {
