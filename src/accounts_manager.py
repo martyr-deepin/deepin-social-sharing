@@ -239,7 +239,6 @@ class AccountsManager(QObject):
         self._accounts_need_auth = []
         self.hasNextToAuthChanged.emit()
         for (accountType, account) in self._accounts.items():
-            print accountType, account.enabled
             if account.enabled and not account.valid():
                 self._accounts_need_auth.append(accountType)
                 self.hasNextToAuthChanged.emit()
