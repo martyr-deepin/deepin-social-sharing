@@ -45,6 +45,7 @@ class AccountBase(QObject):
     failed = pyqtSignal(str, int, arguments=["accountType", "reason"])
 
     loginFailed = pyqtSignal(str, arguments=["accountType"])
+    getAuthorizeUrlFailed = pyqtSignal(str, arguments=["accountType"])
 
     authorizeUrlGot = pyqtSignal(str, str,
         arguments=["accountType", "authorizeUrl"])

@@ -94,6 +94,11 @@ DDialog {
                 auth_browser.setUrl(authorizeUrl)
             }
 
+            onGetAuthorizeUrlFailed: {
+                auth_browser.setAccountType(accountType)
+                auth_browser.setUrl("")
+            }
+
             onAccountAuthorized: {
                 accounts_pick_view.updateView()
                 accounts_pick_view.selectUser(accountType, uid)

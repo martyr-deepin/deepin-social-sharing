@@ -65,6 +65,7 @@ class AccountsManager(QObject):
 
     authorizeUrlGot = pyqtSignal(str, str,
         arguments=["accountType", "authorizeUrl"])
+    getAuthorizeUrlFailed = pyqtSignal(str, arguments=["accountType"])
     accountAuthorized = pyqtSignal(str, str, str,
         arguments=["accountType", "uid", "username"])
 
@@ -91,6 +92,7 @@ class AccountsManager(QObject):
             account.failed.connect(self._accountFailed)
             account.loginFailed.connect(self.loginFailed)
             account.authorizeUrlGot.connect(self.authorizeUrlGot)
+            account.getAuthorizeUrlFailed.connect(self.getAuthorizeUrlFailed)
             account.accountInfoGot.connect(self.handleAccountInfo)
 
     def _checkProgress(self):
@@ -165,6 +167,7 @@ class AccountsManager(QObject):
             account.failed.connect(self._accountFailed)
             account.loginFailed.connect(self.loginFailed)
             account.authorizeUrlGot.connect(self.authorizeUrlGot)
+            account.getAuthorizeUrlFailed.connect(self.getAuthorizeUrlFailed)
             account.accountInfoGot.connect(self.handleAccountInfo)
 
             self._accounts[accountType] = account
@@ -180,6 +183,7 @@ class AccountsManager(QObject):
             account.failed.connect(self._accountFailed)
             account.loginFailed.connect(self.loginFailed)
             account.authorizeUrlGot.connect(self.authorizeUrlGot)
+            account.getAuthorizeUrlFailed.connect(self.getAuthorizeUrlFailed)
             account.accountInfoGot.connect(self.handleAccountInfo)
 
             self._accounts[accountType] = account

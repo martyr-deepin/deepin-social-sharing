@@ -32,8 +32,15 @@ SlideInOutItem {
         root.currentBrowser.accountType = accountType
     }
 
+    // pass a empty string to setUrl means that the manager can't get
+    // an authorizing url for the browser, in other words it's a error.
     function setUrl(url) {
-        root.currentBrowser.url = url
+        if (url) {
+            root.currentBrowser.url = url
+            error_warning.visible = false
+        } else {
+            error_warning.visible = true
+        }
     }
 
     function reset() {
@@ -58,7 +65,7 @@ SlideInOutItem {
             height: parent.height
 
             property alias url: webview_one.url
-            property string accountType
+            property string accountType: ""
 
             WebView {
                 id: webview_one
@@ -95,7 +102,7 @@ SlideInOutItem {
             height: parent.height
 
             property alias url: webview_two.url
-            property string accountType
+            property string accountType: ""
 
             WebView {
                 id: webview_two
@@ -146,5 +153,41 @@ SlideInOutItem {
         anchors.bottomMargin: 10
 
         onClicked: root.back()
+    }
+
+    Timer {
+        id: fake_reload_timer
+        interval: 500
+        onTriggered: error_warning.visible = true
+    }
+
+    Column {
+        id: error_warning
+        width: 100
+        anchors.centerIn: parent
+
+        Image {
+            source: "../../images/unable_to_load.png"
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Item { width: 1; height: 20 }
+
+        Text {
+            text: dsTr("Unable to connect to %1").arg(root.currentBrowser.accountType)
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        LinkButton {
+            label: dsTr("Reload")
+            onClicked: {
+                // the unable to load page errors are most likely caused by
+                // the fact that no url is set to the webview, and  it's
+                // non-sense to reload the page, so I just faked the reload effect.
+                error_warning.visible = false
+                fake_reload_timer.start()
+            }
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
     }
 }

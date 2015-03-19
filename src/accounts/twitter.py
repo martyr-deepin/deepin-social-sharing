@@ -94,7 +94,7 @@ class Twitter(AccountBase):
         self._getAuthorizeUrlThread.authorizeUrlGot.connect(
             lambda x: self.authorizeUrlGot.emit(TWITTER, x))
         self._getAuthorizeUrlThread.getAuthorizeUrlFailed.connect(
-            lambda: self.loginFailed.emit(TWITTER))
+            lambda: self.getAuthorizeUrlFailed.emit(TWITTER))
 
         self._getAccountInfoThread = GetAccountInfoThread(self._client)
         self._getAccountInfoThread.accountInfoGot.connect(
