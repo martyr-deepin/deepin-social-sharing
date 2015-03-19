@@ -47,8 +47,6 @@ class GetAuthorizeUrlThread(TimeoutThread):
     def run(self):
         try:
             token = self._client.get_authorize_token()
-            self._access_token = token['oauth_token']
-            self._access_token_secret = token['oauth_token_secret']
             self.authorizeUrlGot.emit(token["auth_url"])
         except Exception:
             self.getAuthorizeUrlFailed.emit()
@@ -110,7 +108,10 @@ class Twitter(AccountBase):
         self.username = info[1]
 
     def valid(self):
-        return bool(self._client.access_token and self._client.access_token_secret)
+        # self._client.access_token and self._client.access_token are not
+        # reliable here, they are set to request_token and request_token_secret
+        # after the request getting request token.
+        return bool(self.uid and self.username)
 
     def share(self, text, pic=None):
         if not self.enabled: return

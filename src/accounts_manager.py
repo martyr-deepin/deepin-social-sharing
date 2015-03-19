@@ -212,7 +212,7 @@ class AccountsManager(QObject):
         username = accountInfo[1]
         self.accountAuthorized.emit(accountType, uid, username)
 
-        if self._sharing and len(self._accounts_need_auth) == 0:
+        if self._sharing and not self.hasNextToAuth:
             if self._failed_accounts:
                 self.reshare()
             else:
@@ -221,7 +221,7 @@ class AccountsManager(QObject):
     @pyqtSlot()
     def authorizeNextAccount(self):
         if self._sharing:
-            if self._accounts_need_auth:
+            if self.hasNextToAuth:
                 accountType = self._accounts_need_auth.pop()
                 self.hasNextToAuthChanged.emit()
                 self.getAuthorizeUrl(accountType)
@@ -236,7 +236,10 @@ class AccountsManager(QObject):
         self._text = getattr(self, "_text", text)
         self._pic = getattr(self, "_pic", pic)
 
+        self._accounts_need_auth = []
+        self.hasNextToAuthChanged.emit()
         for (accountType, account) in self._accounts.items():
+            print accountType, account.enabled
             if account.enabled and not account.valid():
                 self._accounts_need_auth.append(accountType)
                 self.hasNextToAuthChanged.emit()

@@ -90,7 +90,6 @@ DDialog {
             }
 
             onAuthorizeUrlGot: {
-                auth_browser.next()
                 auth_browser.setAccountType(accountType)
                 auth_browser.setUrl(authorizeUrl)
             }
@@ -266,7 +265,10 @@ DDialog {
                 _accounts_manager.skipAccount(accountType)
 
                 if (_accounts_manager.isSharing) {
-                    _accounts_manager.authorizeNextAccount()
+                    if (_accounts_manager.hasNextToAuth) {
+                        auth_browser.next()
+                        _accounts_manager.authorizeNextAccount()
+                    }
                 } else {
                     auth_browser.leftOut()
                 }
@@ -279,7 +281,10 @@ DDialog {
                 if (verifier) {
                     _accounts_manager.handleVerifier(accountType, verifier)
                     if (_accounts_manager.isSharing) {
-                        _accounts_manager.authorizeNextAccount()
+                        if (_accounts_manager.hasNextToAuth) {
+                            auth_browser.next()
+                            _accounts_manager.authorizeNextAccount()
+                        }
                     } else {
                         auth_browser.leftOut()
                     }
