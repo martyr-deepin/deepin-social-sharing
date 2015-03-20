@@ -5,6 +5,7 @@ MouseArea {
 	height: txt.height
 
 	property alias label: txt.text
+	property alias font: txt.font
 
 	Text {
 		id: txt

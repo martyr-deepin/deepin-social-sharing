@@ -16,7 +16,7 @@ Item {
     signal nextButtonClicked()
     signal shareButtonClicked()
     signal okButtonClicked()
-    signal backButtonClicked()
+    signal accountManageButtonClicked()
 
     states: [
         State {
@@ -28,8 +28,8 @@ Item {
             PropertyChanges { target: next_button; visible: true }
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: false }
-            PropertyChanges { target: back_button; visible: false }
             PropertyChanges { target: word_number_overflow_label; visible: false }
+            PropertyChanges { target: account_manage_button; visible: false }
         },
         State {
             name: "accounts_list"
@@ -40,8 +40,8 @@ Item {
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: true }
             PropertyChanges { target: ok_button; visible: false }
-            PropertyChanges { target: back_button; visible: true }
             PropertyChanges { target: word_number_overflow_label; visible: false }
+            PropertyChanges { target: account_manage_button; visible: false }
         },
         State {
             name: "share"
@@ -52,8 +52,8 @@ Item {
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: true }
             PropertyChanges { target: ok_button; visible: false }
-            PropertyChanges { target: back_button; visible: false }
             PropertyChanges { target: word_number_overflow_label; visible: false }
+            PropertyChanges { target: account_manage_button; visible: true }
         },
         State {
             name: "accounts_manage"
@@ -64,8 +64,8 @@ Item {
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: true }
-            PropertyChanges { target: back_button; visible: false }
             PropertyChanges { target: word_number_overflow_label; visible: false }
+            PropertyChanges { target: account_manage_button; visible: false }
         }
     ]
 
@@ -126,6 +126,18 @@ Item {
         }
     }
 
+    LinkButton {
+        id: account_manage_button
+        label: dsTr("Account management")
+        font.pixelSize: 11
+
+        anchors.left: row.right
+        anchors.leftMargin: 10
+        anchors.verticalCenter: parent.verticalCenter
+
+        onClicked: root.accountManageButtonClicked()
+    }
+
     Text {
         id: accounts_management_label
         text: dsTr("Account management")
@@ -161,20 +173,6 @@ Item {
         anchors.right: next_button.left
         anchors.rightMargin: 10
         anchors.verticalCenter: parent.verticalCenter
-    }
-
-    DImageButton {
-        id: back_button
-        drawBackground: true
-        normal_image: "../../images/back_normal.png"
-        hover_image: "../../images/back_hover.png"
-        press_image: "../../images/back_press.png"
-
-        anchors.left: parent.left
-        anchors.leftMargin: 10
-        anchors.verticalCenter: parent.verticalCenter
-
-        onClicked: root.backButtonClicked()
     }
 
     DTextButton {

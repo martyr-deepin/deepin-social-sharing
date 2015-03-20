@@ -1,5 +1,6 @@
 import QtQuick 2.2
 import QtWebKit 3.0
+import Deepin.Widgets 1.0
 import QtGraphicalEffects 1.0
 
 SlideInOutItem {
@@ -8,11 +9,13 @@ SlideInOutItem {
     height: 300
 
     property alias radius: browser_area.radius
+    property alias window: titlebar.window
     property var currentBrowser: browser_one
 
     property bool canSkip: false
 
-    signal back()
+    signal backButtonClicked()
+    signal closeButtonClicked()
     signal skipped(string accountType)
     signal urlChanged(string accountType, string url)
 
@@ -131,6 +134,32 @@ SlideInOutItem {
                 onClicked: root.skipped(browser_two.accountType)
             }
         }
+
+        DDragableArea {
+            id: titlebar
+            width: root.width
+            height: close_button.height
+
+            Text {
+                id: titlebar_title
+                color: "white"
+                font.pixelSize: 10
+                width: Math.min(parent.width - 40, implicitWidth)
+                anchors.verticalCenter: close_button.verticalCenter
+                anchors.horizontalCenter: titlebar.horizontalCenter
+            }
+
+            DImageButton {
+                id: close_button
+                normal_image: "../../images/window_close_normal.png"
+                hover_image: "../../images/window_close_hover.png"
+                press_image: "../../images/window_close_press.png"
+                anchors.top: parent.top
+                anchors.right: parent.right
+
+                onClicked: root.closeButtonClicked()
+            }
+        }
     }
 
     Rectangle {
@@ -145,14 +174,20 @@ SlideInOutItem {
         maskSource: mask
     }
 
-    WhiteButton {
-        label: dsTr("Back")
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: 10
-        anchors.bottomMargin: 10
+    DImageButton {
+        id: back_button
+        drawBackground: true
+        lightVersion: true
+        normal_image: "../../images/light_back_normal.png"
+        hover_image: "../../images/light_back_hover.png"
+        press_image: "../../images/light_back_press.png"
 
-        onClicked: root.back()
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.topMargin: 5
+        anchors.leftMargin: 5
+
+        onClicked: root.backButtonClicked()
     }
 
     Timer {

@@ -7,11 +7,16 @@ DDialog {
     id: dialog
     x: (Screen.desktopAvailableWidth - width) / 2
     y: (Screen.desktopAvailableHeight - height) / 2
+    width: defaultWidth
+    height: defaultHeight
+
+    readonly property int defaultWidth: 480 + 20
+    readonly property int defaultHeight: 314
 
     property int lastX: x
     property int lastY: y
 
-    Component.onCompleted: { _show(); show() }
+    Component.onCompleted: show()
 
     function dsTr(src) { return locale.dsTr(src) }
 
@@ -40,8 +45,8 @@ DDialog {
     }
 
     function _show() {
-        width = 480 + 20
-        height = 314
+        width = defaultWidth
+        height = defaultHeight
         x = lastX
         y = lastY
     }
@@ -56,6 +61,7 @@ DDialog {
 
         anchors.top: parent.top
         anchors.bottom: bottom_bar.top
+        anchors.topMargin: 6
 
         DLocale { id: locale; domain: "deepin-social-sharing" }
 
@@ -175,6 +181,27 @@ DDialog {
         }
     }
 
+    // FIXME: the parent thing is insane, fix the DDialog component in
+    // deepin-qml-widgets to get a more decent API.
+    ShareTitleBar {
+        id: title_bar
+        x: 14; y: 14
+        width: parent.width
+        parent: mainItem.parent.parent.parent
+        canGoBack: !share_content.visible && !auth_browser.visible
+
+        onBackButtonClicked: {
+            var current = mainItem.getCurrentPage()
+            if (current) {
+                current.rightOut()
+                share_content.leftIn()
+
+                bottom_bar.state = "share"
+                bottom_bar.updateView()
+            }
+        }
+    }
+
     ShareBottomBar {
         id: bottom_bar
         width: parent.width
@@ -223,36 +250,22 @@ DDialog {
             share_content.leftIn()
         }
 
-        onBackButtonClicked: {
-            bottom_bar.state = "first_time"
-            accounts_list.rightOut()
-            share_content.leftIn()
+        onAccountManageButtonClicked: {
+            bottom_bar.state = "accounts_manage"
+            share_content.leftOut()
+            accounts_pick_view.rightIn()
         }
 
         Component.onCompleted: updateView()
     }
 
-    DImageButton {
-        x: 14
-        y: 14
-        parent: mainItem.parent.parent.parent
-        normal_image: "../../images/users_manage_normal.png"
-        hover_image: "../../images/users_manage_hover.png"
-        press_image: "../../images/users_manage_press.png"
-        visible: bottom_bar.state == "first_time" || bottom_bar.state == "share"
-
-        onClicked: {
-            bottom_bar.state = "accounts_manage"
-            share_content.leftOut()
-            accounts_pick_view.rightIn()
-        }
-    }
-
     // TODO: make all the positioning numbers meaningful
     Item {
-        y: -24
+        id: browser_item
+        x: 8; y: 8
         width: 484
         height: 298
+        parent: mainItem.parent.parent.parent
 
         AuthBrowser {
             id: auth_browser
@@ -260,9 +273,12 @@ DDialog {
             height: parent.height
             visible: false
             radius: 3
+            window: dialog
             canSkip: _accounts_manager.hasNextToAuth
 
-            onBack: auth_browser.rightOut()
+            onBackButtonClicked: auth_browser.rightOut()
+
+            onCloseButtonClicked: dialog.close()
 
             onSkipped: {
                 _accounts_manager.skipAccount(accountType)

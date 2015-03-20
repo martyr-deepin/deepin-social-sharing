@@ -91,8 +91,8 @@ SlideInOutItem {
                 visible: itemSelected
                 source: "../../images/account_select_flag.png"
 
-                anchors.left: parent.left
-                anchors.leftMargin: 20
+                anchors.right: banner.left
+                anchors.rightMargin: 20
                 anchors.verticalCenter: parent.verticalCenter
             }
 
