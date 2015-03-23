@@ -38,6 +38,8 @@ SlideInOutItem {
     // pass a empty string to setUrl means that the manager can't get
     // an authorizing url for the browser, in other words it's a error.
     function setUrl(url) {
+        fake_reload_timer.stop()
+
         if (url) {
             root.currentBrowser.url = url
             error_warning.visible = false
@@ -193,7 +195,12 @@ SlideInOutItem {
     Timer {
         id: fake_reload_timer
         interval: 500
-        onTriggered: error_warning.visible = true
+        onTriggered: {
+            error_warning.visible = true
+            loading.visible = Qt.binding(function() {
+                return (webview_one.loading || webview_two.loading) && !(error_warning.visible)
+            })
+        }
     }
 
     Column {
@@ -221,9 +228,16 @@ SlideInOutItem {
                 // the fact that no url is set to the webview, and  it's
                 // non-sense to reload the page, so I just faked the reload effect.
                 error_warning.visible = false
+                loading.visible = true
                 fake_reload_timer.start()
             }
             anchors.horizontalCenter: parent.horizontalCenter
         }
+    }
+
+    LoadingAnimation {
+        id: loading
+        visible: (webview_one.loading || webview_two.loading) && !(error_warning.visible)
+        anchors.centerIn: parent
     }
 }
