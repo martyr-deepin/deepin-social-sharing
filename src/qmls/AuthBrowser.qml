@@ -228,7 +228,7 @@ SlideInOutItem {
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        Item { width: 1; height: 20 }
+        Item { width: 1; height: 10 }
 
         Text {
             text: dsTr("Unable to connect to %1").arg(root.currentBrowser.accountType)
@@ -252,11 +252,14 @@ SlideInOutItem {
     Column {
         id: loading_animation
         width: 100
-        anchors.centerIn: parent
+        anchors.top: error_warning.top
+        anchors.horizontalCenter: parent.horizontalCenter
 
         LoadingAnimation {
             anchors.horizontalCenter: parent.horizontalCenter
         }
+
+        Item { width: 1; height: 10 }
 
         Text {
             text: dsTr("Loading")
