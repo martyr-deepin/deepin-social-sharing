@@ -20,14 +20,24 @@
 <context>
     <name>AuthBrowser</name>
     <message>
-        <location filename="../src/qmls/AuthBrowser.qml" line="+78"/>
-        <location line="+36"/>
+        <location filename="../src/qmls/AuthBrowser.qml" line="+104"/>
+        <location line="+41"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Back</source>
+        <location line="+89"/>
+        <source>Unable to connect to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Reload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Loading</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -35,10 +45,6 @@
     <name>ShareBottomBar</name>
     <message>
         <location filename="../src/qmls/ShareBottomBar.qml" line="+131"/>
-        <source>Please select social platforms</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+12"/>
         <source>Account management</source>
         <translation type="unfinished"></translation>
@@ -49,7 +55,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+11"/>
         <source>Next</source>
         <translation type="unfinished"></translation>
     </message>

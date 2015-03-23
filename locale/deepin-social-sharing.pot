@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-13 16:06+0800\n"
+"POT-Creation-Date: 2015-03-23 17:36+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,19 +25,24 @@ msgstr ""
 msgid "New account"
 msgstr ""
 
-#: ../src/qmls/AuthBrowser.qml:78 ../src/qmls/AuthBrowser.qml:114
+#: ../src/qmls/AuthBrowser.qml:104 ../src/qmls/AuthBrowser.qml:145
 msgid "Skip"
 msgstr ""
 
-#: ../src/qmls/AuthBrowser.qml:138
-msgid "Back"
+#: ../src/qmls/AuthBrowser.qml:234
+#, qt-format
+msgid "Unable to connect to %1"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:131
-msgid "Please select social platforms"
+#: ../src/qmls/AuthBrowser.qml:239
+msgid "Reload"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:143
+#: ../src/qmls/AuthBrowser.qml:265
+msgid "Loading"
+msgstr ""
+
+#: ../src/qmls/ShareBottomBar.qml:131 ../src/qmls/ShareBottomBar.qml:143
 msgid "Account management"
 msgstr ""
 
@@ -45,18 +50,23 @@ msgstr ""
 msgid "The input content is more than maximum words."
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:193
+#: ../src/qmls/ShareBottomBar.qml:180
 msgid "Next"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:205
+#: ../src/qmls/ShareBottomBar.qml:192
 msgid "Share"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:218
+#: ../src/qmls/ShareBottomBar.qml:205
 msgid "OK"
 msgstr ""
 
 #: ../src/qmls/ShareContent.qml:55
 msgid "Input what you want to say"
+msgstr ""
+
+#: ../src/accounts_manager.py:50
+#, python-format
+msgid "Come and look at pictures I share! (Share with %s)"
 msgstr ""
