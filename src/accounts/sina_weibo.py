@@ -108,6 +108,8 @@ class SinaWeibo(AccountBase):
                                                   display="mobile")
         self.authorizeUrlGot.emit(SINAWEIBO, auth_url)
 
+    def cancelGetAuthorizeUrl(self): pass
+
     def getVerifierFromUrl(self, url):
         query = getUrlQuery(url)
         return query.get("code")

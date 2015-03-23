@@ -202,6 +202,10 @@ class AccountsManager(QObject):
     def getAuthorizeUrl(self, accountType):
         return self._accounts[accountType].getAuthorizeUrl()
 
+    @pyqtSlot()
+    def cancelGetAuthorizeUrl(self):
+        map(lambda x: x.cancelGetAuthorizeUrl(), self._accounts.values())
+
     @pyqtSlot(str, str, result=str)
     def getVerifierFromUrl(self, accountType, url):
         return self._accounts[accountType].getVerifierFromUrl(url)

@@ -19,7 +19,7 @@ SlideInOutItem {
     signal skipped(string accountType)
     signal urlChanged(string accountType, string url)
 
-    onBeforeInAnimation: loading_animation.visible = true
+    onBeforeInAnimation: { root._viewShowingHandler() }
 
     function next() {
         if (root.currentBrowser == browser_one) {
@@ -64,6 +64,18 @@ SlideInOutItem {
 
     function _urlEmpty(url) { return !url || url == "about:blank" }
 
+    function _viewShowingHandler() {
+        error_warning.visible = false
+
+        if (!_urlEmpty) {
+            loading_animation.visible = Qt.binding(function () {
+                return root.currentBrowser.loading
+            })
+        } else {
+            loading_animation.visible = true
+        }
+    }
+
     Rectangle {
         id: browser_area
         color: "white"
@@ -77,9 +89,7 @@ SlideInOutItem {
             property alias url: webview_one.url
             property string accountType: ""
 
-            onBeforeInAnimation: loading_animation.visible = Qt.binding(function () {
-                return loading
-            })
+            onBeforeInAnimation: { root._viewShowingHandler() }
 
             WebView {
                 id: webview_one
@@ -121,9 +131,7 @@ SlideInOutItem {
             property alias url: webview_two.url
             property string accountType: ""
 
-            onBeforeInAnimation: loading_animation.visible = Qt.binding(function () {
-                return loading
-            })
+            onBeforeInAnimation: { root._viewShowingHandler() }
 
             WebView {
                 id: webview_two

@@ -276,11 +276,15 @@ DDialog {
             window: dialog
             canSkip: _accounts_manager.hasNextToAuth
 
-            onBackButtonClicked: auth_browser.rightOut()
+            onBackButtonClicked: {
+                auth_browser.rightOut()
+                _accounts_manager.cancelGetAuthorizeUrl()
+            }
 
             onCloseButtonClicked: dialog.close()
 
             onSkipped: {
+                _accounts_manager.cancelGetAuthorizeUrl()
                 _accounts_manager.skipAccount(accountType)
 
                 if (_accounts_manager.isSharing) {

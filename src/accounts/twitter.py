@@ -135,6 +135,10 @@ class Twitter(AccountBase):
         self._getAuthorizeUrlThread.setClient(self._client)
         self._getAuthorizeUrlThread.start()
 
+    def cancelGetAuthorizeUrl(self):
+        if self._getAuthorizeUrlThread.isRunning():
+            self._getAuthorizeUrlThread.terminate()
+
     def getVerifierFromUrl(self, url):
         query = getUrlQuery(url)
         return query.get("oauth_verifier")
