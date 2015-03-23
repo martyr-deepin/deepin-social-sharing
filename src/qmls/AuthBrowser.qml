@@ -19,6 +19,8 @@ SlideInOutItem {
     signal skipped(string accountType)
     signal urlChanged(string accountType, string url)
 
+    onBeforeInAnimation: loading_animation.visible = true
+
     function next() {
         if (root.currentBrowser == browser_one) {
             root.currentBrowser = browser_two
@@ -44,6 +46,7 @@ SlideInOutItem {
             root.currentBrowser.url = url
             error_warning.visible = false
         } else {
+            loading_animation.visible = false
             error_warning.visible = true
         }
     }
@@ -59,6 +62,8 @@ SlideInOutItem {
         browser_two.accountType = ""
     }
 
+    function _urlEmpty(url) { return !url || url == "about:blank" }
+
     Rectangle {
         id: browser_area
         color: "white"
@@ -72,11 +77,18 @@ SlideInOutItem {
             property alias url: webview_one.url
             property string accountType: ""
 
+            onBeforeInAnimation: loading_animation.visible = Qt.binding(function () {
+                return loading
+            })
+
             WebView {
                 id: webview_one
                 anchors.fill: parent
 
                 onNavigationRequested: root.urlChanged(browser_one.accountType, request.url)
+                onLoadProgressChanged: {
+                    loading_animation.visible = (_urlEmpty(url) || loadProgress < 95)
+                }
 
                 Rectangle {
                     width: Math.max(20, parent.width * webview_one.loadProgress / 100)
@@ -108,6 +120,10 @@ SlideInOutItem {
 
             property alias url: webview_two.url
             property string accountType: ""
+
+            onBeforeInAnimation: loading_animation.visible = Qt.binding(function () {
+                return loading
+            })
 
             WebView {
                 id: webview_two
@@ -197,9 +213,7 @@ SlideInOutItem {
         interval: 500
         onTriggered: {
             error_warning.visible = true
-            loading.visible = Qt.binding(function() {
-                return (webview_one.loading || webview_two.loading) && !(error_warning.visible)
-            })
+            loading_animation.visible = false
         }
     }
 
@@ -228,16 +242,25 @@ SlideInOutItem {
                 // the fact that no url is set to the webview, and  it's
                 // non-sense to reload the page, so I just faked the reload effect.
                 error_warning.visible = false
-                loading.visible = true
+                loading_animation.visible = true
                 fake_reload_timer.start()
             }
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }
 
-    LoadingAnimation {
-        id: loading
-        visible: (webview_one.loading || webview_two.loading) && !(error_warning.visible)
+    Column {
+        id: loading_animation
+        width: 100
         anchors.centerIn: parent
+
+        LoadingAnimation {
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Text {
+            text: dsTr("Loading")
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
     }
 }
