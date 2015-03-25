@@ -96,6 +96,7 @@ Item {
         DImageCheckBox {
             id: sinaweibo_checkbox
             visible: false
+            spacing: 5
             imageSource :"../../images/sinaweibo_small.png"
 
             anchors.verticalCenter: parent.verticalCenter
@@ -106,6 +107,7 @@ Item {
         DImageCheckBox {
             id: twitter_checkbox
             visible: false
+            spacing: 5
             imageSource :"../../images/twitter_small.png"
 
             anchors.verticalCenter: parent.verticalCenter
@@ -120,7 +122,7 @@ Item {
         font.pixelSize: 11
 
         anchors.left: row.right
-        anchors.leftMargin: 10
+        anchors.leftMargin: 15
         anchors.verticalCenter: parent.verticalCenter
 
         onClicked: root.accountManageButtonClicked()
