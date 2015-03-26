@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Piotr Strębski <strebski@o2.pl>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: deepin-social-sharing\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-23 17:36+0800\n"
+"PO-Revision-Date: 2015-03-25 09:06+0000\n"
+"Last-Translator: Piotr Strębski <strebski@o2.pl>\n"
+"Language-Team: Polish (http://www.transifex.com/projects/p/deepin-social-sharing/language/pl/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../src/qmls/AccountsManagement.qml:151
+msgid "Log in"
+msgstr "Zaloguj"
+
+#: ../src/qmls/AccountsMenu.qml:34
+msgid "New account"
+msgstr "Nowe konto"
+
+#: ../src/qmls/AuthBrowser.qml:104 ../src/qmls/AuthBrowser.qml:145
+msgid "Skip"
+msgstr "Pomiń"
+
+#: ../src/qmls/AuthBrowser.qml:234
+#, qt-format
+msgid "Unable to connect to %1"
+msgstr "Nie udało się połączyć z %1"
+
+#: ../src/qmls/AuthBrowser.qml:239
+msgid "Reload"
+msgstr "Ponownie wczytaj"
+
+#: ../src/qmls/AuthBrowser.qml:265
+msgid "Loading"
+msgstr "Wczytywanie"
+
+#: ../src/qmls/ShareBottomBar.qml:131 ../src/qmls/ShareBottomBar.qml:143
+msgid "Account management"
+msgstr "Zarządzanie kontem"
+
+#: ../src/qmls/ShareBottomBar.qml:169
+msgid "The input content is more than maximum words."
+msgstr "Zawartość tego, co wpisujemy jest więcej warta niż maksimum słów."
+
+#: ../src/qmls/ShareBottomBar.qml:180
+msgid "Next"
+msgstr "Dalej"
+
+#: ../src/qmls/ShareBottomBar.qml:192
+msgid "Share"
+msgstr "Udostępnij"
+
+#: ../src/qmls/ShareBottomBar.qml:205
+msgid "OK"
+msgstr "OK"
+
+#: ../src/qmls/ShareContent.qml:55
+msgid "Input what you want to say"
+msgstr "Wpisz to, co chcesz powiedzieć"
+
+#: ../src/accounts_manager.py:50
+#, python-format
+msgid "Come and look at pictures I share! (Share with %s)"
+msgstr "Chodź i spójrz na obrazki, które udostępniam! (Udostępniam poprzez %s)"
