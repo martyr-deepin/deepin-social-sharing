@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-23 17:36+0800\n"
+"POT-Creation-Date: 2015-03-27 16:00+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,40 +25,36 @@ msgstr ""
 msgid "New account"
 msgstr ""
 
-#: ../src/qmls/AuthBrowser.qml:104 ../src/qmls/AuthBrowser.qml:145
+#: ../src/qmls/AuthBrowser.qml:114 ../src/qmls/AuthBrowser.qml:153
 msgid "Skip"
 msgstr ""
 
-#: ../src/qmls/AuthBrowser.qml:234
+#: ../src/qmls/AuthBrowser.qml:242
 #, qt-format
 msgid "Unable to connect to %1"
 msgstr ""
 
-#: ../src/qmls/AuthBrowser.qml:239
+#: ../src/qmls/AuthBrowser.qml:247
 msgid "Reload"
 msgstr ""
 
-#: ../src/qmls/AuthBrowser.qml:265
+#: ../src/qmls/AuthBrowser.qml:273
 msgid "Loading"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:131 ../src/qmls/ShareBottomBar.qml:143
+#: ../src/qmls/ShareBottomBar.qml:121 ../src/qmls/ShareBottomBar.qml:133
 msgid "Account management"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:169
-msgid "The input content is more than maximum words."
-msgstr ""
-
-#: ../src/qmls/ShareBottomBar.qml:180
+#: ../src/qmls/ShareBottomBar.qml:155
 msgid "Next"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:192
+#: ../src/qmls/ShareBottomBar.qml:167
 msgid "Share"
 msgstr ""
 
-#: ../src/qmls/ShareBottomBar.qml:205
+#: ../src/qmls/ShareBottomBar.qml:180
 msgid "OK"
 msgstr ""
 
@@ -66,7 +62,25 @@ msgstr ""
 msgid "Input what you want to say"
 msgstr ""
 
-#: ../src/accounts_manager.py:50
+#: ../src/main.py:102
+msgid "Succeeded"
+msgstr ""
+
+#: ../src/main.py:103
+#, python-format
+msgid "You have successfully shared the picture to (%s)"
+msgstr ""
+
+#: ../src/main.py:108
+msgid "Failed"
+msgstr ""
+
+#: ../src/main.py:109
+#, python-format
+msgid "Sorry, failed to share the picture to (%s)"
+msgstr ""
+
+#: ../src/accounts_manager.py:51
 #, python-format
 msgid "Come and look at pictures I share! (Share with %s)"
 msgstr ""
