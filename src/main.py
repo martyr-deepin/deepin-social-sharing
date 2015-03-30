@@ -40,7 +40,7 @@ app.setApplicationVersion("1.0")
 app.setQuitOnLastWindowClosed(True)
 
 from i18n import _
-from constants import MAIN_QML
+from constants import MAIN_QML, SINAWEIBO, TWITTER
 from accounts_manager import AccountsManager
 from dbus_services import DBUS_NAME, DBUS_PATH
 from dbus_services import DeepinSocialSharingAdaptor, session_bus
@@ -96,13 +96,22 @@ class QmlEngine(QQmlApplicationEngine):
         self.rootObject.setScreenshot(picture)
         self.rootObject.show()
 
+    def _accountTypeName(self, accountType):
+        nameDict = {
+            SINAWEIBO: _("Weibo"),
+            TWITTER: _("Twitter")
+        }
+        return nameDict.get(accountType, accountType)
+
     def _shareSucceededCB(self, accounts):
+        accounts = map(lambda x: self._accountTypeName(x), accounts)
         accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = self._notificationsInterface.notify(
             _("Succeeded"),
             _("You have successfully shared the picture to (%s)") % accountsStr.encode("utf-8"))
 
     def _shareFailedCB(self, accounts):
+        accounts = map(lambda x: self._accountTypeName(x), accounts)
         accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = self._notificationsInterface.notify(
             _("Failed"),
