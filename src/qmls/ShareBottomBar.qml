@@ -68,6 +68,7 @@ Item {
     function anyPlatform() {
         return (sinaweibo_checkbox.visible && sinaweibo_checkbox.checked)
                || (twitter_checkbox.visible && twitter_checkbox.checked)
+               || (facebook_checkbox.visible && facebook_checkbox.checked)
     }
 
     function lightUpIcons(filterMap) {
@@ -75,6 +76,8 @@ Item {
         sinaweibo_checkbox.checked = filterMap.indexOf("sinaweibo") != -1
         twitter_checkbox.visible = filterMap.indexOf("twitter") != -1
         twitter_checkbox.checked = filterMap.indexOf("twitter") != -1
+        facebook_checkbox.visible = filterMap.indexOf("facebook") != -1
+        facebook_checkbox.checked = filterMap.indexOf("facebook") != -1
     }
 
     DSeparatorHorizontal {
@@ -111,6 +114,17 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
 
             onClicked: checked ? root.accountSelected("twitter") : root.accountDeselected("twitter")
+        }
+
+        DImageCheckBox {
+            id: facebook_checkbox
+            visible: false
+            spacing: 5
+            imageSource :"../../images/facebook_small.png"
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            onClicked: checked ? root.accountSelected("facebook") : root.accountDeselected("facebook")
         }
     }
 

@@ -37,6 +37,7 @@ if not os.path.exists(CONFIG_DIR): os.makedirs(CONFIG_DIR)
 
 SINAWEIBO = "sinaweibo"
 TWITTER = "twitter"
+FACEBOOK = "facebook"
 
 class ShareFailedReason(object):
 	Authorization = 0

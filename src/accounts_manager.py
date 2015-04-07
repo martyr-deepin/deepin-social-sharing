@@ -21,8 +21,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from i18n import _
-from accounts import SinaWeibo, Twitter
-from database import db, SINAWEIBO, TWITTER
+from accounts import SinaWeibo, Twitter, Facebook
+from database import db, SINAWEIBO, TWITTER, FACEBOOK
 from constants import ShareFailedReason
 from settings import SocialSharingSettings
 
@@ -33,6 +33,7 @@ from weakref import ref
 typeClassMap = {
     SINAWEIBO: SinaWeibo,
     TWITTER: Twitter,
+    FACEBOOK: Facebook
 }
 
 class _ShareThread(QThread):
@@ -47,7 +48,6 @@ class _ShareThread(QThread):
         for account in self.accounts:
             if self.text == "" and self.manager:
                 tag = account.generateTag(self.manager.appName)
-                tag = tag.encode("utf-8")
                 text = _("Come and look at pictures I share! (Share with %s)") % tag
                 account.share(text, self.pic)
             else:
@@ -145,7 +145,7 @@ class AccountsManager(QObject):
     def getAllAccounts(self):
         result = []
 
-        for _type in [SINAWEIBO, TWITTER]:
+        for _type in [SINAWEIBO, TWITTER, FACEBOOK]:
             for account in db.fetchAccounts(_type):
                 result.append([_type, account[0], account[1]])
 
