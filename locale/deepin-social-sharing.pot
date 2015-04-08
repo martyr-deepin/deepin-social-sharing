@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-27 16:00+0800\n"
+"POT-Creation-Date: 2015-04-08 10:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,22 +62,36 @@ msgstr ""
 msgid "Input what you want to say"
 msgstr ""
 
+#: ../src/main.py:101
+msgid "Weibo"
+msgstr ""
+
 #: ../src/main.py:102
+msgid "Twitter"
+msgstr ""
+
+#. Dear translators, please note here that this "," should be translated to
+#. a localized comma, for example in Chinese it should be "、"
+#: ../src/main.py:108 ../src/main.py:115
+msgid ","
+msgstr ""
+
+#: ../src/main.py:110
 msgid "Succeeded"
 msgstr ""
 
-#: ../src/main.py:103
+#: ../src/main.py:111
 #, python-format
-msgid "You have successfully shared the picture to (%s)"
+msgid "You have successfully shared the picture to %s"
 msgstr ""
 
-#: ../src/main.py:108
+#: ../src/main.py:117
 msgid "Failed"
 msgstr ""
 
-#: ../src/main.py:109
+#: ../src/main.py:118
 #, python-format
-msgid "Sorry, failed to share the picture to (%s)"
+msgid "Sorry, failed to share the picture to %s"
 msgstr ""
 
 #: ../src/accounts_manager.py:51
