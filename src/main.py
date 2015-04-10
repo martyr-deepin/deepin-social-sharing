@@ -108,14 +108,14 @@ class QmlEngine(QQmlApplicationEngine):
         accountsStr = _(",").join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = self._notificationsInterface.notify(
             _("Succeeded"),
-            _("You have successfully shared the picture to %s") % accountsStr.encode("utf-8"))
+            _("You have successfully shared the picture to %s") % accountsStr)
 
     def _shareFailedCB(self, accounts):
         accounts = map(lambda x: self._accountTypeName(x), accounts)
         accountsStr = _(",").join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = self._notificationsInterface.notify(
             _("Failed"),
-            _("Sorry, failed to share the picture to %s") % accountsStr.encode("utf-8"),
+            _("Sorry, failed to share the picture to %s") % accountsStr,
             [ACTION_ID_RESHARE, "Resend"])
 
     def _notificationClosedCB(self, notificationId, reason):
