@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Анатолий Валерианович <ffox909@mail.ru>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: deepin-social-sharing\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-23 17:36+0800\n"
+"PO-Revision-Date: 2015-03-24 04:57+0000\n"
+"Last-Translator: Анатолий Валерианович <ffox909@mail.ru>\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/deepin-social-sharing/language/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../src/qmls/AccountsManagement.qml:151
+msgid "Log in"
+msgstr "Вход"
+
+#: ../src/qmls/AccountsMenu.qml:34
+msgid "New account"
+msgstr "Новый аккаунт"
+
+#: ../src/qmls/AuthBrowser.qml:104 ../src/qmls/AuthBrowser.qml:145
+msgid "Skip"
+msgstr "Пропустить"
+
+#: ../src/qmls/AuthBrowser.qml:234
+#, qt-format
+msgid "Unable to connect to %1"
+msgstr "Не удаётся подключится к %1"
+
+#: ../src/qmls/AuthBrowser.qml:239
+msgid "Reload"
+msgstr "Перезагрузка"
+
+#: ../src/qmls/AuthBrowser.qml:265
+msgid "Loading"
+msgstr "Загрузка"
+
+#: ../src/qmls/ShareBottomBar.qml:131 ../src/qmls/ShareBottomBar.qml:143
+msgid "Account management"
+msgstr "Управление аккаунтами"
+
+#: ../src/qmls/ShareBottomBar.qml:169
+msgid "The input content is more than maximum words."
+msgstr "Содержание входящего, превышает максимум слов."
+
+#: ../src/qmls/ShareBottomBar.qml:180
+msgid "Next"
+msgstr "Далее"
+
+#: ../src/qmls/ShareBottomBar.qml:192
+msgid "Share"
+msgstr "Поделиться"
+
+#: ../src/qmls/ShareBottomBar.qml:205
+msgid "OK"
+msgstr "ОК"
+
+#: ../src/qmls/ShareContent.qml:55
+msgid "Input what you want to say"
+msgstr "Введите то что хотите сказать"
+
+#: ../src/accounts_manager.py:50
+#, python-format
+msgid "Come and look at pictures I share! (Share with %s)"
+msgstr "Зайдите и посмотрите, я делюсь фотографиями! (Делюсь с %s)"

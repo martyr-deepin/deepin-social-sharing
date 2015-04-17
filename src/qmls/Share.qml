@@ -129,9 +129,6 @@ DDialog {
             id: share_content
             width: parent.width
             height: parent.height
-
-            onTextOverflow: bottom_bar.warnWordsCount()
-            onTextInBounds: bottom_bar.showWordsCount()
         }
 
         AccountsList {
@@ -276,18 +273,20 @@ DDialog {
             window: dialog
             canSkip: _accounts_manager.hasNextToAuth
 
-            onBackButtonClicked: auth_browser.rightOut()
+            onBackButtonClicked: {
+                auth_browser.rightOut()
+                _accounts_manager.cancelGetAuthorizeUrl()
+            }
 
             onCloseButtonClicked: dialog.close()
 
             onSkipped: {
+                _accounts_manager.cancelGetAuthorizeUrl()
                 _accounts_manager.skipAccount(accountType)
 
-                if (_accounts_manager.isSharing) {
-                    if (_accounts_manager.hasNextToAuth) {
-                        auth_browser.next()
-                        _accounts_manager.authorizeNextAccount()
-                    }
+                if (_accounts_manager.isSharing && _accounts_manager.hasNextToAuth) {
+                    auth_browser.next()
+                    _accounts_manager.authorizeNextAccount()
                 } else {
                     auth_browser.leftOut()
                 }
@@ -299,11 +298,9 @@ DDialog {
                 var verifier = _accounts_manager.getVerifierFromUrl(accountType, url)
                 if (verifier) {
                     _accounts_manager.handleVerifier(accountType, verifier)
-                    if (_accounts_manager.isSharing) {
-                        if (_accounts_manager.hasNextToAuth) {
-                            auth_browser.next()
-                            _accounts_manager.authorizeNextAccount()
-                        }
+                    if (_accounts_manager.isSharing && _accounts_manager.hasNextToAuth) {
+                        auth_browser.next()
+                        _accounts_manager.authorizeNextAccount()
                     } else {
                         auth_browser.leftOut()
                     }

@@ -67,6 +67,9 @@ class AccountBase(QObject):
     def getAuthorizeUrl(self):
         raise NotImplementedError()
 
+    def cancelGetAuthorizeUrl(self):
+        raise NotImplementedError()
+
     def getVerifierFromUrl(self, url):
         raise NotImplementedError()
 

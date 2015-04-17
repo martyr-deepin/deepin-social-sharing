@@ -47,6 +47,7 @@ class _ShareThread(QThread):
         for account in self.accounts:
             if self.text == "" and self.manager:
                 tag = account.generateTag(self.manager.appName)
+                tag = tag.encode("utf-8")
                 text = _("Come and look at pictures I share! (Share with %s)") % tag
                 account.share(text, self.pic)
             else:
@@ -201,6 +202,10 @@ class AccountsManager(QObject):
     @pyqtSlot(str, result=str)
     def getAuthorizeUrl(self, accountType):
         return self._accounts[accountType].getAuthorizeUrl()
+
+    @pyqtSlot()
+    def cancelGetAuthorizeUrl(self):
+        map(lambda x: x.cancelGetAuthorizeUrl(), self._accounts.values())
 
     @pyqtSlot(str, str, result=str)
     def getVerifierFromUrl(self, accountType, url):

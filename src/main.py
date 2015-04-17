@@ -20,6 +20,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# set the environment variable 'bo_reuse'(used by mesa) to 0, thus
+# preventing the damage to our window blur effects.
+import os
+os.environ['bo_reuse'] = '0'
+
 import sys
 import signal
 import shutil
@@ -35,7 +40,7 @@ app.setApplicationVersion("1.0")
 app.setQuitOnLastWindowClosed(True)
 
 from i18n import _
-from constants import MAIN_QML
+from constants import MAIN_QML, SINAWEIBO, TWITTER
 from accounts_manager import AccountsManager
 from dbus_services import DBUS_NAME, DBUS_PATH
 from dbus_services import DeepinSocialSharingAdaptor, session_bus
@@ -91,17 +96,26 @@ class QmlEngine(QQmlApplicationEngine):
         self.rootObject.setScreenshot(picture)
         self.rootObject.show()
 
+    def _accountTypeName(self, accountType):
+        nameDict = {
+            SINAWEIBO: _("Weibo"),
+            TWITTER: _("Twitter")
+        }
+        return nameDict.get(accountType, accountType)
+
     def _shareSucceededCB(self, accounts):
-        accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
+        accounts = map(lambda x: self._accountTypeName(x), accounts)
+        accountsStr = _(",").join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = self._notificationsInterface.notify(
             _("Succeeded"),
-            _("You have successfully shared the picture to (%s)") % accountsStr)
+            _("You have successfully shared the picture to %s") % accountsStr)
 
     def _shareFailedCB(self, accounts):
-        accountsStr = " ".join(accounts) if len(accounts) > 1 else accounts[0]
+        accounts = map(lambda x: self._accountTypeName(x), accounts)
+        accountsStr = _(",").join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = self._notificationsInterface.notify(
             _("Failed"),
-            _("Sorry, failed to share the picture to (%s)") % accountsStr,
+            _("Sorry, failed to share the picture to %s") % accountsStr,
             [ACTION_ID_RESHARE, "Resend"])
 
     def _notificationClosedCB(self, notificationId, reason):

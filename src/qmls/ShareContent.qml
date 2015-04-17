@@ -15,37 +15,41 @@ SlideInOutItem {
     signal textOverflow()
     signal textInBounds()
 
-    function setText(text) {
-        input_text.text = text
-    }
+    function setText(text) { input_text.text = text }
 
-    function setScreenshot(source) {
-        screenshot = source
-    }
+    function setScreenshot(source) { screenshot = source }
 
-    TextEdit {
-        id: input_text
-
+    Item {
+        id: input_area
+        width: root.width - root.inputLeftRightPadding * 2
         height: 70
-        color: "#686868"
-        font.pixelSize: 12
-        wrapMode:TextEdit.Wrap
-        selectByMouse: true
-        selectionColor: "#276ea7"
-        horizontalAlignment: TextEdit.AlignHCenter
-        verticalAlignment: TextEdit.AlignVCenter
+        anchors.horizontalCenter: parent.horizontalCenter
 
-        anchors.left: parent.left
-        anchors.leftMargin: root.inputLeftRightPadding
-        anchors.right: parent.right
-        anchors.rightMargin: root.inputLeftRightPadding
+        MouseArea {
+            anchors.fill: parent
+            onClicked: input_text.focus = true
+        }
 
-        onTextChanged: {
-            if (input_text.length > 140) {
-                input_text.remove(140, 141)
-                root.textOverflow()
-            } else {
-                root.textInBounds()
+        TextEdit {
+            id: input_text
+            width: parent.width
+
+            color: "#686868"
+            font.pixelSize: 12
+            wrapMode:TextEdit.Wrap
+            selectByMouse: true
+            selectionColor: "#276ea7"
+            horizontalAlignment: TextEdit.AlignHCenter
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            onTextChanged: {
+                if (input_text.length > 140) {
+                    input_text.remove(140, 141)
+                    root.textOverflow()
+                } else {
+                    root.textInBounds()
+                }
             }
         }
 
@@ -62,7 +66,7 @@ SlideInOutItem {
     DSeparatorHorizontal {
         id: separate_line
         width: parent.width - root.inputLeftRightPadding * 2
-        anchors.top: input_text.bottom
+        anchors.top: input_area.bottom
         anchors.topMargin: 20
         anchors.horizontalCenter: parent.horizontalCenter
     }

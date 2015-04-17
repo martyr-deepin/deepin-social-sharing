@@ -20,36 +20,37 @@
 <context>
     <name>AuthBrowser</name>
     <message>
-        <location filename="../src/qmls/AuthBrowser.qml" line="+78"/>
-        <location line="+36"/>
+        <location filename="../src/qmls/AuthBrowser.qml" line="+114"/>
+        <location line="+39"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Back</source>
+        <location line="+89"/>
+        <source>Unable to connect to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Reload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Loading</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ShareBottomBar</name>
     <message>
-        <location filename="../src/qmls/ShareBottomBar.qml" line="+131"/>
-        <source>Please select social platforms</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/qmls/ShareBottomBar.qml" line="+121"/>
         <location line="+12"/>
         <source>Account management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
-        <source>The input content is more than maximum words.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+24"/>
+        <location line="+22"/>
         <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
