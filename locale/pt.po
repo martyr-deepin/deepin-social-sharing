@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Ricardo Simões <xmcorporation@gmail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: deepin-social-sharing\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-23 17:36+0800\n"
+"PO-Revision-Date: 2015-03-23 15:46+0000\n"
+"Last-Translator: Ricardo Simões <xmcorporation@gmail.com>\n"
+"Language-Team: Portuguese (http://www.transifex.com/projects/p/deepin-social-sharing/language/pt/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/qmls/AccountsManagement.qml:151
+msgid "Log in"
+msgstr "Entrar"
+
+#: ../src/qmls/AccountsMenu.qml:34
+msgid "New account"
+msgstr "Nova conta"
+
+#: ../src/qmls/AuthBrowser.qml:104 ../src/qmls/AuthBrowser.qml:145
+msgid "Skip"
+msgstr "Saltar"
+
+#: ../src/qmls/AuthBrowser.qml:234
+#, qt-format
+msgid "Unable to connect to %1"
+msgstr "Incapaz de conectar a %1"
+
+#: ../src/qmls/AuthBrowser.qml:239
+msgid "Reload"
+msgstr "Recarregar"
+
+#: ../src/qmls/AuthBrowser.qml:265
+msgid "Loading"
+msgstr "A carregar"
+
+#: ../src/qmls/ShareBottomBar.qml:131 ../src/qmls/ShareBottomBar.qml:143
+msgid "Account management"
+msgstr "Gestão de conta"
+
+#: ../src/qmls/ShareBottomBar.qml:169
+msgid "The input content is more than maximum words."
+msgstr "O conteúdo introduzido é superior ao máximo de palavras."
+
+#: ../src/qmls/ShareBottomBar.qml:180
+msgid "Next"
+msgstr "Seguinte"
+
+#: ../src/qmls/ShareBottomBar.qml:192
+msgid "Share"
+msgstr "Partilhar"
+
+#: ../src/qmls/ShareBottomBar.qml:205
+msgid "OK"
+msgstr "Ok"
+
+#: ../src/qmls/ShareContent.qml:55
+msgid "Input what you want to say"
+msgstr "Introduza o que quer dizer"
+
+#: ../src/accounts_manager.py:50
+#, python-format
+msgid "Come and look at pictures I share! (Share with %s)"
+msgstr "Venha ver as fotografias que eu partilho! (partilhar com %s)"

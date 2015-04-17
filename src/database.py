@@ -20,21 +20,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import time
 import sqlite3
 
-HOME = os.path.expanduser('~')
-XDG_CONFIG_HOME = os.environ.get('XDG_CONFIG_HOME') or \
-                  os.path.join(HOME, '.config')
-PROJECT_NAME = "deepin-social-sharing"
-CONFIG_DIR = os.path.join(XDG_CONFIG_HOME, PROJECT_NAME)
-DATABASE_FILE = os.path.join(CONFIG_DIR, "accounts.db")
-
-if not os.path.exists(CONFIG_DIR): os.makedirs(CONFIG_DIR)
-
-SINAWEIBO = "sinaweibo"
-TWITTER = "twitter"
+from constants import DATABASE_FILE, SINAWEIBO, TWITTER
 
 class Database(object):
 
@@ -57,8 +46,8 @@ class Database(object):
 
     def fetchAccountByUID(self, accountType, uid):
         self.db_cursor.execute(
-            "SELECT * FROM %s WHERE uid=%s" % (accountType, uid))
-        tuples = self.db_cursor.fetchone()
+            "SELECT * FROM %s WHERE uid='%s'" % (accountType, uid))
+        tuples = self.db_cursor.fetchmany()
         if tuples:
             return tuples[0]
         else:
@@ -71,8 +60,14 @@ class Database(object):
         return filter(not_expired_func, accounts)
 
     def saveAccountInfo(self, accountType, info):
+        info = map(lambda x: unicode(x), info)
         self.db_cursor.execute(
             "INSERT OR REPLACE INTO %s VALUES(?, ?, ?, ?)" % accountType, info)
+        self.db_connect.commit()
+
+    def removeAccountByUID(self, accountType, uid):
+        self.db_cursor.execute(
+            "DELETE FROM %s WHERE uid='%s'" % (accountType, uid))
         self.db_connect.commit()
 
 db = Database()

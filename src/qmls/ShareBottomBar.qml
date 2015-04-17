@@ -4,72 +4,85 @@ import Deepin.Widgets 1.0
 Item {
     id: root
     width: 300
-    height: 40
+    height: 36
     state: "first_time"
 
-    property alias wordCount: word_number_label.text
+    property alias wordsLeft: word_number_label.text
 
+    property bool shareEnabled: true
+
+    signal accountSelected(string accountType)
+    signal accountDeselected(string accountType)
     signal nextButtonClicked()
     signal shareButtonClicked()
     signal okButtonClicked()
+    signal accountManageButtonClicked()
 
     states: [
         State {
             name: "first_time"
 
             PropertyChanges { target: row; visible: false }
-            PropertyChanges { target: plz_choose_sns_label; visible: false }
             PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: word_number_label; visible: true }
             PropertyChanges { target: next_button; visible: true }
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: false }
+            PropertyChanges { target: account_manage_button; visible: false }
         },
         State {
             name: "accounts_list"
 
             PropertyChanges { target: row; visible: false }
-            PropertyChanges { target: plz_choose_sns_label; visible: true }
             PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: word_number_label; visible: false }
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: true }
             PropertyChanges { target: ok_button; visible: false }
+            PropertyChanges { target: account_manage_button; visible: false }
         },
         State {
             name: "share"
 
             PropertyChanges { target: row; visible: true }
-            PropertyChanges { target: plz_choose_sns_label; visible: false }
             PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: word_number_label; visible: true }
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: true }
             PropertyChanges { target: ok_button; visible: false }
+            PropertyChanges { target: account_manage_button; visible: true }
         },
         State {
             name: "accounts_manage"
 
             PropertyChanges { target: row; visible: false }
-            PropertyChanges { target: plz_choose_sns_label; visible: false }
             PropertyChanges { target: accounts_management_label; visible: true }
             PropertyChanges { target: word_number_label; visible: false }
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: true }
+            PropertyChanges { target: account_manage_button; visible: false }
         }
     ]
 
-    function lightUpIcons(filterMap) {
-        sinaweibo_checkbox.visible = filterMap.indexOf("sinaweibo") != -1
-        twitter_checkbox.visible = filterMap.indexOf("twitter") != -1
+    function anyPlatform() {
+        return (sinaweibo_checkbox.visible && sinaweibo_checkbox.checked)
+               || (twitter_checkbox.visible && twitter_checkbox.checked)
     }
 
-    function getEnabledAccounts() {
-        var result = []
-        if (sinaweibo_checkbox.checked) result.push("sinaweibo")
-        if (twitter_checkbox.checked) result.push("twitter")
-        return result
+    function lightUpIcons(filterMap) {
+        sinaweibo_checkbox.visible = filterMap.indexOf("sinaweibo") != -1
+        sinaweibo_checkbox.checked = filterMap.indexOf("sinaweibo") != -1
+        twitter_checkbox.visible = filterMap.indexOf("twitter") != -1
+        twitter_checkbox.checked = filterMap.indexOf("twitter") != -1
+    }
+
+    DSeparatorHorizontal {
+        width: parent.width - 5 * 2
+
+        anchors.top: parent.top
+        anchors.topMargin: -5
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 
     Row {
@@ -78,44 +91,52 @@ Item {
         spacing: 10
 
         anchors.left: parent.left
-        anchors.leftMargin: 5
+        anchors.leftMargin: 10
 
         DImageCheckBox {
             id: sinaweibo_checkbox
             visible: false
-            imageSource :"../images/sinaweibo_small.png"
+            spacing: 5
+            imageSource :"../../images/sinaweibo_small.png"
 
             anchors.verticalCenter: parent.verticalCenter
+
+            onClicked: checked ? root.accountSelected("sinaweibo") : root.accountDeselected("sinaweibo")
         }
 
         DImageCheckBox {
             id: twitter_checkbox
             visible: false
-            imageSource :"../images/twitter_small.png"
+            spacing: 5
+            imageSource :"../../images/twitter_small.png"
 
             anchors.verticalCenter: parent.verticalCenter
+
+            onClicked: checked ? root.accountSelected("twitter") : root.accountDeselected("twitter")
         }
     }
 
-    Text {
-        id: plz_choose_sns_label
-        text: "Please choose platforms"
-        color: "#FDA825"
+    LinkButton {
+        id: account_manage_button
+        label: dsTr("Account management")
         font.pixelSize: 11
-        visible: false
 
-        anchors.left: parent.left
+        anchors.left: row.right
+        anchors.leftMargin: 15
         anchors.verticalCenter: parent.verticalCenter
+
+        onClicked: root.accountManageButtonClicked()
     }
 
     Text {
         id: accounts_management_label
-        text: "Accounts management"
-        color: "#FDA825"
+        text: dsTr("Account management")
+        color: "#b4b4b4"
         font.pixelSize: 11
         visible: false
 
         anchors.left: parent.left
+        anchors.leftMargin: 16
         anchors.verticalCenter: parent.verticalCenter
     }
 
@@ -131,11 +152,11 @@ Item {
 
     DTextButton {
         id: next_button
-        text: "Next"
+        text: dsTr("Next")
         visible: false
 
         anchors.right: parent.right
-        anchors.rightMargin: 5
+        anchors.rightMargin: 10
         anchors.verticalCenter: parent.verticalCenter
 
         onClicked: root.nextButtonClicked()
@@ -143,10 +164,12 @@ Item {
 
     DTextButton {
         id: share_button
-        text: "Share"
+        text: dsTr("Share")
+        enabled: root.shareEnabled
+        opacity: enabled ? 1.0 : 0.5
 
         anchors.right: parent.right
-        anchors.rightMargin: 5
+        anchors.rightMargin: 10
         anchors.verticalCenter: parent.verticalCenter
 
         onClicked: root.shareButtonClicked()
@@ -154,11 +177,11 @@ Item {
 
     DTextButton {
         id: ok_button
-        text: "OK"
+        text: dsTr("OK")
         visible: false
 
         anchors.right: parent.right
-        anchors.rightMargin: 5
+        anchors.rightMargin: 10
         anchors.verticalCenter: parent.verticalCenter
 
         onClicked: root.okButtonClicked()

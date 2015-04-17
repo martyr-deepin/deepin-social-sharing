@@ -1,15 +1,17 @@
-Source: deepin-share
+Source: deepin-social-sharing
 Section: misc
 Priority: extra
 Maintainer: 宋文武 <songwenwu@linuxdeepin.com>
-Build-Depends: debhelper (>= 9), python
+Build-Depends: debhelper (>= 9), python, deepin-gettext-tools
 Standards-Version: 3.9.5
 Homepage: http://www.linuxdeepin.com
 
-Package: deepin-share
+Package: deepin-social-sharing
 Architecture: all
 Depends: ${shlibs:Depends},
  ${misc:Depends},
  python-pyqt5,
+ python-requests,
+ python-requests-oauthlib,
  deepin-qml-widgets,
-Description: FIXME
+Description: System-wide social sharing service for Deepin!

@@ -11,6 +11,8 @@ class DeepinSocialSharingAdaptor(QDBusAbstractAdaptor):
     Q_CLASSINFO("D-Bus Introspection",
                 '  <interface name="com.deepin.SocialSharing">\n'
                 '    <method name="Share">\n'
+                '      <arg direction="in" type="s" name="appName"/>\n'
+                '      <arg direction="in" type="s" name="appIcon"/>\n'
                 '      <arg direction="in" type="s" name="text"/>\n'
                 '      <arg direction="in" type="s" name="picture"/>\n'
                 '    </method>\n'
@@ -20,6 +22,6 @@ class DeepinSocialSharingAdaptor(QDBusAbstractAdaptor):
         super(DeepinSocialSharingAdaptor, self).__init__(parent)
         self.parent = parent
 
-    @pyqtSlot(str, str)
-    def Share(self, text, picture):
-        return self.parent.share(text, picture)
+    @pyqtSlot(str, str, str, str)
+    def Share(self, appName, appIcon, text, picture):
+        return self.parent.share(appName, appIcon, text, picture)

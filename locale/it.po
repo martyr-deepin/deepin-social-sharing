@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Massimo Antonio Carofano <real.massimo@hotmail.it>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: deepin-social-sharing\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-23 17:36+0800\n"
+"PO-Revision-Date: 2015-03-23 09:41+0000\n"
+"Last-Translator: Massimo Antonio Carofano <real.massimo@hotmail.it>\n"
+"Language-Team: Italian (http://www.transifex.com/projects/p/deepin-social-sharing/language/it/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/qmls/AccountsManagement.qml:151
+msgid "Log in"
+msgstr "Login"
+
+#: ../src/qmls/AccountsMenu.qml:34
+msgid "New account"
+msgstr "Nuovo account"
+
+#: ../src/qmls/AuthBrowser.qml:104 ../src/qmls/AuthBrowser.qml:145
+msgid "Skip"
+msgstr "Salta"
+
+#: ../src/qmls/AuthBrowser.qml:234
+#, qt-format
+msgid "Unable to connect to %1"
+msgstr "Impossibile connettersi a %1"
+
+#: ../src/qmls/AuthBrowser.qml:239
+msgid "Reload"
+msgstr "Ricarica"
+
+#: ../src/qmls/AuthBrowser.qml:265
+msgid "Loading"
+msgstr "Caricamento"
+
+#: ../src/qmls/ShareBottomBar.qml:131 ../src/qmls/ShareBottomBar.qml:143
+msgid "Account management"
+msgstr "Impostazioni account"
+
+#: ../src/qmls/ShareBottomBar.qml:169
+msgid "The input content is more than maximum words."
+msgstr "I dati immessi sono superiori al massimo consentito."
+
+#: ../src/qmls/ShareBottomBar.qml:180
+msgid "Next"
+msgstr "Avanti"
+
+#: ../src/qmls/ShareBottomBar.qml:192
+msgid "Share"
+msgstr "Condividi"
+
+#: ../src/qmls/ShareBottomBar.qml:205
+msgid "OK"
+msgstr "OK"
+
+#: ../src/qmls/ShareContent.qml:55
+msgid "Input what you want to say"
+msgstr "A cosa stai pensando?"
+
+#: ../src/accounts_manager.py:50
+#, python-format
+msgid "Come and look at pictures I share! (Share with %s)"
+msgstr "Vieni a vedere la foto che ho condiviso! (Condivisa con %s)"

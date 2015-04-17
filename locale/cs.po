@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# fri, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: deepin-social-sharing\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-23 17:36+0800\n"
+"PO-Revision-Date: 2015-03-23 10:23+0000\n"
+"Last-Translator: fri\n"
+"Language-Team: Czech (http://www.transifex.com/projects/p/deepin-social-sharing/language/cs/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: ../src/qmls/AccountsManagement.qml:151
+msgid "Log in"
+msgstr "Přihlásit se"
+
+#: ../src/qmls/AccountsMenu.qml:34
+msgid "New account"
+msgstr "Nový účet"
+
+#: ../src/qmls/AuthBrowser.qml:104 ../src/qmls/AuthBrowser.qml:145
+msgid "Skip"
+msgstr "Přeskočit"
+
+#: ../src/qmls/AuthBrowser.qml:234
+#, qt-format
+msgid "Unable to connect to %1"
+msgstr "Nelze se připojit k %1"
+
+#: ../src/qmls/AuthBrowser.qml:239
+msgid "Reload"
+msgstr "Nahrát znovu"
+
+#: ../src/qmls/AuthBrowser.qml:265
+msgid "Loading"
+msgstr "Nahrává se"
+
+#: ../src/qmls/ShareBottomBar.qml:131 ../src/qmls/ShareBottomBar.qml:143
+msgid "Account management"
+msgstr "Správa účtu"
+
+#: ../src/qmls/ShareBottomBar.qml:169
+msgid "The input content is more than maximum words."
+msgstr "Vložený obsah má větší než možný počet slov."
+
+#: ../src/qmls/ShareBottomBar.qml:180
+msgid "Next"
+msgstr "Další"
+
+#: ../src/qmls/ShareBottomBar.qml:192
+msgid "Share"
+msgstr "Sdílet"
+
+#: ../src/qmls/ShareBottomBar.qml:205
+msgid "OK"
+msgstr "OK"
+
+#: ../src/qmls/ShareContent.qml:55
+msgid "Input what you want to say"
+msgstr "Napište, co chcete říct"
+
+#: ../src/accounts_manager.py:50
+#, python-format
+msgid "Come and look at pictures I share! (Share with %s)"
+msgstr "Pojďte se podívat na mnou sdílené obrázky! (Sdílejte s %s)"
