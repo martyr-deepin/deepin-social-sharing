@@ -23,12 +23,14 @@
 # set the environment variable 'bo_reuse'(used by mesa) to 0, thus
 # preventing the damage to our window blur effects.
 import os
+import re
 os.environ['bo_reuse'] = '0'
 
 import sys
 import signal
 import shutil
 import tempfile
+from glob import glob
 
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot
 from PyQt5.QtQml import QQmlApplicationEngine
@@ -40,7 +42,7 @@ app.setApplicationVersion("1.0")
 app.setQuitOnLastWindowClosed(True)
 
 from i18n import _
-from constants import MAIN_QML, SINAWEIBO, TWITTER
+from constants import MAIN_QML, IMAGE_EM, SINAWEIBO, TWITTER
 from accounts_manager import AccountsManager
 from dbus_services import DBUS_NAME, DBUS_PATH
 from dbus_services import DeepinSocialSharingAdaptor, session_bus
@@ -63,6 +65,44 @@ class UIUtils(QObject):
     def notifyContent(self, content):
         self.notificationsInterface.notifyBody(content)
 
+    @pyqtSlot(str, result='QVariant')
+    def emojiFaceInfoList(self, emojiFaceDir):
+        em_total_dir = IMAGE_EM
+        emoji_face_list = sorted(glob(em_total_dir))
+        sort_face_list = []
+        for image_file in emoji_face_list:
+            image_file = image_file.split("/")[-1]
+            sort_face_list.append(image_file)
+        emoji_image_list = []
+        emoji_image_rest = []
+        for image_file in sort_face_list:
+            emoji_image_selected_first = re.compile(r"(1f6\w+).png")
+            emoji_image_selected = emoji_image_selected_first.search(image_file)
+            if emoji_image_selected == None:
+                emoji_image_rest.append(image_file)
+            else:
+                emoji_image_list.append(emoji_image_selected.group(0))
+        for image_file in emoji_image_rest:
+            emoji_image_list.append(image_file)
+        return emoji_image_list
+
+
+    @pyqtSlot(str, result=str)
+    def shareTextConvert(self, shareText):
+        def matchObjectToUnicode(matchobj):
+            codeString = matchobj.group(1)
+            code = int(codeString, 16)
+            return unichr(code)
+        def matchObjectToUnicodeChar(matchobj):
+            codeString = matchobj.group(1)
+            return codeString
+        contentPattern = re.compile(r"<p.*?>(.*)?</p>")
+        content = contentPattern.search(shareText).group(1)
+        imgPattern = re.compile(r"<img src=['|\"].*?/([\w+]*?).png['|\"] />")
+        firstPattern_text =imgPattern.sub(matchObjectToUnicode, content)
+        contentPattern = re.compile(r"<span.*?>(.*)?</span>")
+        share_text = contentPattern.sub(matchObjectToUnicodeChar, firstPattern_text)
+        return share_text
 
 class QmlEngine(QQmlApplicationEngine):
     def __init__(self):
