@@ -96,7 +96,6 @@ Item {
         DImageCheckBox {
             id: sinaweibo_checkbox
             visible: false
-            spacing: 5
             imageSource :"../../images/sinaweibo_small.png"
 
             anchors.verticalCenter: parent.verticalCenter
@@ -107,7 +106,6 @@ Item {
         DImageCheckBox {
             id: twitter_checkbox
             visible: false
-            spacing: 5
             imageSource :"../../images/twitter_small.png"
 
             anchors.verticalCenter: parent.verticalCenter

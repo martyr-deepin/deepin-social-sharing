@@ -202,8 +202,6 @@ SlideInOutItem {
 
     DImageButton {
         id: back_button
-        drawBackground: true
-        lightVersion: true
         normal_image: "../../images/light_back_normal.png"
         hover_image: "../../images/light_back_hover.png"
         press_image: "../../images/light_back_press.png"
