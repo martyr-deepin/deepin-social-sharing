@@ -23,7 +23,7 @@ Item {
         anchors.leftMargin: 5
         anchors.verticalCenter: parent.verticalCenter
         text: "text " + index
-        color: itemOnHover ? dconstants.activeColor : dconstants.fgColor
+        color: itemOnHover ? DConstants.activeColor : DConstants.fgColor
     }
 
     MouseArea {
