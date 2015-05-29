@@ -65,7 +65,9 @@ DPopupWindow {
                     }
                     onClear: {
                         menuPopupWindow.removeAccount(index)
-                        completeView.model.remove(index, 1)
+                        if (index>=0) {
+                            completeView.model.remove(index, 1)
+                        }
                         if (completeView.count != 1) {
                             menuPopupWindow.menuSelect(0)
                         } else {
