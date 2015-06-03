@@ -102,7 +102,6 @@ Item {
         ToolButton {
             id: share_face
             imageName: "share_face"
-            toolImageEnabled: root.shareEnabled
             group: row
             onClicked: {
                 root.shareEmojiFaceSelected()

@@ -290,6 +290,7 @@ DDialog {
         onNextButtonClicked: {
             bottom_bar.state = "accounts_list"
             side_bar.state = "accounts_list"
+            side_bar.visible = false
             share_content.leftOut()
             accounts_list.rightIn()
         }
