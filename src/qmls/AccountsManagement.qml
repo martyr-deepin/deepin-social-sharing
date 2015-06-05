@@ -39,6 +39,7 @@ SlideInOutItem {
     }
 
     function selectUser(accountType, uid) {
+
         var index = 0
         switch (accountType) {
             case "sinaweibo": {
@@ -120,17 +121,23 @@ SlideInOutItem {
                                     return i
                                 }
                             }
+
+                            text = _accounts[0].username
+                            return 0
                         }
-                        return -1
+                        return 0
                     }
                     menu.labels: {
                         var result = []
+
                         if (accounts) {
                             var _accounts = JSON.parse(accounts)
                             for (var i = 0; i < _accounts.length; i++) {
                                 result.push(_accounts[i].username)
                             }
                         }
+                        result.push(dsTr("New account"))
+
                         return result
                     }
                     anchors.verticalCenter: parent.verticalCenter
@@ -152,7 +159,7 @@ SlideInOutItem {
 
                     onRemoveAccount: {
                         var _accounts = JSON.parse(accounts)
-                        var uid = _accounts[index].uid
+                        var uid = _accounts[menu.getIndexBeforeSorted(index)].uid
                         _accounts_manager.removeUser(accountType, uid)
                     }
                 }
