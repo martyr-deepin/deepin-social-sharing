@@ -14,10 +14,6 @@ Rectangle {
     property var emojiFaceText: emojiLook.imageText
     property url emojiFaceDir: "../../images/emoji/*.png"
     property bool shareEnabled: true
-    property bool sinaweiboCheckBoxVisible: false
-    property bool twitterCheckBoxVisible: false
-    property bool sinaweiboCheckBoxChecked: false
-    property bool twitterCheckBoxChecked: false
 
     signal accountSelected(string accountType)
     signal accountDeselected(string accountType)
@@ -59,15 +55,16 @@ Rectangle {
     ]
 
     function anyPlatform() {
-        return (sinaweiboCheckBoxVisible && sinaweibo_checkbox.checked)
-               || (twitterCheckBoxVisible && twitterCheckBoxChecked)
+        return (sinaweibo_checkbox.checked) || (twitter_checkbox.checked) || (facebook_checkBox.checked)
     }
 
     function lightUpIcons(filterMap) {
-        sinaweiboCheckBoxVisible = filterMap.indexOf("sinaweibo") != -1
+        sinaweibo_checkbox.visible = filterMap.indexOf("sinaweibo") != -1
         sinaweibo_checkbox.checked = filterMap.indexOf("sinaweibo") != -1
-        twitterCheckBoxVisible = filterMap.indexOf("twitter") != -1
-        twitterCheckBoxChecked = filterMap.indexOf("twitter") != -1
+        twitter_checkbox.visible = filterMap.indexOf("twitter") != -1
+        twitter_checkbox.checked = filterMap.indexOf("twitter") != -1
+        facebook_checkbox.visible = filterMap.indexOf("facebook") != -1
+        facebook_checkbox.checked = filterMap.indexOf("facebook") != -1
     }
 
     Column {
@@ -81,7 +78,8 @@ Rectangle {
 
         DImageCheckBox {
             id: sinaweibo_checkbox
-            visible: column.visible && sinaweiboCheckBoxVisible
+            visible: false
+            spacing: 5
             imageSource :"../../images/sinaweibo_small.png"
 
             anchors.horizontalCenter: parent.horizontalCenter
@@ -91,13 +89,26 @@ Rectangle {
 
         DImageCheckBox {
             id: twitter_checkbox
-            visible: column.visible && twitterCheckBoxVisible
+            visible: false
+            spacing: 5
             imageSource :"../../images/twitter_small.png"
 
             anchors.horizontalCenter: parent.horizontalCenter
 
             onClicked: checked ? share_platform_em.accountSelected("twitter") : share_platform_em.accountDeselected("twitter")
         }
+
+        DImageCheckBox {
+            id: facebook_checkbox
+            visible: false
+            spacing: 5
+            imageSource :"../../images/facebook_small.png"
+
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            onClicked: checked ? root.accountSelected("facebook") : share_platform_em.accountDeselected("facebook")
+        }
+
     }
     LinkButton {
         id: account_manage_button

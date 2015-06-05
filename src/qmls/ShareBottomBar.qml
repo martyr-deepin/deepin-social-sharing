@@ -93,7 +93,6 @@ Item {
         ToolButton {
             id: share_paltform
             imageName: "share"
-            toolImageEnabled: root.shareEnabled
             group: row
             onClicked: {
                 root.sharePlatFormSelected()
@@ -108,16 +107,6 @@ Item {
             }
         }
 
-        DImageCheckBox {
-            id: facebook_checkbox
-            visible: false
-            spacing: 5
-            imageSource :"../../images/facebook_small.png"
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            onClicked: checked ? root.accountSelected("facebook") : root.accountDeselected("facebook")
-        }
     }
 
 

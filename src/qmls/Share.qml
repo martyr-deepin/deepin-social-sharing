@@ -189,7 +189,7 @@ DDialog {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.topMargin: -40
-        shareEnabled: anyPlatform() || accounts_list.anyPlatform()
+        shareEnabled: anyPlatform()
         visible: false
         property bool firstCount: false
         function updateView() {
@@ -259,7 +259,7 @@ DDialog {
         id: bottom_bar
         width: side_bar.visible ? parent.width - side_bar.width : parent.width
         wordsLeft: '%1'.arg(wordNumber)
-        shareEnabled: side_bar.shareEnabled
+        shareEnabled: side_bar.shareEnabled || accounts_list.anyPlatform()
 
         anchors.left: side_bar.visible ? side_bar.right :parent.left
         anchors.bottom: parent.bottom
