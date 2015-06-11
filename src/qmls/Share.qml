@@ -227,8 +227,9 @@ DDialog {
         }
 
         onEmojiFaceAdd: {
+            var position = share_content.input_text.cursorPosition
             bottom_bar.wordNumber = bottom_bar.wordNumber - 2
-            share_content.text = share_content.text + imgText
+            share_content.input_text.insert(position, imgText)
         }
         Component.onCompleted: updateView()
     }

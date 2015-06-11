@@ -8,6 +8,7 @@ SlideInOutItem {
 
     property alias wordCount: input_text.length
     property alias text: input_text.text
+    property alias input_text: input_text
     property string screenshot
 
     property int inputLeftRightPadding: 24
@@ -96,13 +97,14 @@ SlideInOutItem {
             wrapMode:TextEdit.Wrap
             selectByMouse: true
             selectionColor: "#276ea7"
-            horizontalAlignment: TextEdit.AlignHCenter
+            //horizontalAlignment: TextEdit.AlignHCenter
 
             anchors.verticalCenter: parent.verticalCenter
             property string beforeChangedText: input_text.text
             property string changedText: ""
             onTextChanged: {
                 changedText = input_text.text
+
                 var deletewords = beforeChangedText.length - changedText.length
                 if (deletewords == 79 || deletewords == 48) {
                     deleteOneEmojiFace()

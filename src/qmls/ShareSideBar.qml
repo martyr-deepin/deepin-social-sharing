@@ -55,7 +55,7 @@ Rectangle {
     ]
 
     function anyPlatform() {
-        return (sinaweibo_checkbox.checked) || (twitter_checkbox.checked) || (facebook_checkBox.checked)
+        return (sinaweibo_checkbox.checked) || (twitter_checkbox.checked) || (facebook_checkbox.checked)
     }
 
     function lightUpIcons(filterMap) {
