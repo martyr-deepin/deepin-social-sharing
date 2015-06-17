@@ -29,8 +29,8 @@ from constants import FACEBOOK, ShareFailedReason
 import time
 from PyQt5.QtCore import pyqtSignal
 
-APP_KEY = '1628035900772049'
-APP_SECRET = '4ea629ca9c03c98bcabbc23ca83cedfc'
+APP_KEY = '310092719114444'
+APP_SECRET = '7071fafce8c2de03c23d830cff16fffb'
 CALLBACK_URL = 'http://www.linuxdeepin.com/'
 
 class GetAccountInfoThread(TimeoutThread):
