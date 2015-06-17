@@ -4,7 +4,7 @@ import Deepin.Widgets 1.0
 
 Rectangle {
     id: share_platform_em
-    width: 150
+    width: 160
     height: 300
     state: "first time"
     color: "transparent"
@@ -124,11 +124,11 @@ Rectangle {
 
     EmojiFaceView {
         id: emojiLook
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.topMargin: 20
-        width: parent.width - 6
+        anchors.fill: parent
+        anchors.leftMargin: padding
         visible: false
+
+        property int padding: 16
         share_platform: share_platform_em
         onEmojiFaceClicked: {
             share_platform_em.emojiFaceAdd(imgText)

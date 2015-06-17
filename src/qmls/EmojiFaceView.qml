@@ -15,26 +15,22 @@ Rectangle {
 
     Rectangle {
         id: rect
-        width: parent.width
-        height: parent.height
-        anchors.top: parent.top
-        anchors.topMargin: 8
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 8
+        anchors.fill: parent
+        anchors.rightMargin: 12
+        anchors.topMargin: 16
         color: "transparent"
 
         Component {
             id: appDelegate
 
             Item {
-                width: 24
-                height: 24
+                width: 22
+                height: 22
 
                 Image {
                     id: myIcon
-                    anchors.centerIn: parent
-                    anchors.margins: 2
+                    anchors.top: parent.top
+                    anchors.left: parent.left
                     source: "../../images/selected_emoji/%1".arg(icon)
 
 
@@ -53,11 +49,10 @@ Rectangle {
 
         GridView {
             id: gridView
-            width: parent.width
-            height: parent.height
             anchors.fill: parent
-            cellWidth: 24
-            cellHeight: 24
+            anchors.topMargin: 3
+            cellWidth: 22
+            cellHeight: 22
             model: ListModel {}
             delegate: appDelegate
             boundsBehavior: Flickable.StopAtBounds
@@ -67,6 +62,8 @@ Rectangle {
                 }
             }
             DScrollBar {
+               anchors.right: parent.right
+               anchors.rightMargin: -6
                flickable: gridView
                inactiveColor: "grey"
             }

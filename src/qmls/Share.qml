@@ -184,7 +184,7 @@ DDialog {
 
     ShareSideBar {
         id: side_bar
-        width: 150
+        width: 160
         height: parent.height + 40
         anchors.left: parent.left
         anchors.top: parent.top
