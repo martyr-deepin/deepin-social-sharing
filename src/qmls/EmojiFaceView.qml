@@ -13,6 +13,12 @@ Rectangle {
 
     signal emojiFaceClicked(string imgText)
 
+    function addquto(str) {
+        var reg = /\.png$/
+        reg = str.replace(reg,'')
+        var showstr = _utils.facegetValue(reg)
+        return "["+showstr+"]"
+    }
     Rectangle {
         id: rect
         anchors.fill: parent
@@ -38,7 +44,7 @@ Rectangle {
                         anchors.fill: parent
 
                         onClicked: {
-                            var imgText = "<img src='" + myIcon.source + "' />"
+                            var imgText = emojiFace.addquto(icon)
                             emojiFace.emojiFaceClicked(imgText)
                         }
                     }

@@ -48,6 +48,8 @@ from dbus_services import DBUS_NAME, DBUS_PATH
 from dbus_services import DeepinSocialSharingAdaptor, session_bus
 from dbus_interfaces import NotificationsInterface
 
+import face_data
+
 ACTION_ID_RESHARE = "action_id_reshare"
 
 
@@ -64,6 +66,13 @@ class UIUtils(QObject):
     @pyqtSlot(str)
     def notifyContent(self, content):
         self.notificationsInterface.notifyBody(content)
+
+    @pyqtSlot(str, result='QVariant')
+    def facegetValue(self, str):
+        value = face_data.getValue(str)
+        return value
+
+
 
     @pyqtSlot(str, result='QVariant')
     def emojiFaceInfoList(self, emojiFaceDir):
@@ -89,19 +98,13 @@ class UIUtils(QObject):
 
     @pyqtSlot(str, result=str)
     def shareTextConvert(self, shareText):
-        def matchObjectToUnicode(matchobj):
+        def faceGetKey(matchobj):
             codeString = matchobj.group(1)
-            code = int(codeString, 16)
-            return unichr(code)
-        def matchObjectToUnicodeChar(matchobj):
-            codeString = matchobj.group(1)
-            return codeString
-        contentPattern = re.compile(r"<p.*?>(.*)?</p>")
-        content = contentPattern.search(shareText).group(1)
-        imgPattern = re.compile(r"<img src=['|\"].*?/([\w+]*?).png['|\"] />")
-        firstPattern_text =imgPattern.sub(matchObjectToUnicode, content)
-        contentPattern = re.compile(r"<span.*?>(.*)?</span>")
-        share_text = contentPattern.sub(matchObjectToUnicodeChar, firstPattern_text)
+            codeString = face_data.getKey(codeString)
+            codeString = int(codeString, 16)
+            return unichr(codeString)
+        contentPattern = re.compile(r"\[([0-9a-zA-Z ]+)\]")
+        share_text =contentPattern.sub(faceGetKey, shareText)
         return share_text
 
 class QmlEngine(QQmlApplicationEngine):

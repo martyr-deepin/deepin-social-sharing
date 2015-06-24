@@ -93,11 +93,10 @@ SlideInOutItem {
 
             color: "#686868"
             font.pixelSize: 12
-            textFormat: TextEdit.RichText
             wrapMode:TextEdit.Wrap
             selectByMouse: true
             selectionColor: "#276ea7"
-            //horizontalAlignment: TextEdit.AlignHCenter
+            horizontalAlignment: TextEdit.AlignHCenter
 
             anchors.verticalCenter: parent.verticalCenter
             property string beforeChangedText: input_text.text
@@ -105,10 +104,6 @@ SlideInOutItem {
             onTextChanged: {
                 changedText = input_text.text
 
-                var deletewords = beforeChangedText.length - changedText.length
-                if (deletewords == 79 || deletewords == 48) {
-                    deleteOneEmojiFace()
-                }
                 if (input_text.length > 140) {
                     input_text.remove(140, 141)
                     root.textOverflow()

@@ -133,9 +133,6 @@ DDialog {
             id: share_content
             width: parent.width
             height: parent.height
-            onDeleteOneEmojiFace: {
-                share_bottom_bar.wordNumber = share_bottom_bar.wordNumber + 2
-            }
         }
 
         AccountsList {
@@ -194,7 +191,10 @@ DDialog {
         anchors.topMargin: -40
         shareEnabled: anyPlatform()
         visible: false
-        property bool firstCount: false
+
+        property bool firstAdd: false
+
+
         function updateView() {
             var accounts = _accounts_manager.getCurrentAccounts()
             var filterMap = []
@@ -220,7 +220,9 @@ DDialog {
 
         onAccountSelected: _accounts_manager.enableAccount(accountType)
         onAccountDeselected: _accounts_manager.disableAccount(accountType)
-
+        onFirstAddChanged: {
+            share_content.input_text.focus = true
+        }
         onAccountManageButtonClicked: {
             share_bottom_bar.state = "accounts_manage"
             state = "accounts_manage"
@@ -230,8 +232,8 @@ DDialog {
         }
 
         onEmojiFaceAdd: {
+            firstAdd = true
             var position = share_content.input_text.cursorPosition
-            share_bottom_bar.wordNumber = share_bottom_bar.wordNumber - 2
             share_content.input_text.insert(position, imgText)
         }
         Component.onCompleted: updateView()
