@@ -55,7 +55,7 @@ Rectangle {
     ]
 
     function anyPlatform() {
-        return (sinaweibo_checkbox.checked) || (twitter_checkbox.checked) || (facebook_checkbox.checked)
+        return (sinaweibo_checkbox.checked) || (twitter_checkbox.checked)// || (facebook_checkbox.checked)
     }
 
     function lightUpIcons(filterMap) {
@@ -63,8 +63,8 @@ Rectangle {
         sinaweibo_checkbox.checked = filterMap.indexOf("sinaweibo") != -1
         twitter_checkbox.visible = filterMap.indexOf("twitter") != -1
         twitter_checkbox.checked = filterMap.indexOf("twitter") != -1
-        facebook_checkbox.visible = filterMap.indexOf("facebook") != -1
-        facebook_checkbox.checked = filterMap.indexOf("facebook") != -1
+        //facebook_checkbox.visible = filterMap.indexOf("facebook") != -1
+        //facebook_checkbox.checked = filterMap.indexOf("facebook") != -1
     }
 
     Column {
@@ -98,16 +98,16 @@ Rectangle {
             onClicked: checked ? share_platform_em.accountSelected("twitter") : share_platform_em.accountDeselected("twitter")
         }
 
-        DImageCheckBox {
-            id: facebook_checkbox
-            visible: false
-            spacing: 5
-            imageSource :"../../images/facebook_small.png"
+        //DImageCheckBox {
+            //id: facebook_checkbox
+            //visible: false
+            //spacing: 5
+            //imageSource :"../../images/facebook_small.png"
 
-            anchors.horizontalCenter: parent.horizontalCenter
+            //anchors.horizontalCenter: parent.horizontalCenter
 
-            onClicked: checked ? root.accountSelected("facebook") : share_platform_em.accountDeselected("facebook")
-        }
+            //onClicked: checked ? root.accountSelected("facebook") : share_platform_em.accountDeselected("facebook")
+        //}
 
     }
     LinkButton {

@@ -21,10 +21,10 @@ SlideInOutItem {
                 index = 1
                 break
             }
-            case "facebook": {
-                index = 2
-                break
-            }
+            //case "facebook": {
+                //index = 2
+                //break
+            //}
         }
         var _accounts = list_view.model.get(index).accounts
         var result = []
@@ -50,10 +50,10 @@ SlideInOutItem {
                 index = 1
                 break
             }
-            case "facebook": {
-                index = 2
-                break
-            }
+            //case "facebook": {
+                //index = 2
+                //break
+            //}
         }
         list_view.model.setProperty(index, "selectedUser", uid)
     }
@@ -63,8 +63,8 @@ SlideInOutItem {
         list_view.model.setProperty(0, "selectUser", "")
         list_view.model.setProperty(1, "accounts", "")
         list_view.model.setProperty(1, "selectUser", "")
-        list_view.model.setProperty(2, "accounts", "")
-        list_view.model.setProperty(2, "selectUser", "")
+        //list_view.model.setProperty(2, "accounts", "")
+        //list_view.model.setProperty(2, "selectUser", "")
     }
 
     ListView {
@@ -197,12 +197,12 @@ SlideInOutItem {
                 accounts: ""
                 selectedUser: ""
             }
-            ListElement {
-                iconSource: "../../images/facebook_big.png"
-                accountType: "facebook"
-                accounts: ""
-                selectedUser: ""
-            }
+            //ListElement {
+                //iconSource: "../../images/facebook_big.png"
+                //accountType: "facebook"
+                //accounts: ""
+                //selectedUser: ""
+            //}
         }
     }
 }

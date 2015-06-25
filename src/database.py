@@ -23,7 +23,7 @@
 import time
 import sqlite3
 
-from constants import DATABASE_FILE, SINAWEIBO, TWITTER, FACEBOOK
+from constants import DATABASE_FILE, SINAWEIBO, TWITTER#, FACEBOOK
 
 class Database(object):
 
@@ -33,7 +33,7 @@ class Database(object):
         self.db_connect = sqlite3.connect(self.db_path)
         self.db_cursor = self.db_connect.cursor()
 
-        for _type in [SINAWEIBO, TWITTER, FACEBOOK]:
+        for _type in [SINAWEIBO, TWITTER]:#, FACEBOOK]:
             self.db_cursor.execute(
                 '''CREATE TABLE IF NOT EXISTS
                    %s (uid PRIMARY KEY, username, access_token, expires)

@@ -22,4 +22,4 @@
 
 from sina_weibo import SinaWeibo
 from twitter import Twitter
-from facebook import Facebook
+#from facebook import Facebook
