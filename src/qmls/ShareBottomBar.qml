@@ -8,74 +8,62 @@ Item {
     state: "first_time"
 
     property alias wordsLeft: word_number_label.text
-
     property bool shareEnabled: true
-
-    signal accountSelected(string accountType)
-    signal accountDeselected(string accountType)
+    property alias sharePlatFormButton: share_paltform
+    property alias shareFaceButton: share_face
     signal nextButtonClicked()
     signal shareButtonClicked()
     signal okButtonClicked()
-    signal accountManageButtonClicked()
-
+    signal emojiFaceAdd()
+    signal sharePlatFormSelected()
+    signal shareEmojiFaceSelected()
     states: [
         State {
             name: "first_time"
 
-            PropertyChanges { target: row; visible: false }
-            PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: word_number_label; visible: true }
+            PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: next_button; visible: true }
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: false }
-            PropertyChanges { target: account_manage_button; visible: false }
+            PropertyChanges { target: share_paltform; visible: false}
+            PropertyChanges { target: share_face; visible: true}
         },
         State {
             name: "accounts_list"
 
-            PropertyChanges { target: row; visible: false }
-            PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: word_number_label; visible: false }
+            PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: true }
             PropertyChanges { target: ok_button; visible: false }
-            PropertyChanges { target: account_manage_button; visible: false }
+            PropertyChanges { target: share_paltform; visible: false}
+            PropertyChanges { target: share_face; visible: false }
         },
         State {
             name: "share"
 
-            PropertyChanges { target: row; visible: true }
-            PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: word_number_label; visible: true }
+            PropertyChanges { target: accounts_management_label; visible: false }
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: true }
             PropertyChanges { target: ok_button; visible: false }
-            PropertyChanges { target: account_manage_button; visible: true }
+            PropertyChanges { target: share_paltform; visible: true}
+            PropertyChanges { target: share_face; visible: true }
         },
         State {
             name: "accounts_manage"
 
-            PropertyChanges { target: row; visible: false }
-            PropertyChanges { target: accounts_management_label; visible: true }
             PropertyChanges { target: word_number_label; visible: false }
+            PropertyChanges { target: accounts_management_label; visible: true }
             PropertyChanges { target: next_button; visible: false }
             PropertyChanges { target: share_button; visible: false }
             PropertyChanges { target: ok_button; visible: true }
-            PropertyChanges { target: account_manage_button; visible: false }
+            PropertyChanges { target: share_paltform; visible: false}
+            PropertyChanges { target: share_face; visible: false}
         }
     ]
 
-    function anyPlatform() {
-        return (sinaweibo_checkbox.visible && sinaweibo_checkbox.checked)
-               || (twitter_checkbox.visible && twitter_checkbox.checked)
-    }
-
-    function lightUpIcons(filterMap) {
-        sinaweibo_checkbox.visible = filterMap.indexOf("sinaweibo") != -1
-        sinaweibo_checkbox.checked = filterMap.indexOf("sinaweibo") != -1
-        twitter_checkbox.visible = filterMap.indexOf("twitter") != -1
-        twitter_checkbox.checked = filterMap.indexOf("twitter") != -1
-    }
 
     DSeparatorHorizontal {
         width: parent.width - 5 * 2
@@ -92,41 +80,35 @@ Item {
 
         anchors.left: parent.left
         anchors.leftMargin: 10
-
-        DImageCheckBox {
-            id: sinaweibo_checkbox
-            visible: false
-            spacing: 5
-            imageSource :"../../images/sinaweibo_small.png"
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            onClicked: checked ? root.accountSelected("sinaweibo") : root.accountDeselected("sinaweibo")
+        anchors.top: parent.top
+        anchors.topMargin: 10
+        function checkState(id) {
+            for (var i=0;i<row.children.length;i++) {
+                var childButton = row.children[i]
+                if (childButton.imageName!=id.imageName) {
+                    childButton.state = "off"
+                }
+            }
+        }
+        ToolButton {
+            id: share_paltform
+            imageName: "share"
+            group: row
+            onClicked: {
+                root.sharePlatFormSelected()
+            }
+        }
+        ToolButton {
+            id: share_face
+            imageName: "share_face"
+            group: row
+            onClicked: {
+                root.shareEmojiFaceSelected()
+            }
         }
 
-        DImageCheckBox {
-            id: twitter_checkbox
-            visible: false
-            spacing: 5
-            imageSource :"../../images/twitter_small.png"
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            onClicked: checked ? root.accountSelected("twitter") : root.accountDeselected("twitter")
-        }
     }
 
-    LinkButton {
-        id: account_manage_button
-        label: dsTr("Account management")
-        font.pixelSize: 11
-
-        anchors.left: row.right
-        anchors.leftMargin: 15
-        anchors.verticalCenter: parent.verticalCenter
-
-        onClicked: root.accountManageButtonClicked()
-    }
 
     Text {
         id: accounts_management_label

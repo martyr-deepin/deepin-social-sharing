@@ -30,6 +30,7 @@ CONFIG_DIR = os.path.join(XDG_CONFIG_HOME, PROJECT_NAME)
 DATABASE_FILE = os.path.join(CONFIG_DIR, "accounts.db")
 
 _parentDir = os.path.dirname(os.path.abspath(__file__))
+IMAGE_EM = os.path.join(os.path.dirname(_parentDir), "images/selected_emoji/*.png")
 _qmlDir = os.path.join(_parentDir, "qmls")
 MAIN_QML = os.path.join(_qmlDir, "Share.qml")
 
@@ -37,7 +38,8 @@ if not os.path.exists(CONFIG_DIR): os.makedirs(CONFIG_DIR)
 
 SINAWEIBO = "sinaweibo"
 TWITTER = "twitter"
+#FACEBOOK = "facebook"
 
 class ShareFailedReason(object):
-	Authorization = 0
-	Other = 10
+    Authorization = 0
+    Other = 10

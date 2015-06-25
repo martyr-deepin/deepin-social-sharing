@@ -21,6 +21,10 @@ SlideInOutItem {
                 index = 1
                 break
             }
+            //case "facebook": {
+                //index = 2
+                //break
+            //}
         }
         var _accounts = list_view.model.get(index).accounts
         var result = []
@@ -35,6 +39,7 @@ SlideInOutItem {
     }
 
     function selectUser(accountType, uid) {
+
         var index = 0
         switch (accountType) {
             case "sinaweibo": {
@@ -45,6 +50,10 @@ SlideInOutItem {
                 index = 1
                 break
             }
+            //case "facebook": {
+                //index = 2
+                //break
+            //}
         }
         list_view.model.setProperty(index, "selectedUser", uid)
     }
@@ -54,6 +63,8 @@ SlideInOutItem {
         list_view.model.setProperty(0, "selectUser", "")
         list_view.model.setProperty(1, "accounts", "")
         list_view.model.setProperty(1, "selectUser", "")
+        //list_view.model.setProperty(2, "accounts", "")
+        //list_view.model.setProperty(2, "selectUser", "")
     }
 
     ListView {
@@ -110,17 +121,23 @@ SlideInOutItem {
                                     return i
                                 }
                             }
+
+                            text = _accounts[0].username
+                            return 0
                         }
-                        return -1
+                        return 0
                     }
                     menu.labels: {
                         var result = []
+
                         if (accounts) {
                             var _accounts = JSON.parse(accounts)
                             for (var i = 0; i < _accounts.length; i++) {
                                 result.push(_accounts[i].username)
                             }
                         }
+                        result.push(dsTr("New account"))
+
                         return result
                     }
                     anchors.verticalCenter: parent.verticalCenter
@@ -142,7 +159,7 @@ SlideInOutItem {
 
                     onRemoveAccount: {
                         var _accounts = JSON.parse(accounts)
-                        var uid = _accounts[index].uid
+                        var uid = _accounts[menu.getIndexBeforeSorted(index)].uid
                         _accounts_manager.removeUser(accountType, uid)
                     }
                 }
@@ -180,6 +197,12 @@ SlideInOutItem {
                 accounts: ""
                 selectedUser: ""
             }
+            //ListElement {
+                //iconSource: "../../images/facebook_big.png"
+                //accountType: "facebook"
+                //accounts: ""
+                //selectedUser: ""
+            //}
         }
     }
 }

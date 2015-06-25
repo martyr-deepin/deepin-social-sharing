@@ -26,6 +26,6 @@ LOCALE_DIR="/usr/share/locale"
 
 _ = None
 try:
-    _ = gettext.translation("deepin-social-sharing", LOCALE_DIR).gettext
+    _ = gettext.translation("deepin-social-sharing", LOCALE_DIR).ugettext
 except Exception, e:
     _ = lambda i : i

@@ -2,26 +2,25 @@ import QtQuick 2.2
 import Deepin.Widgets 1.0
 
 Item {
-	id: root
-	width: 300
-	height: 30
+    id: root
+    width: 300
+    height: 30
 
-	property bool canGoBack: true
-	property alias lightBackButton: back_button.lightVersion
+    property bool canGoBack: true
+    property var shareSideBar
+    signal backButtonClicked()
 
-	signal backButtonClicked()
+    DImageButton {
+        id: back_button
+        visible: root.canGoBack
+        normal_image: "../../images/back_normal.png"
+        hover_image: "../../images/back_hover.png"
+        press_image: "../../images/back_press.png"
 
-	DImageButton {
-	    id: back_button
-	    visible: root.canGoBack
-	    drawBackground: true
-	    normal_image: "../../images/back_normal.png"
-	    hover_image: "../../images/back_hover.png"
-	    press_image: "../../images/back_press.png"
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: shareSideBar.visible ? shareSideBar.width: 12
 
-	    anchors.top: parent.top
-	    anchors.left: parent.left
-
-	    onClicked: root.backButtonClicked()
-	}
+        onClicked: root.backButtonClicked()
+    }
 }

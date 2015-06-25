@@ -130,6 +130,11 @@ SlideInOutItem {
                 itemSelected: false
                 imageSource: "../../images/account_banner_twitter.png"
             }
+            //ListElement {
+                //itemName: "facebook"
+                //itemSelected: false
+                //imageSource: "../../images/account_banner_facebook.png"
+            //}
         }
     }
 }
