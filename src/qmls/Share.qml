@@ -176,8 +176,14 @@ DDialog {
         }
 
         Keys.onReturnPressed: {
+
             if (event.modifiers & Qt.ControlModifier) {
-                _accounts_manager.tryToShare(share_content.text, share_content.screenshot)
+                if (share_bottom_bar.state == "first_time") {
+                    share_bottom_bar.nextButtonClicked()
+                }
+                if (share_bottom_bar.state == "share" ) {
+                    _accounts_manager.tryToShare(_utils.shareTextConvert(share_content.text), share_content.screenshot)
+                }
             }
         }
     }
