@@ -21,16 +21,16 @@ DComboBox {
         property bool canDelete: wrapper.index != root.labels.length - 1
 
         Rectangle {
-            color: wrapper.itemOnHover ? DConstants.popupMenuObj.hoverBgColor
-                                       : DConstants.popupMenuObj.normalBgColor
+            color: wrapper.itemOnHover ? DPalette.popupMenuObj.hoverBgColor
+                                       : DPalette.popupMenuObj.normalBgColor
             anchors.fill: parent
         }
 
         DssH2 {
             id: label
             text: wrapper.value
-            color: wrapper.itemOnHover ? DConstants.activeColor
-                                       : DConstants.fgColor
+            color: wrapper.itemOnHover ? DPalette.activeColor
+                                       : DPalette.fgColor
 
             anchors.left: parent.left
             anchors.leftMargin: 5
