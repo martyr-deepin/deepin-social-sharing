@@ -201,6 +201,7 @@ class AccountsManager(QObject):
 
     @pyqtSlot(str, result=str)
     def getAuthorizeUrl(self, accountType):
+        print "getAuthorizeUrl", accountType
         return self._accounts[accountType].getAuthorizeUrl()
 
     @pyqtSlot()
@@ -213,7 +214,9 @@ class AccountsManager(QObject):
 
     @pyqtSlot(str, str)
     def handleVerifier(self, accountType, verifier):
-        self._accounts[accountType].getAccountInfoWithVerifier(verifier)
+        if accountType in self._accounts_need_auth:
+            self._accounts_need_auth.remove(accountType)
+            self._accounts[accountType].getAccountInfoWithVerifier(verifier)
 
     def handleAccountInfo(self, accountType, accountInfo):
         db.saveAccountInfo(accountType, accountInfo)
@@ -229,9 +232,10 @@ class AccountsManager(QObject):
 
     @pyqtSlot()
     def authorizeNextAccount(self):
+        print "authorizeNextAccount"
         if self._sharing:
             if self.hasNextToAuth:
-                accountType = self._accounts_need_auth.pop()
+                accountType = self._accounts_need_auth[-1]
                 self.hasNextToAuthChanged.emit()
                 self.getAuthorizeUrl(accountType)
 

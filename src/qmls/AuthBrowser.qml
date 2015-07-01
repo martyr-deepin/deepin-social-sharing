@@ -138,6 +138,9 @@ SlideInOutItem {
                 anchors.fill: parent
 
                 onNavigationRequested: root.urlChanged(browser_two.accountType, request.url)
+                onLoadProgressChanged: {
+                    loading_animation.visible = (_urlEmpty(url) || loadProgress < 95)
+                }
 
                 Rectangle {
                     width: Math.max(20, parent.width * webview_two.loadProgress / 100)
