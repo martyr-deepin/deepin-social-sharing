@@ -100,10 +100,14 @@ class UIUtils(QObject):
     def shareTextConvert(self, shareText):
         def faceGetKey(matchobj):
             codeString = matchobj.group(1)
-            codeString = face_data.getKey(codeString)
-            codeString = int(codeString, 16)
-            return unichr(codeString)
-        contentPattern = re.compile(r"\[([0-9a-zA-Z ]+)\]")
+            keyString = face_data.getKey(codeString)
+            if keyString == 'default-value':
+                return '['+codeString+']'
+            else:
+                keyString = int(keyString, 16)
+                return unichr(keyString)
+
+        contentPattern = re.compile(r"\[([0-9a-zA-Z\s]+)\]")
         share_text =contentPattern.sub(faceGetKey, shareText)
         return share_text
 

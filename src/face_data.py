@@ -107,9 +107,7 @@ FACE_DICT = {
 }
 
 def getValue(str):
-    if FACE_DICT[str] == 'undefined':
-        return ""
-    return FACE_DICT[str]
+    return FACE_DICT.get(str, 'default-value')
 
 
 def getKey(str):
@@ -117,5 +115,5 @@ def getKey(str):
         if FACE_DICT[key] == str:
             return key
 
-    return ''
+    return 'default-value'
 
