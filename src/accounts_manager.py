@@ -201,7 +201,6 @@ class AccountsManager(QObject):
 
     @pyqtSlot(str, result=str)
     def getAuthorizeUrl(self, accountType):
-        print "getAuthorizeUrl", accountType
         return self._accounts[accountType].getAuthorizeUrl()
 
     @pyqtSlot()
@@ -232,7 +231,6 @@ class AccountsManager(QObject):
 
     @pyqtSlot()
     def authorizeNextAccount(self):
-        print "authorizeNextAccount"
         if self._sharing:
             if self.hasNextToAuth:
                 accountType = self._accounts_need_auth[-1]
