@@ -9,6 +9,7 @@ SlideInOutItem {
     property alias wordCount: input_text.length
     property alias text: input_text.text
     property alias input_text: input_text
+    property alias label_text: label.text
     property string screenshot
 
     property int inputLeftRightPadding: 24

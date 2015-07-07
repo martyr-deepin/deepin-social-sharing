@@ -228,6 +228,7 @@ DDialog {
         onAccountDeselected: _accounts_manager.disableAccount(accountType)
         onFirstAddChanged: {
             share_content.input_text.focus = true
+            share_content.label_text = ""
         }
         onAccountManageButtonClicked: {
             share_bottom_bar.state = "accounts_manage"
