@@ -42,7 +42,7 @@ SlideInOutItem {
     // pass a empty string to setUrl means that the manager can't get
     // an authorizing url for the browser, in other words it's a error.
     function setUrl(url) {
-        //fake_reload_timer.stop()
+        fake_reload_timer.stop()
 
         if (url) {
             root.currentBrowser.url = url
@@ -51,6 +51,7 @@ SlideInOutItem {
             loading_animation.visible = false
             error_warning.visible = true
         }
+        fake_reload_timer.start()
     }
 
     function reset() {
@@ -105,6 +106,7 @@ SlideInOutItem {
                     } else {
                         if (loadRequest.status == 2 ) {
                             if (firstload%2 == 0) {
+                                fake_reload_timer.stop()
                                 loading_animation.visible = false
                                 error_warning.visible = false
                                 firstload = firstload+1
@@ -161,7 +163,7 @@ SlideInOutItem {
             WebView {
                 id: webview_two
                 anchors.fill: parent
-
+                property var secondload: 1
                 onNavigationRequested: root.urlChanged(browser_two.accountType, request.url)
                 onLoadProgressChanged: {
                     loading_animation.visible = (_urlEmpty(url) || loadProgress < 95)
@@ -172,14 +174,25 @@ SlideInOutItem {
                         error_warning.visible = true
                     } else {
                         if (loadRequest.status == 2 ) {
-                            loading_animation.visible = true
-                            error_warning.visible = false
+                            if (secondload%2 == 0) {
+                                fake_reload_timer.stop()
+                                loading_animation.visible = false
+                                error_warning.visible = false
+                                secondload = secondload+1
+                            } else {
+                                loading_animation.visible = true
+                                error_warning.visible = false
+                                secondload = secondload+1
+                            }
                         } else if (loadRequest.status == 3) {
                             loading_animation.visible = false
                             error_warning.visible = true
                         } else {
                             loading_animation.visible = true
                             error_warning.visible = false
+                            if (loadRequest.status == 1) {
+                                secondload = secondload+1
+                            }
                         }
                     }
                 }
@@ -259,14 +272,14 @@ SlideInOutItem {
         onClicked: root.backButtonClicked()
     }
 
-    //Timer {
-        //id: fake_reload_timer
-        //interval: 500
-        //onTriggered: {
-            //error_warning.visible = true
-            //loading_animation.visible = false
-        //}
-    //}
+    Timer {
+        id: fake_reload_timer
+        interval: 700
+        onTriggered: {
+            error_warning.visible = true
+            loading_animation.visible = false
+        }
+    }
 
     Column {
         id: error_warning
