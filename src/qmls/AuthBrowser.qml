@@ -165,9 +165,9 @@ SlideInOutItem {
                 anchors.fill: parent
                 property var secondload: 1
                 onNavigationRequested: root.urlChanged(browser_two.accountType, request.url)
-                onLoadProgressChanged: {
-                    loading_animation.visible = (_urlEmpty(url) || loadProgress < 95)
-                }
+                //onLoadProgressChanged: {
+                    //loading_animation.visible = (_urlEmpty(url) || loadProgress < 95)
+                //}
                 onLoadingChanged: {
                     if (loadRequest.errorDomain == 2) {
                         loading_animation.visible = false
@@ -274,7 +274,7 @@ SlideInOutItem {
 
     Timer {
         id: fake_reload_timer
-        interval: 700
+        interval: 10000
         onTriggered: {
             error_warning.visible = true
             loading_animation.visible = false
