@@ -118,7 +118,10 @@ SlideInOutItem {
                         } else if (loadRequest.status == 3) {
                             loading_animation.visible = false
                             error_warning.visible = true
-                        } else {
+                        } else if (loadRequest.status == 0) {
+                            loading_animation.visible = false
+                            error_warning.visible = true
+                        }  else {
                             loading_animation.visible = true
                             error_warning.visible = false
                             if (loadRequest.status == 1) {
@@ -187,7 +190,10 @@ SlideInOutItem {
                         } else if (loadRequest.status == 3) {
                             loading_animation.visible = false
                             error_warning.visible = true
-                        } else {
+                        } else if (loadRequest.status == 0) {
+                            loading_animation.visible = false
+                            error_warning.visible = true
+                        }  else {
                             loading_animation.visible = true
                             error_warning.visible = false
                             if (loadRequest.status == 1) {
