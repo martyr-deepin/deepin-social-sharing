@@ -61,7 +61,6 @@ DDialog {
         anchors.left: share_side_bar.visible ? share_side_bar.right: parent.left
         clip: true
         focus: true
-
         property var browser
 
         anchors.top: parent.top
@@ -197,9 +196,7 @@ DDialog {
         anchors.topMargin: -40
         shareEnabled: anyPlatform()
         visible: false
-
         property bool firstAdd: false
-
 
         function updateView() {
             var accounts = _accounts_manager.getCurrentAccounts()

@@ -112,6 +112,9 @@ SlideInOutItem {
                     root.textInBounds()
                 }
             }
+            onFocusChanged: {
+               label.text = ""
+            }
         }
 
         Label {
