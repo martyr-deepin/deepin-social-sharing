@@ -106,9 +106,10 @@ SlideInOutItem {
                     } else {
                         if (loadRequest.status == 2 ) {
                             if (firstload%2 == 0) {
-                                fake_reload_timer.stop()
                                 loading_animation.visible = false
                                 error_warning.visible = false
+                                reload_timer.stop()
+                                fake_reload_timer.stop()
                                 firstload = firstload+1
                             } else {
                                 loading_animation.visible = true
@@ -119,8 +120,7 @@ SlideInOutItem {
                             loading_animation.visible = false
                             error_warning.visible = true
                         } else if (loadRequest.status == 0) {
-                            loading_animation.visible = false
-                            error_warning.visible = true
+                            reload_timer.start()
                         }  else {
                             loading_animation.visible = true
                             error_warning.visible = false
@@ -178,9 +178,10 @@ SlideInOutItem {
                     } else {
                         if (loadRequest.status == 2 ) {
                             if (secondload%2 == 0) {
-                                fake_reload_timer.stop()
                                 loading_animation.visible = false
                                 error_warning.visible = false
+                                fake_reload_timer.stop()
+                                reload_timer.stop()
                                 secondload = secondload+1
                             } else {
                                 loading_animation.visible = true
@@ -191,8 +192,7 @@ SlideInOutItem {
                             loading_animation.visible = false
                             error_warning.visible = true
                         } else if (loadRequest.status == 0) {
-                            loading_animation.visible = false
-                            error_warning.visible = true
+                            reload_timer.start()
                         }  else {
                             loading_animation.visible = true
                             error_warning.visible = false
@@ -278,6 +278,14 @@ SlideInOutItem {
         onClicked: root.backButtonClicked()
     }
 
+    Timer {
+        id: reload_timer
+        interval: 6000
+        onTriggered: {
+            error_warning.visible = true
+            loading_animation.visible = false
+        }
+    }
     Timer {
         id: fake_reload_timer
         interval: 10000

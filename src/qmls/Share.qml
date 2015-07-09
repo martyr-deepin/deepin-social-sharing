@@ -313,6 +313,7 @@ DDialog {
             share_bottom_bar.state = "share"
             share_side_bar.state = "share"
             share_side_bar.updateView()
+            share_bottom_bar.updateView()
             accounts_pick_view.rightOut()
             share_content.leftIn()
         }
