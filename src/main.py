@@ -143,22 +143,16 @@ class QmlEngine(QQmlApplicationEngine):
         self.rootObject.setScreenshot(picture)
         self.rootObject.show()
 
-    def _accountTypeName(self, accountType):
-        nameDict = {
-            SINAWEIBO: _("Weibo"),
-            TWITTER: _("Twitter")
-        }
-        return nameDict.get(accountType, accountType)
 
     def _shareSucceededCB(self, accounts):
-        accounts = map(lambda x: self._accountTypeName(x), accounts)
+        accounts = map(lambda x: self._accounts_manager.accountTypeName(x), accounts)
         accountsStr = _(",").join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = self._notificationsInterface.notify(
             _("Succeeded"),
             _("You have successfully shared the picture to %s") % accountsStr)
 
     def _shareFailedCB(self, accounts):
-        accounts = map(lambda x: self._accountTypeName(x), accounts)
+        accounts = map(lambda x: self._accounts_manager.accountTypeName(x), accounts)
         accountsStr = _(",").join(accounts) if len(accounts) > 1 else accounts[0]
         self._notificationId = self._notificationsInterface.notify(
             _("Failed"),

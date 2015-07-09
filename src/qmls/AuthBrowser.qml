@@ -309,7 +309,7 @@ SlideInOutItem {
         Item { width: 1; height: 10 }
 
         Text {
-            text: dsTr("Unable to connect to %1").arg(root.currentBrowser.accountType)
+            text: dsTr("Unable to connect to %1").arg(_accounts_manager.accountTypeName(root.currentBrowser.accountType))
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -321,7 +321,6 @@ SlideInOutItem {
                 // non-sense to reload the page, so I just faked the reload effect.
                 error_warning.visible = false
                 loading_animation.visible = true
-
                 _accounts_manager.getAuthorizeUrl(root.currentBrowser.accountType)
             }
             anchors.horizontalCenter: parent.horizontalCenter

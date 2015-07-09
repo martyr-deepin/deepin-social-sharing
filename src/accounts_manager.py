@@ -240,6 +240,15 @@ class AccountsManager(QObject):
         if accountType not in self._skipped_accounts:
             self._skipped_accounts.append(accountType)
 
+
+    @pyqtSlot(str, result="QString")
+    def accountTypeName(self, accountType):
+        nameDict = {
+            SINAWEIBO: _("Weibo"),
+            TWITTER: _("Twitter")
+        }
+        return nameDict.get(accountType, accountType)
+
     @pyqtSlot(str, str)
     def tryToShare(self, text, pic):
         self._sharing = True
