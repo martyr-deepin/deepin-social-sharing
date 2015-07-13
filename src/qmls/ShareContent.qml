@@ -35,7 +35,7 @@ SlideInOutItem {
         Image {
             id: image
             source: root.screenshot
-            fillMode: Image.PreserveAspectCrop
+            fillMode: Image.Pad
             anchors.fill: image_frame
         }
 
