@@ -13,6 +13,8 @@ SlideInOutItem {
     property string screenshot
 
     property int inputLeftRightPadding: 24
+    property var imageAreawidth
+    property var iamgeAreaheight
 
     signal textOverflow()
     signal textInBounds()
@@ -20,13 +22,15 @@ SlideInOutItem {
     function setText(text) { input_text.text = text }
 
     function setScreenshot(source) { screenshot = source }
+    function setImageSize(wid, het) {
+        imageAreawidth = wid
+        iamgeAreaheight = het
+    }
 
-
-
-    Item {
+    Rectangle {
         id: image_area
-        width: 110
-        height: 110
+        width: imageAreawidth
+        height: iamgeAreaheight
 
         anchors.top: parent.top
         anchors.topMargin: 10
@@ -35,16 +39,14 @@ SlideInOutItem {
         Image {
             id: image
             source: root.screenshot
-            fillMode: Image.Pad
+            fillMode: Image.PreserveAspectFit
             anchors.fill: image_frame
         }
-
         Rectangle {
             id: image_mask
             radius: image_frame.radius
             anchors.fill: image
         }
-
         OpacityMask {
             anchors.fill: image
             source: image
@@ -53,11 +55,11 @@ SlideInOutItem {
 
         Rectangle {
             id: image_frame
-            width: 100
-            height: 100
+            width: parent.width
+            height: parent.height
             color: "transparent"
             radius: 3
-            border.width:2
+            border.width: 2
             border.color: Qt.rgba(1, 1, 1, 0.3)
 
             anchors.centerIn: parent

@@ -35,6 +35,7 @@ from glob import glob
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot
 from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QPixmap
 app = QApplication(sys.argv)
 app.setOrganizationName("Deepin")
 app.setApplicationName("Deepin Social Sharing")
@@ -117,7 +118,7 @@ class QmlEngine(QQmlApplicationEngine):
         self._accounts_manager = AccountsManager()
         self._notificationId = None
         self._utils = UIUtils()
-
+        self._pixmap = None
         self.rootContext().setContextProperty("_utils", self._utils)
         self.rootContext().setContextProperty("_accounts_manager",
                                               self._accounts_manager)
@@ -139,10 +140,12 @@ class QmlEngine(QQmlApplicationEngine):
 
         self._accounts_manager.appName = appName
 
+        self.pixmap = QPixmap(picture)
+        self.rootObject.getImageSize(self.pixmap.width(), self.pixmap.height())
         self.rootObject.setText(text)
         self.rootObject.setScreenshot(picture)
-        self.rootObject.show()
 
+        self.rootObject.show()
 
     def _shareSucceededCB(self, accounts):
         accounts = map(lambda x: self._accounts_manager.accountTypeName(x), accounts)

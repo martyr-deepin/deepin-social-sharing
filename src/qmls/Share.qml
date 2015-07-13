@@ -32,6 +32,22 @@ DDialog {
         share_content.setScreenshot(path)
     }
 
+    function getImageSize(width, height) {
+        if (Math.max(width, height) < 100) {
+            width = width
+            height = height
+        } else if (width/height >= 1) {
+            var port = height/width
+            width = 100
+            height = 100*port
+        } else {
+            var port = width/height
+            height = 100
+            width = 100*port
+        }
+        share_content.setImageSize(width, height)
+    }
+
     function authorizeAccount(accountType) {
         auth_browser.reset()
         auth_browser.rightIn()
