@@ -29,12 +29,13 @@ SlideInOutItem {
 
     Rectangle {
         id: image_area
-        width: imageAreawidth
-        height: iamgeAreaheight
+        width: imageAreawidth + 10
+        height: iamgeAreaheight + 10
 
         anchors.top: parent.top
-        anchors.topMargin: 10
+        anchors.topMargin: 20
         anchors.horizontalCenter: parent.horizontalCenter
+        color: "transparent"
 
         Image {
             id: image
@@ -55,8 +56,8 @@ SlideInOutItem {
 
         Rectangle {
             id: image_frame
-            width: parent.width
-            height: parent.height
+            width: parent.width - 10
+            height: parent.height - 10
             color: "transparent"
             radius: 3
             border.width: 2
@@ -81,8 +82,8 @@ SlideInOutItem {
         width: root.width - root.inputLeftRightPadding * 2
         height: 70
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: image_area.bottom
-        anchors.topMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
         MouseArea {
             anchors.fill: parent
             onClicked:  {
