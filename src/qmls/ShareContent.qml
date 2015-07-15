@@ -83,7 +83,7 @@ SlideInOutItem {
         height: 70
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
+        anchors.bottomMargin: 20
         MouseArea {
             anchors.fill: parent
             onClicked:  {
