@@ -14,7 +14,7 @@ SlideInOutItem {
 
     property int inputLeftRightPadding: 24
     property var imageAreawidth
-    property var iamgeAreaheight
+    property var imageAreaheight
 
     signal textOverflow()
     signal textInBounds()
@@ -24,16 +24,16 @@ SlideInOutItem {
     function setScreenshot(source) { screenshot = source }
     function setImageSize(wid, het) {
         imageAreawidth = wid
-        iamgeAreaheight = het
+        imageAreaheight = het
     }
 
     Rectangle {
         id: image_area
         width: imageAreawidth + 10
-        height: iamgeAreaheight + 10
+        height: imageAreaheight + 10
 
         anchors.top: parent.top
-        anchors.topMargin: 20
+        anchors.topMargin: 20 + Math.max((root.height - input_area.height - imageAreaheight - 30) / 2 - 20, 0)
         anchors.horizontalCenter: parent.horizontalCenter
         color: "transparent"
 
