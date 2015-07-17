@@ -86,12 +86,8 @@ SlideInOutItem {
         anchors.bottomMargin: 20
         MouseArea {
             anchors.fill: parent
-           acceptedButtons: Qt.LeftButton | Qt.RightButton
             onClicked:  {
                 input_text.focus = true
-                if (mouse.button == Qt.RightButton) {
-                    _menu_controller.show_menu()
-                }
             }
         }
 
@@ -124,28 +120,6 @@ SlideInOutItem {
             }
         }
 
-        Connections {
-            target: _menu_controller
-            onToolSelected: {
-                switch(selectedAction) {
-                    case "_Copy": {
-                        input_text.copy()
-                        break
-                    }
-                    case "_Paste": {
-                        input_text.paste()
-                        break
-                    }
-                    case "_Cut": {
-                        input_text.cut()
-                        break
-                    }
-                }
-            }
-            onExitedSelected: {
-                dialog.close()
-            }
-        }
         Label {
             id: label
             visible: !input_text.focus
