@@ -86,8 +86,12 @@ SlideInOutItem {
         anchors.bottomMargin: 20
         MouseArea {
             anchors.fill: parent
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
             onClicked:  {
                 input_text.focus = true
+                if (mouse.button == Qt.RightButton) {
+                    input_text.paste()
+                }
             }
         }
 
