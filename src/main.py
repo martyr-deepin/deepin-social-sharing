@@ -45,6 +45,7 @@ app.setQuitOnLastWindowClosed(True)
 from i18n import _
 from constants import MAIN_QML, IMAGE_EM, SINAWEIBO, TWITTER
 from accounts_manager import AccountsManager
+from menu import MenuController
 from dbus_services import DBUS_NAME, DBUS_PATH
 from dbus_services import DeepinSocialSharingAdaptor, session_bus
 from dbus_interfaces import NotificationsInterface
@@ -118,11 +119,12 @@ class QmlEngine(QQmlApplicationEngine):
         self._accounts_manager = AccountsManager()
         self._notificationId = None
         self._utils = UIUtils()
+        self._menu_controller = MenuController()
         self._pixmap = None
         self.rootContext().setContextProperty("_utils", self._utils)
         self.rootContext().setContextProperty("_accounts_manager",
                                               self._accounts_manager)
-
+        self.rootContext().setContextProperty("_menu_controller", self._menu_controller)
         self.load(QUrl.fromLocalFile(MAIN_QML))
         self.rootObject = self.rootObjects()[0]
 

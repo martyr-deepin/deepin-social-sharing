@@ -97,7 +97,9 @@ DDialog {
         // response to a click event outside itself.
         MouseArea {
             anchors.fill: parent
-            onClicked: mainItem.focus = true
+            onClicked: {
+                mainItem.focus = true
+            }
         }
 
         Connections {
@@ -201,6 +203,7 @@ DDialog {
                 }
             }
         }
+
     }
 
     ShareSideBar {
