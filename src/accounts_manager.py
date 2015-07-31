@@ -45,13 +45,14 @@ class _ShareThread(QThread):
         self.accounts = []
 
     def run(self):
-        for account in self.accounts:
-            if self.text == "" and self.manager:
+        if self.manager:
+            for account in self.accounts:
                 tag = account.generateTag(self.manager.appName)
-                text = _("Come and look at pictures I share! (Share with %s)") % tag
-                account.share(text, self.pic)
-            else:
-                account.share(self.text, self.pic)
+                if self.text == "":
+                    text = _("Come and look at pictures I share! (Share with %s)") % tag
+                    account.share(text, self.pic)
+                else:
+                    account.share(self.text + tag, self.pic)
 
 class AccountsManager(QObject):
     """Manager of all the SNS accounts"""
