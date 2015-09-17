@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deepin-social-sharing\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-23 17:36+0800\n"
-"PO-Revision-Date: 2015-03-25 18:26+0000\n"
+"POT-Creation-Date: 2015-04-08 10:26+0800\n"
+"PO-Revision-Date: 2015-04-14 18:31+0000\n"
 "Last-Translator: Carl Andersen <carl@manjaro.dk>\n"
-"Language-Team: Danish (http://www.transifex.com/projects/p/deepin-social-sharing/language/da/)\n"
+"Language-Team: Danish (http://www.transifex.com/linuxdeepin/deepin-social-sharing/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,40 +26,36 @@ msgstr "Log ind"
 msgid "New account"
 msgstr "Ny konto"
 
-#: ../src/qmls/AuthBrowser.qml:104 ../src/qmls/AuthBrowser.qml:145
+#: ../src/qmls/AuthBrowser.qml:114 ../src/qmls/AuthBrowser.qml:153
 msgid "Skip"
 msgstr "Afbryd"
 
-#: ../src/qmls/AuthBrowser.qml:234
+#: ../src/qmls/AuthBrowser.qml:242
 #, qt-format
 msgid "Unable to connect to %1"
 msgstr "Kan ikke forbinde til %1"
 
-#: ../src/qmls/AuthBrowser.qml:239
+#: ../src/qmls/AuthBrowser.qml:247
 msgid "Reload"
 msgstr "Opdater"
 
-#: ../src/qmls/AuthBrowser.qml:265
+#: ../src/qmls/AuthBrowser.qml:273
 msgid "Loading"
 msgstr "Loader"
 
-#: ../src/qmls/ShareBottomBar.qml:131 ../src/qmls/ShareBottomBar.qml:143
+#: ../src/qmls/ShareBottomBar.qml:121 ../src/qmls/ShareBottomBar.qml:133
 msgid "Account management"
 msgstr "Konto håndtering"
 
-#: ../src/qmls/ShareBottomBar.qml:169
-msgid "The input content is more than maximum words."
-msgstr "Input indhold er mere end maksimalt tilladte ord."
-
-#: ../src/qmls/ShareBottomBar.qml:180
+#: ../src/qmls/ShareBottomBar.qml:155
 msgid "Next"
 msgstr "Næste"
 
-#: ../src/qmls/ShareBottomBar.qml:192
+#: ../src/qmls/ShareBottomBar.qml:167
 msgid "Share"
 msgstr "Del"
 
-#: ../src/qmls/ShareBottomBar.qml:205
+#: ../src/qmls/ShareBottomBar.qml:180
 msgid "OK"
 msgstr "OK"
 
@@ -67,7 +63,39 @@ msgstr "OK"
 msgid "Input what you want to say"
 msgstr "Indtast, hvad du vil sige"
 
-#: ../src/accounts_manager.py:50
+#: ../src/main.py:101
+msgid "Weibo"
+msgstr "Weibo"
+
+#: ../src/main.py:102
+msgid "Twitter"
+msgstr "Twitter"
+
+#. Dear translators, please note here that this "," should be translated to
+#. a localized comma, for example in Chinese it should be "、"
+#: ../src/main.py:108 ../src/main.py:115
+msgid ","
+msgstr ","
+
+#: ../src/main.py:110
+msgid "Succeeded"
+msgstr "lykkedes"
+
+#: ../src/main.py:111
+#, python-format
+msgid "You have successfully shared the picture to %s"
+msgstr "Du har vellykket delt billedet til %s"
+
+#: ../src/main.py:117
+msgid "Failed"
+msgstr "mislykkedes"
+
+#: ../src/main.py:118
+#, python-format
+msgid "Sorry, failed to share the picture to %s"
+msgstr "Beklager, der opstod en fejl ved deling af billedet til %s"
+
+#: ../src/accounts_manager.py:51
 #, python-format
 msgid "Come and look at pictures I share! (Share with %s)"
 msgstr "Kom og se på billeder jeg deler! (Del med %s)"

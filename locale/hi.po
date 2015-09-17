@@ -3,74 +3,73 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Jorge Diego Moraes Malcher <diegomalcher@gmail.com>, 2015
-# RAFAEL GAUNA <rafaelgt.mbin@gmail.com>, 2015
+# AnandVivek, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: deepin-social-sharing\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-08 10:26+0800\n"
-"PO-Revision-Date: 2015-08-11 12:03+0000\n"
-"Last-Translator: Jorge Diego Moraes Malcher <diegomalcher@gmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/linuxdeepin/deepin-social-sharing/language/pt_BR/)\n"
+"PO-Revision-Date: 2015-04-16 04:07+0000\n"
+"Last-Translator: AnandVivek\n"
+"Language-Team: Hindi (http://www.transifex.com/linuxdeepin/deepin-social-sharing/language/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: hi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/qmls/AccountsManagement.qml:151
 msgid "Log in"
-msgstr "Entrar"
+msgstr "अंदर आयें"
 
 #: ../src/qmls/AccountsMenu.qml:34
 msgid "New account"
-msgstr "Nova conta"
+msgstr "नया खाता"
 
 #: ../src/qmls/AuthBrowser.qml:114 ../src/qmls/AuthBrowser.qml:153
 msgid "Skip"
-msgstr "Pular"
+msgstr "छोड़ें"
 
 #: ../src/qmls/AuthBrowser.qml:242
 #, qt-format
 msgid "Unable to connect to %1"
-msgstr "Não pode conectar à %1"
+msgstr "%1 से जोड़ने में विफल"
 
 #: ../src/qmls/AuthBrowser.qml:247
 msgid "Reload"
-msgstr "Recarregar"
+msgstr "पुनः भरना"
 
 #: ../src/qmls/AuthBrowser.qml:273
 msgid "Loading"
-msgstr "Carregando"
+msgstr "भरण"
 
 #: ../src/qmls/ShareBottomBar.qml:121 ../src/qmls/ShareBottomBar.qml:133
 msgid "Account management"
-msgstr "Gerenciamento de conta"
+msgstr "खाता संचालन"
 
 #: ../src/qmls/ShareBottomBar.qml:155
 msgid "Next"
-msgstr "Próximo"
+msgstr "आगे"
 
 #: ../src/qmls/ShareBottomBar.qml:167
 msgid "Share"
-msgstr "Compart."
+msgstr "साँझा"
 
 #: ../src/qmls/ShareBottomBar.qml:180
 msgid "OK"
-msgstr "OK"
+msgstr "ठीक है"
 
 #: ../src/qmls/ShareContent.qml:55
 msgid "Input what you want to say"
-msgstr "Diga alguma coisa"
+msgstr "डालें जो भी आप कहना चाहते हैं"
 
 #: ../src/main.py:101
 msgid "Weibo"
-msgstr "Weibo"
+msgstr "वेबों"
 
 #: ../src/main.py:102
 msgid "Twitter"
-msgstr "Twitter"
+msgstr "ट्विटर"
 
 #. Dear translators, please note here that this "," should be translated to
 #. a localized comma, for example in Chinese it should be "、"
@@ -80,23 +79,23 @@ msgstr ","
 
 #: ../src/main.py:110
 msgid "Succeeded"
-msgstr "Sucedido"
+msgstr "सफल रहा"
 
 #: ../src/main.py:111
 #, python-format
 msgid "You have successfully shared the picture to %s"
-msgstr "Você compartilhou a foto com %s"
+msgstr "आपने सफलतापूर्वक यह चित्र %s से साँझा किया"
 
 #: ../src/main.py:117
 msgid "Failed"
-msgstr "Falhou"
+msgstr "विफल"
 
 #: ../src/main.py:118
 #, python-format
 msgid "Sorry, failed to share the picture to %s"
-msgstr "Desculpe, falha no compartilhamento da foto com %s"
+msgstr "क्षमा करें, चित्र को %s से साँझा करने में विफल रहा"
 
 #: ../src/accounts_manager.py:51
 #, python-format
 msgid "Come and look at pictures I share! (Share with %s)"
-msgstr "Venha e olhe as imagens que eu compartilhei! (Compart. com %s)"
+msgstr "आओ और देखो चित्र जो आपने साँझा किया (%s के साथ)"
