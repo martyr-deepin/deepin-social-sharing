@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Andreas Gustafsson <addegsson@gmail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: deepin-social-sharing\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-08 10:26+0800\n"
+"PO-Revision-Date: 2015-07-24 06:30+0000\n"
+"Last-Translator: Andreas Gustafsson <addegsson@gmail.com>\n"
+"Language-Team: Swedish (http://www.transifex.com/linuxdeepin/deepin-social-sharing/language/sv/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/qmls/AccountsManagement.qml:151
+msgid "Log in"
+msgstr "Logga in"
+
+#: ../src/qmls/AccountsMenu.qml:34
+msgid "New account"
+msgstr "Nytt konto"
+
+#: ../src/qmls/AuthBrowser.qml:114 ../src/qmls/AuthBrowser.qml:153
+msgid "Skip"
+msgstr "Hoppa över"
+
+#: ../src/qmls/AuthBrowser.qml:242
+#, qt-format
+msgid "Unable to connect to %1"
+msgstr "Kunde inte ansluta till %1"
+
+#: ../src/qmls/AuthBrowser.qml:247
+msgid "Reload"
+msgstr "Ladda om"
+
+#: ../src/qmls/AuthBrowser.qml:273
+msgid "Loading"
+msgstr "Laddar"
+
+#: ../src/qmls/ShareBottomBar.qml:121 ../src/qmls/ShareBottomBar.qml:133
+msgid "Account management"
+msgstr "Kontohantering"
+
+#: ../src/qmls/ShareBottomBar.qml:155
+msgid "Next"
+msgstr "Nästa"
+
+#: ../src/qmls/ShareBottomBar.qml:167
+msgid "Share"
+msgstr "Dela"
+
+#: ../src/qmls/ShareBottomBar.qml:180
+msgid "OK"
+msgstr "Okej"
+
+#: ../src/qmls/ShareContent.qml:55
+msgid "Input what you want to say"
+msgstr "Skriv in vad du vill säga"
+
+#: ../src/main.py:101
+msgid "Weibo"
+msgstr "Weibo"
+
+#: ../src/main.py:102
+msgid "Twitter"
+msgstr "Twitter"
+
+#. Dear translators, please note here that this "," should be translated to
+#. a localized comma, for example in Chinese it should be "、"
+#: ../src/main.py:108 ../src/main.py:115
+msgid ","
+msgstr ","
+
+#: ../src/main.py:110
+msgid "Succeeded"
+msgstr "Lyckades"
+
+#: ../src/main.py:111
+#, python-format
+msgid "You have successfully shared the picture to %s"
+msgstr "Du har lyckats att dela bilden till %s"
+
+#: ../src/main.py:117
+msgid "Failed"
+msgstr "Misslyckades"
+
+#: ../src/main.py:118
+#, python-format
+msgid "Sorry, failed to share the picture to %s"
+msgstr "Tyvärr, misslyckades att ladda upp bilden till %s"
+
+#: ../src/accounts_manager.py:51
+#, python-format
+msgid "Come and look at pictures I share! (Share with %s)"
+msgstr "Kom och se bilderna jag delar! (Dela med %s)"

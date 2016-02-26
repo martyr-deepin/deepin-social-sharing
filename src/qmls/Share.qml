@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) 2015 Deepin Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ **/
 import QtQuick 2.1
 import QtQuick.Window 2.1
 import Deepin.Widgets 1.0
@@ -13,10 +21,14 @@ DDialog {
     readonly property int defaultWidth: 480 + 20
     readonly property int defaultHeight: 314
 
+    property alias share_side_bar: share_side_bar
     property int lastX: x
     property int lastY: y
 
-    Component.onCompleted: show()
+    Component.onCompleted: {
+        title_bar.z = title_bar.z - 1
+        show()
+    }
 
     function dsTr(src) { return locale.dsTr(src) }
 
@@ -26,6 +38,22 @@ DDialog {
 
     function setScreenshot(path) {
         share_content.setScreenshot(path)
+    }
+
+    function getImageSize(width, height) {
+        if (Math.max(width, height) < 100) {
+            width = width
+            height = height
+        } else if (width/height >= 1) {
+            var port = height/width
+            width = 100
+            height = 100*port
+        } else {
+            var port = width/height
+            height = 100
+            width = 100*port
+        }
+        share_content.setImageSize(width, height)
     }
 
     function authorizeAccount(accountType) {
@@ -53,14 +81,14 @@ DDialog {
 
     Item {
         id: mainItem
-        width: parent.width
+        width: share_side_bar.visible ? parent.width - share_side_bar.width : parent.width
+        anchors.left: share_side_bar.visible ? share_side_bar.right: parent.left
         clip: true
         focus: true
-
         property var browser
 
         anchors.top: parent.top
-        anchors.bottom: bottom_bar.top
+        anchors.bottom: share_bottom_bar.top
         anchors.topMargin: 6
 
         DLocale { id: locale; domain: "deepin-social-sharing" }
@@ -124,7 +152,6 @@ DDialog {
             //     }
             // }
         }
-
         ShareContent {
             id: share_content
             width: parent.width
@@ -172,41 +199,28 @@ DDialog {
         }
 
         Keys.onReturnPressed: {
+
             if (event.modifiers & Qt.ControlModifier) {
-                _accounts_manager.tryToShare(share_content.text, share_content.screenshot)
+                if (share_bottom_bar.state == "first_time") {
+                    share_bottom_bar.nextButtonClicked()
+                }
+                if (share_bottom_bar.state == "share" ) {
+                    _accounts_manager.tryToShare(_utils.shareTextConvert(share_content.text), share_content.screenshot)
+                }
             }
         }
     }
 
-    // FIXME: the parent thing is insane, fix the DDialog component in
-    // deepin-qml-widgets to get a more decent API.
-    ShareTitleBar {
-        id: title_bar
-        x: 14; y: 14
-        width: parent.width
-        parent: mainItem.parent.parent.parent
-        canGoBack: !share_content.visible && !auth_browser.visible
-
-        onBackButtonClicked: {
-            var current = mainItem.getCurrentPage()
-            if (current) {
-                current.rightOut()
-                share_content.leftIn()
-
-                bottom_bar.state = "share"
-                bottom_bar.updateView()
-            }
-        }
-    }
-
-    ShareBottomBar {
-        id: bottom_bar
-        width: parent.width
-        wordsLeft: 140 - share_content.wordCount
-        shareEnabled: anyPlatform() || accounts_list.anyPlatform()
-
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: -5
+    ShareSideBar {
+        id: share_side_bar
+        width: 160
+        height: parent.height + 40
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.topMargin: -40
+        shareEnabled: anyPlatform()
+        visible: false
+        property bool firstAdd: false
 
         function updateView() {
             var accounts = _accounts_manager.getCurrentAccounts()
@@ -216,7 +230,10 @@ DDialog {
                 if (accounts[i][1] && accounts[i][2]) {
                     filterMap.push(accounts[i][0])
                     _accounts_manager.enableAccount(accounts[i][0])
-                    if (state == "first_time") state = "share"
+                    if (state == "first_time") {
+                        state = "share"
+                        share_bottom_bar.state = "share"
+                    }
                     userExistsFlag = true
                 }
             }
@@ -224,34 +241,124 @@ DDialog {
 
             if (!userExistsFlag && state == "share") {
                 state = "first_time"
+                share_bottom_bar.state = "first_time"
             }
         }
 
         onAccountSelected: _accounts_manager.enableAccount(accountType)
         onAccountDeselected: _accounts_manager.disableAccount(accountType)
+        onFirstAddChanged: {
+            share_content.input_text.focus = true
+            share_content.label_text = ""
+        }
+        onAccountManageButtonClicked: {
+            share_bottom_bar.state = "accounts_manage"
+            state = "accounts_manage"
+            share_content.leftOut()
+            accounts_pick_view.rightIn()
+            share_side_bar.visible = false
+        }
+
+        onEmojiFaceAdd: {
+            firstAdd = true
+            var position = share_content.input_text.cursorPosition
+            share_content.input_text.insert(position, imgText)
+        }
+        Component.onCompleted: updateView()
+    }
+    // FIXME: the parent thing is insane, fix the DDialog component in
+    // deepin-qml-widgets to get a more decent API.
+    ShareTitleBar {
+        id: share_title_bar
+        x: share_bottom_bar.x
+        y: 14
+        width: share_side_bar.visible ? parent.width - share_side_bar.width : parent.width
+        parent: mainItem.parent.parent.parent
+        canGoBack: !share_content.visible && !auth_browser.visible
+        shareSideBar: share_side_bar
+        onBackButtonClicked: {
+            var current = mainItem.getCurrentPage()
+            if (current) {
+                current.rightOut()
+                share_content.leftIn()
+                share_side_bar.state = "share"
+                share_bottom_bar.state = "share"
+                share_bottom_bar.sharePlatFormButton.state = "off"
+                share_bottom_bar.updateView()
+            }
+        }
+    }
+
+    ShareBottomBar {
+        id: share_bottom_bar
+        width: share_side_bar.visible ? parent.width - share_side_bar.width : parent.width
+        wordsLeft: '%1'.arg(wordNumber)
+        shareEnabled: share_side_bar.shareEnabled || accounts_list.anyPlatform()
+
+        anchors.left: share_side_bar.visible ? share_side_bar.right :parent.left
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: -5
+        property var wordNumber: 140-share_content.wordCount
+        property string _text: share_content.text
+        function updateView() {
+            var accounts = _accounts_manager.getCurrentAccounts()
+            var filterMap = []
+            var userExistsFlag = false
+            for (var i = 0; i < accounts.length; i++) {
+                if (accounts[i][1] && accounts[i][2]) {
+                    filterMap.push(accounts[i][0])
+                    _accounts_manager.enableAccount(accounts[i][0])
+                    if (state == "first_time") {
+                        state = "share"
+                    }
+                    userExistsFlag = true
+                }
+            }
+
+            if (!userExistsFlag && state == "share") {
+                state = "first_time"
+            }
+        }
+
 
         onNextButtonClicked: {
-            bottom_bar.state = "accounts_list"
+            share_bottom_bar.state = "accounts_list"
+            share_side_bar.state = "accounts_list"
+            share_side_bar.visible = false
             share_content.leftOut()
             accounts_list.rightIn()
         }
 
         onShareButtonClicked: {
-            _accounts_manager.tryToShare(share_content.text, share_content.screenshot)
+            _accounts_manager.tryToShare(_utils.shareTextConvert(share_content.text), share_content.screenshot)
         }
 
         onOkButtonClicked: {
-            bottom_bar.state = "share"
-            updateView()
+            share_bottom_bar.state = "share"
+            share_side_bar.state = "share"
+            share_side_bar.updateView()
+            share_bottom_bar.updateView()
             accounts_pick_view.rightOut()
             share_content.leftIn()
         }
 
-        onAccountManageButtonClicked: {
-            bottom_bar.state = "accounts_manage"
-            share_content.leftOut()
-            accounts_pick_view.rightIn()
+        onSharePlatFormSelected: {
+           if (sharePlatFormButton.state == "on") {
+               share_side_bar.state = "share"
+                share_side_bar.visible = true
+            } else {
+                share_side_bar.visible = false
+            }
         }
+        onShareEmojiFaceSelected: {
+           if (shareFaceButton.state == "on") {
+               share_side_bar.state = "share_face"
+                share_side_bar.visible = true
+            } else {
+                share_side_bar.visible = false
+            }
+        }
+
 
         Component.onCompleted: updateView()
     }

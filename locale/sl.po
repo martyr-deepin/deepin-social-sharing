@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Filip Komar <filip.komar@gmail.com>, 2015
+# Sasa Batistic <sasa.batistic@gmail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: deepin-social-sharing\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-08 10:26+0800\n"
+"PO-Revision-Date: 2015-04-19 19:44+0000\n"
+"Last-Translator: Filip Komar <filip.komar@gmail.com>\n"
+"Language-Team: Slovenian (http://www.transifex.com/linuxdeepin/deepin-social-sharing/language/sl/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
+
+#: ../src/qmls/AccountsManagement.qml:151
+msgid "Log in"
+msgstr "Prijava"
+
+#: ../src/qmls/AccountsMenu.qml:34
+msgid "New account"
+msgstr "Nov račun"
+
+#: ../src/qmls/AuthBrowser.qml:114 ../src/qmls/AuthBrowser.qml:153
+msgid "Skip"
+msgstr "Preskoči"
+
+#: ../src/qmls/AuthBrowser.qml:242
+#, qt-format
+msgid "Unable to connect to %1"
+msgstr "Povezava s %1 ni možna"
+
+#: ../src/qmls/AuthBrowser.qml:247
+msgid "Reload"
+msgstr "Znova naloži"
+
+#: ../src/qmls/AuthBrowser.qml:273
+msgid "Loading"
+msgstr "Nalaganje"
+
+#: ../src/qmls/ShareBottomBar.qml:121 ../src/qmls/ShareBottomBar.qml:133
+msgid "Account management"
+msgstr "Upravljanje računa"
+
+#: ../src/qmls/ShareBottomBar.qml:155
+msgid "Next"
+msgstr "Naslednji"
+
+#: ../src/qmls/ShareBottomBar.qml:167
+msgid "Share"
+msgstr "Deli"
+
+#: ../src/qmls/ShareBottomBar.qml:180
+msgid "OK"
+msgstr "V redu"
+
+#: ../src/qmls/ShareContent.qml:55
+msgid "Input what you want to say"
+msgstr "Vnesite, kar želite povedati"
+
+#: ../src/main.py:101
+msgid "Weibo"
+msgstr "Weibo"
+
+#: ../src/main.py:102
+msgid "Twitter"
+msgstr "Twitter"
+
+#. Dear translators, please note here that this "," should be translated to
+#. a localized comma, for example in Chinese it should be "、"
+#: ../src/main.py:108 ../src/main.py:115
+msgid ","
+msgstr ","
+
+#: ../src/main.py:110
+msgid "Succeeded"
+msgstr "Uspelo"
+
+#: ../src/main.py:111
+#, python-format
+msgid "You have successfully shared the picture to %s"
+msgstr "Uspešno ste delili sliko na %s"
+
+#: ../src/main.py:117
+msgid "Failed"
+msgstr "Ni uspelo"
+
+#: ../src/main.py:118
+#, python-format
+msgid "Sorry, failed to share the picture to %s"
+msgstr "Shranjevanje slike na %s žal ni uspelo"
+
+#: ../src/accounts_manager.py:51
+#, python-format
+msgid "Come and look at pictures I share! (Share with %s)"
+msgstr "Pridi in poglej slike, ki sem jih delil! (Deli s %s)"

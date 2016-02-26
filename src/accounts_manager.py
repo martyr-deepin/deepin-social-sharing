@@ -1,28 +1,16 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2014 ~ 2015 Deepin, Inc.
-#               2014 ~ 2015 Wang Yaohua
 #
-# Author:     Wang Yaohua <mr.asianwang@gmail.com>
-# Maintainer: Wang Yaohua <mr.asianwang@gmail.com>
+# Copyright (C) 2015 Deepin Technology Co., Ltd.
 #
-# This program is free software: you can redistribute it and/or modify
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
 
 from i18n import _
-from accounts import SinaWeibo, Twitter
-from database import db, SINAWEIBO, TWITTER
+from accounts import SinaWeibo, Twitter#, Facebook
+from database import db, SINAWEIBO, TWITTER#, FACEBOOK
 from constants import ShareFailedReason
 from settings import SocialSharingSettings
 
@@ -33,6 +21,7 @@ from weakref import ref
 typeClassMap = {
     SINAWEIBO: SinaWeibo,
     TWITTER: Twitter,
+    #FACEBOOK: Facebook
 }
 
 class _ShareThread(QThread):
@@ -44,14 +33,14 @@ class _ShareThread(QThread):
         self.accounts = []
 
     def run(self):
-        for account in self.accounts:
-            if self.text == "" and self.manager:
+        if self.manager:
+            for account in self.accounts:
                 tag = account.generateTag(self.manager.appName)
-                tag = tag.encode("utf-8")
-                text = _("Come and look at pictures I share! (Share with %s)") % tag
-                account.share(text, self.pic)
-            else:
-                account.share(self.text, self.pic)
+                if self.text == "":
+                    text = _("Come and look at pictures I share! (Share with %s)") % tag
+                    account.share(text, self.pic)
+                else:
+                    account.share(self.text + tag, self.pic)
 
 class AccountsManager(QObject):
     """Manager of all the SNS accounts"""
@@ -145,7 +134,7 @@ class AccountsManager(QObject):
     def getAllAccounts(self):
         result = []
 
-        for _type in [SINAWEIBO, TWITTER]:
+        for _type in [SINAWEIBO, TWITTER]:#, FACEBOOK]:
             for account in db.fetchAccounts(_type):
                 result.append([_type, account[0], account[1]])
 
@@ -237,7 +226,17 @@ class AccountsManager(QObject):
 
     @pyqtSlot(str)
     def skipAccount(self, accountType):
-        self._skipped_accounts.append(accountType)
+        if accountType not in self._skipped_accounts:
+            self._skipped_accounts.append(accountType)
+
+
+    @pyqtSlot(str, result="QString")
+    def accountTypeName(self, accountType):
+        nameDict = {
+            SINAWEIBO: _("Weibo"),
+            TWITTER: _("Twitter")
+        }
+        return nameDict.get(accountType, accountType)
 
     @pyqtSlot(str, str)
     def tryToShare(self, text, pic):

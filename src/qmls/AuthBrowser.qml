@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) 2015 Deepin Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ **/
 import QtQuick 2.2
 import QtWebKit 3.0
 import Deepin.Widgets 1.0
@@ -26,10 +34,12 @@ SlideInOutItem {
             root.currentBrowser = browser_two
             browser_one.leftOut()
             browser_two.rightIn()
+            loading_animation.visible = true
         } else if (root.currentBrowser == browser_two) {
             root.currentBrowser = browser_one
             browser_two.leftOut()
             browser_one.rightIn()
+            loading_animation.visible = true
         }
     }
 
@@ -49,6 +59,7 @@ SlideInOutItem {
             loading_animation.visible = false
             error_warning.visible = true
         }
+        fake_reload_timer.start()
     }
 
     function reset() {
@@ -66,7 +77,6 @@ SlideInOutItem {
 
     function _viewShowingHandler() {
         error_warning.visible = false
-
         if (!_urlEmpty) {
             loading_animation.visible = Qt.binding(function () {
                 return root.currentBrowser.loading
@@ -95,11 +105,39 @@ SlideInOutItem {
                 id: webview_one
                 anchors.fill: parent
 
+                property var firstload: 1
                 onNavigationRequested: root.urlChanged(browser_one.accountType, request.url)
-                onLoadProgressChanged: {
-                    loading_animation.visible = (_urlEmpty(url) || loadProgress < 95)
+                onLoadingChanged: {
+                    if (loadRequest.errorDomain == 2) {
+                        loading_animation.visible = false
+                        error_warning.visible = true
+                    } else {
+                        if (loadRequest.status == 2 ) {
+                            if (firstload%2 == 0) {
+                                loading_animation.visible = false
+                                error_warning.visible = false
+                                reload_timer.stop()
+                                fake_reload_timer.stop()
+                                firstload = firstload+1
+                            } else {
+                                loading_animation.visible = true
+                                error_warning.visible = false
+                                firstload = firstload+1
+                            }
+                        } else if (loadRequest.status == 3) {
+                            loading_animation.visible = false
+                            error_warning.visible = true
+                        } else if (loadRequest.status == 0) {
+                            reload_timer.start()
+                        }  else {
+                            loading_animation.visible = true
+                            error_warning.visible = false
+                            if (loadRequest.status == 1) {
+                                firstload = firstload+1
+                            }
+                        }
+                    }
                 }
-
                 Rectangle {
                     width: Math.max(20, parent.width * webview_one.loadProgress / 100)
                     height: 2
@@ -136,8 +174,42 @@ SlideInOutItem {
             WebView {
                 id: webview_two
                 anchors.fill: parent
-
+                property var secondload: 1
                 onNavigationRequested: root.urlChanged(browser_two.accountType, request.url)
+                //onLoadProgressChanged: {
+                    //loading_animation.visible = (_urlEmpty(url) || loadProgress < 95)
+                //}
+                onLoadingChanged: {
+                    if (loadRequest.errorDomain == 2) {
+                        loading_animation.visible = false
+                        error_warning.visible = true
+                    } else {
+                        if (loadRequest.status == 2 ) {
+                            if (secondload%2 == 0) {
+                                loading_animation.visible = false
+                                error_warning.visible = false
+                                fake_reload_timer.stop()
+                                reload_timer.stop()
+                                secondload = secondload+1
+                            } else {
+                                loading_animation.visible = true
+                                error_warning.visible = false
+                                secondload = secondload+1
+                            }
+                        } else if (loadRequest.status == 3) {
+                            loading_animation.visible = false
+                            error_warning.visible = true
+                        } else if (loadRequest.status == 0) {
+                            reload_timer.start()
+                        }  else {
+                            loading_animation.visible = true
+                            error_warning.visible = false
+                            if (loadRequest.status == 1) {
+                                secondload = secondload+1
+                            }
+                        }
+                    }
+                }
 
                 Rectangle {
                     width: Math.max(20, parent.width * webview_two.loadProgress / 100)
@@ -202,8 +274,6 @@ SlideInOutItem {
 
     DImageButton {
         id: back_button
-        drawBackground: true
-        lightVersion: true
         normal_image: "../../images/light_back_normal.png"
         hover_image: "../../images/light_back_hover.png"
         press_image: "../../images/light_back_press.png"
@@ -217,8 +287,16 @@ SlideInOutItem {
     }
 
     Timer {
+        id: reload_timer
+        interval: 6000
+        onTriggered: {
+            error_warning.visible = true
+            loading_animation.visible = false
+        }
+    }
+    Timer {
         id: fake_reload_timer
-        interval: 500
+        interval: 10000
         onTriggered: {
             error_warning.visible = true
             loading_animation.visible = false
@@ -239,7 +317,7 @@ SlideInOutItem {
         Item { width: 1; height: 10 }
 
         Text {
-            text: dsTr("Unable to connect to %1").arg(root.currentBrowser.accountType)
+            text: dsTr("Unable to connect to %1").arg(_accounts_manager.accountTypeName(root.currentBrowser.accountType))
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -251,7 +329,7 @@ SlideInOutItem {
                 // non-sense to reload the page, so I just faked the reload effect.
                 error_warning.visible = false
                 loading_animation.visible = true
-                fake_reload_timer.start()
+                _accounts_manager.getAuthorizeUrl(root.currentBrowser.accountType)
             }
             anchors.horizontalCenter: parent.horizontalCenter
         }

@@ -1,29 +1,17 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2014 ~ 2015 Deepin, Inc.
-#               2014 ~ 2015 Wang Yaohua
 #
-# Author:     Wang Yaohua <mr.asianwang@gmail.com>
-# Maintainer: Wang Yaohua <mr.asianwang@gmail.com>
+# Copyright (C) 2015 Deepin Technology Co., Ltd.
 #
-# This program is free software: you can redistribute it and/or modify
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
 
 import time
 import sqlite3
 
-from constants import DATABASE_FILE, SINAWEIBO, TWITTER
+from constants import DATABASE_FILE, SINAWEIBO, TWITTER#, FACEBOOK
 
 class Database(object):
 
@@ -33,7 +21,7 @@ class Database(object):
         self.db_connect = sqlite3.connect(self.db_path)
         self.db_cursor = self.db_connect.cursor()
 
-        for _type in [SINAWEIBO, TWITTER]:
+        for _type in [SINAWEIBO, TWITTER]:#, FACEBOOK]:
             self.db_cursor.execute(
                 '''CREATE TABLE IF NOT EXISTS
                    %s (uid PRIMARY KEY, username, access_token, expires)

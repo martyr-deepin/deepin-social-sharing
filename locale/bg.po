@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Galin Iskrenov <loot270@abv.bg>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: deepin-social-sharing\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-08 10:26+0800\n"
+"PO-Revision-Date: 2015-04-17 09:54+0000\n"
+"Last-Translator: Galin Iskrenov <loot270@abv.bg>\n"
+"Language-Team: Bulgarian (http://www.transifex.com/linuxdeepin/deepin-social-sharing/language/bg/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: bg\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/qmls/AccountsManagement.qml:151
+msgid "Log in"
+msgstr "Влизане"
+
+#: ../src/qmls/AccountsMenu.qml:34
+msgid "New account"
+msgstr "Нова регистрация"
+
+#: ../src/qmls/AuthBrowser.qml:114 ../src/qmls/AuthBrowser.qml:153
+msgid "Skip"
+msgstr "Пропусни"
+
+#: ../src/qmls/AuthBrowser.qml:242
+#, qt-format
+msgid "Unable to connect to %1"
+msgstr "Невъзможна връзка към %1"
+
+#: ../src/qmls/AuthBrowser.qml:247
+msgid "Reload"
+msgstr "Презареждане"
+
+#: ../src/qmls/AuthBrowser.qml:273
+msgid "Loading"
+msgstr "Зареждане"
+
+#: ../src/qmls/ShareBottomBar.qml:121 ../src/qmls/ShareBottomBar.qml:133
+msgid "Account management"
+msgstr "Управление на регистрация"
+
+#: ../src/qmls/ShareBottomBar.qml:155
+msgid "Next"
+msgstr "Следващ"
+
+#: ../src/qmls/ShareBottomBar.qml:167
+msgid "Share"
+msgstr "Споделяне"
+
+#: ../src/qmls/ShareBottomBar.qml:180
+msgid "OK"
+msgstr "Да"
+
+#: ../src/qmls/ShareContent.qml:55
+msgid "Input what you want to say"
+msgstr "Въведете каквото казвате"
+
+#: ../src/main.py:101
+msgid "Weibo"
+msgstr "Weibo"
+
+#: ../src/main.py:102
+msgid "Twitter"
+msgstr "Twitter"
+
+#. Dear translators, please note here that this "," should be translated to
+#. a localized comma, for example in Chinese it should be "、"
+#: ../src/main.py:108 ../src/main.py:115
+msgid ","
+msgstr ","
+
+#: ../src/main.py:110
+msgid "Succeeded"
+msgstr "Успешно"
+
+#: ../src/main.py:111
+#, python-format
+msgid "You have successfully shared the picture to %s"
+msgstr "Успешно споделихте снимката на %s"
+
+#: ../src/main.py:117
+msgid "Failed"
+msgstr "Неуспех"
+
+#: ../src/main.py:118
+#, python-format
+msgid "Sorry, failed to share the picture to %s"
+msgstr "Съжалявам, неуспешно споделяне на снимка на %s"
+
+#: ../src/accounts_manager.py:51
+#, python-format
+msgid "Come and look at pictures I share! (Share with %s)"
+msgstr "Ела те и вижте снимката която споделих! (споделено с %s)"

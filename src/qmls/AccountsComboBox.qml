@@ -1,166 +1,76 @@
+/**
+ * Copyright (C) 2015 Deepin Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ **/
 import QtQuick 2.1
 import QtQuick.Window 2.1
 import Deepin.Widgets 1.0
 
-Item {
-    id: combobox
-    width: Math.max(minMiddleWidth, parent.width)
-    height: background.height
-
-    property bool hovered: false
-    property bool pressed: false
-
-    property alias text: currentLabel.text
-    property alias menu: menu
-
-    property var parentWindow
-    property var labels
-    property int selectIndex: 0
-
-    signal clicked
-    signal menuSelect(int index)
+DComboBox {
+    id: root
     signal newAccount()
     signal removeAccount(int index)
 
-    onSelectIndexChanged: {
-        select(selectIndex)
-    }
+    itemDelegate: Item {
+        id: wrapper
 
-    Component.onCompleted: {
-        if(selectIndex != -1){
-            select(selectIndex)
+        height: 26
+        layer.enabled: true
+
+        // Properties that DComboBox.itemDelegate should provide.
+        property int index
+        property var value
+        property bool itemOnHover
+
+        property bool canDelete: wrapper.index != root.labels.length - 1
+
+        Rectangle {
+            color: wrapper.itemOnHover ? DPalette.popupMenuObj.hoverBgColor
+                                       : DPalette.popupMenuObj.normalBgColor
+            anchors.fill: parent
         }
-    }
-
-    function select(index) {
-        if (menu.labels[selectIndex] != undefined) {
-            selectIndex = index
-            text = menu.labels[index]
-        }
-    }
-
-    AccountsMenu {
-        id: menu
-        parentWindow: combobox.parentWindow
-        labels: combobox.labels
-
-        onReset: {
-            combobox.selectIndex = -1
-            combobox.text = ""
-            menu.visible = false
-        }
-
-        onNewAccount: combobox.newAccount()
-
-        onMenuSelect: {
-            combobox.menuSelect(index)
-            combobox.select(index)
-        }
-
-        onRemoveAccount: {
-            combobox.removeAccount(index)
-            menu.labels.splice(index, 1)
-        }
-    }
-
-    function showMenu(x, y, w) {
-        menu.x = x - menu.frameEdge + 1
-        menu.y = y - menu.frameEdge
-        menu.width = w + menu.frameEdge * 2 -2
-        menu.visible = true
-    }
-
-    onClicked: {
-        var pos = mapToItem(null, 0, 0)
-        var x = parentWindow.x + pos.x
-        var y = parentWindow.y + pos.y + height
-        var w = width
-        showMenu(x, y, w)
-    }
-
-    QtObject {
-        id: buttonImage
-        property string status: "normal"
-        property string header: "../../images/button_left_%1.png".arg(status)
-        property string middle: "../../images/button_center_%1.png".arg(status)
-        property string tail: "../../images/button_right_%1.png".arg(status)
-    }
-
-    property int minMiddleWidth: buttonHeader.width + downArrow.width + buttonTail.width
-
-    Row {
-        id: background
-        height: buttonHeader.height
-        width: parent.width
-
-        Image{
-            id: buttonHeader
-            source: buttonImage.header
-        }
-
-        Image {
-            id: buttonMiddle
-            source: buttonImage.middle
-            width: parent.width - buttonHeader.width - buttonTail.width
-        }
-
-        Image{
-            id: buttonTail
-            source: buttonImage.tail
-        }
-    }
-
-    Rectangle {
-        id: content
-        width: buttonMiddle.width
-        height: background.height
-        anchors.left: parent.left
-        anchors.leftMargin: buttonHeader.width
-        anchors.verticalCenter: parent.verticalCenter
-        color: Qt.rgba(1, 0, 0, 0)
 
         DssH2 {
-            id: currentLabel
+            id: label
+            text: wrapper.value
+            color: wrapper.itemOnHover ? DPalette.activeColor
+                                       : DPalette.fgColor
+
             anchors.left: parent.left
+            anchors.leftMargin: 5
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.width - downArrow.width
-            elide: Text.ElideRight
         }
 
-        Image {
-            id: downArrow
+        DImageButton {
+            visible: wrapper.canDelete
+            normal_image: "../../images/clear_content_normal.png"
+            hover_image: "../../images/clear_content_hover.png"
+            press_image: "../../images/clear_content_press.png"
+
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            source: hovered ? "../../images/arrow_down_hover.png" : "../../images/arrow_down_normal.png"
+
+            onEntered: wrapper.itemOnHover = true
+            onExited: wrapper.itemOnHover = false
+
+            onClicked: {
+                root.hideMenu()
+                root.removeAccount(index)
+            }
         }
 
-    }
+        MouseArea {
+            anchors.fill: parent
+            enabled: wrapper.index == root.labels.length - 1
 
-    MouseArea{
-        anchors.fill: parent
-        hoverEnabled: true
-
-        onEntered: {
-            parent.hovered = true
-        }
-
-        onExited: {
-            parent.hovered = false
-        }
-
-        onPressed: {
-            parent.pressed = true
-            buttonImage.status = "press"
-        }
-        onReleased: {
-            parent.pressed = false
-            parent.hovered = containsMouse
-            buttonImage.status = "normal"
-        }
-
-        onClicked: {
-            combobox.clicked()
+            onClicked: {
+                root.hideMenu()
+                root.newAccount()
+            }
         }
     }
-
 }

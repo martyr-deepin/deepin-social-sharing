@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) 2015 Deepin Technology Co., Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ **/
 import QtQuick 2.1
 import QtGraphicalEffects 1.0
 import Deepin.Widgets 1.0
@@ -21,6 +29,10 @@ SlideInOutItem {
                 index = 1
                 break
             }
+            //case "facebook": {
+                //index = 2
+                //break
+            //}
         }
         var _accounts = list_view.model.get(index).accounts
         var result = []
@@ -35,6 +47,7 @@ SlideInOutItem {
     }
 
     function selectUser(accountType, uid) {
+
         var index = 0
         switch (accountType) {
             case "sinaweibo": {
@@ -45,6 +58,10 @@ SlideInOutItem {
                 index = 1
                 break
             }
+            //case "facebook": {
+                //index = 2
+                //break
+            //}
         }
         list_view.model.setProperty(index, "selectedUser", uid)
     }
@@ -54,6 +71,8 @@ SlideInOutItem {
         list_view.model.setProperty(0, "selectUser", "")
         list_view.model.setProperty(1, "accounts", "")
         list_view.model.setProperty(1, "selectUser", "")
+        //list_view.model.setProperty(2, "accounts", "")
+        //list_view.model.setProperty(2, "selectUser", "")
     }
 
     ListView {
@@ -110,17 +129,23 @@ SlideInOutItem {
                                     return i
                                 }
                             }
+
+                            text = _accounts[0].username
+                            return 0
                         }
-                        return -1
+                        return 0
                     }
                     menu.labels: {
                         var result = []
+
                         if (accounts) {
                             var _accounts = JSON.parse(accounts)
                             for (var i = 0; i < _accounts.length; i++) {
                                 result.push(_accounts[i].username)
                             }
                         }
+                        result.push(dsTr("New account"))
+
                         return result
                     }
                     anchors.verticalCenter: parent.verticalCenter
@@ -142,7 +167,7 @@ SlideInOutItem {
 
                     onRemoveAccount: {
                         var _accounts = JSON.parse(accounts)
-                        var uid = _accounts[index].uid
+                        var uid = _accounts[menu.getIndexBeforeSorted(index)].uid
                         _accounts_manager.removeUser(accountType, uid)
                     }
                 }
@@ -180,6 +205,12 @@ SlideInOutItem {
                 accounts: ""
                 selectedUser: ""
             }
+            //ListElement {
+                //iconSource: "../../images/facebook_big.png"
+                //accountType: "facebook"
+                //accounts: ""
+                //selectedUser: ""
+            //}
         }
     }
 }
