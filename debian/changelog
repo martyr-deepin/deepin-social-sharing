@@ -1,0 +1,23 @@
+deepin-social-sharing (1.1.2-1) stable; urgency=low
+
+  * Autobuild Tag 1.1.2 
+
+ -- TagBuilder <tagbuilder@linuxdeepin.com>  Tue, 12 Jan 2016 18:06:46 +0000
+
+deepin-social-sharing (1.1-1) stable; urgency=low
+
+  * Autobuild Tag 1.1 
+
+ -- TagBuilder <tabbuilder@linuxdeepin.com>  Mon, 20 Jul 2015 14:15:00 +0000
+
+deepin-social-sharing (1.0.90-1) unstable; urgency=low
+
+  * Autobuild Tag 1.0.90 
+
+ -- TagBuilder <tabbuilder@linuxdeepin.com>  Wed, 01 Jul 2015 19:41:29 +0000
+
+deepin-social-sharing (0.0.0) unstable; urgency=medium
+
+  * Initial release.
+
+ -- 宋文武 <songwenwu@linuxdeepin.com>  Tue, 20 Jan 2015 12:11:42 +0800
