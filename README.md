@@ -30,4 +30,4 @@ You can commit you patch on [https://cr.deepin.io/#/admin/projects/deepin-social
 
 ## License
 
-GNU General Public License, Version 3.0
+deepin-social-sharing is licensed under [GPLv3](LICENSE).
